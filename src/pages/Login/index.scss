@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  background: #fcfcfc;
+  zoom: -1;
+  .left-wrapper {
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+    @media screen and (min-width: 800px) {
+      display: flex;
+    }
+    .logo {
+      width: 80%;
+      height: 50%;
+    }
+  }
+  .right-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 50%;
+    @media screen and (max-width: 800px) {
+      width: 100%;
+    }
+    @media screen and (min-width: 800px) {
+      width: 50%;
+    }
+    .form-wrapper {
+      .app-name {
+        font-size: 18px;
+        color: #919191;
+        font-weight: 500;
+      }
+      .title {
+        margin-top: 6px;
+        color: #000000;
+        font-size: 24px;
+      }
+      .account-input {
+        display: block;
+        width: 360px;
+        height: 40px;
+        margin-top: 22px;
+      }
+      .pwd-input {
+        display: block;
+        width: 360px;
+        height: 40px;
+        margin-top: 32px;
+      }
+      .btn-start {
+        width: 360px;
+        height: 40px;
+        margin-top: 32px;
+        letter-spacing: 2px;
+      }
+      .bottom-link {
+        width: 360px;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+        .link {
+          font-size: 14px;
+        }
+        .ant-btn-link {
+          padding: 0;
+        }
+      }
+    }
+  }
+}

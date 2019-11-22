@@ -1,0 +1,38 @@
+html,
+body,
+div,
+span,
+h1,
+h2,
+h3,
+p,
+img,
+i,
+ul,
+li,
+label,
+footer,
+header,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  overflow: auto;
+  font-size: 14px;
+  background-color: rgba(239, 243, 244, 1);
+  color: #5e5e5e;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
