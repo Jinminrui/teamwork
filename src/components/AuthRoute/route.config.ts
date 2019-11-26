@@ -2,10 +2,11 @@ import LoginPage from 'pages/Login';
 import HomePage from 'pages/Home';
 import ErrorPage from 'pages/404';
 import EditorPage from 'pages/Editor';
+import { FC } from 'react';
 
 export interface RouteItem {
   path: string;
-  component?: any;
+  component?: FC;
   auth?: boolean;
 }
 

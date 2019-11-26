@@ -1,5 +1,5 @@
-const ADD_USER: string = 'ADD_USER';
-const DELETE_USER: string = 'DELETE_USER';
+const ADD_USER = 'ADD_USER';
+const DELETE_USER = 'DELETE_USER';
 
 export default {
   /**

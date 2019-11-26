@@ -4,7 +4,7 @@ import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
 import './index.scss';
 import 'highlight.js/styles/atom-one-dark.css';
-import { Button } from 'antd';
+import { Button, Input } from 'antd';
 
 const MOCK_DATA =
   'Hello.\n\n * This is markdown.\n * It is fun\n * Love it or leave it.';
@@ -37,6 +37,9 @@ const Editor: React.FC = () => {
   }
   return (
     <div className="editor-wrapper">
+      <div className="header">
+        <Input placeholder="文章标题" className="title-input" />
+      </div>
       <MdEditor
         name="editor"
         value={MOCK_DATA}
@@ -50,7 +53,7 @@ const Editor: React.FC = () => {
           },
           imageUrl: 'https://octodex.github.com/images/minion.png',
         }}
-        style={{ height: 'calc(100vh - 60px)' }}
+        style={{ height: 'calc(100vh - 100px)' }}
       />
       <div className="footer">
         <Button className="btn">放弃</Button>

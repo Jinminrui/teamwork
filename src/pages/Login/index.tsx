@@ -3,9 +3,10 @@ import { Input, Icon, Button } from 'antd';
 import './index.scss';
 import logo from './co-work.svg';
 
-const Login: React.SFC<any> = props => {
+const Login: React.FC<any> = props => {
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
+  console.log(props);
 
   const { history } = props;
 

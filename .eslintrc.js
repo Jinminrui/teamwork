@@ -52,11 +52,24 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 0,
     'import/no-unresolved': [
       'error',
-      { ignore: ['@', 'api', 'utils', 'pages', 'styles', 'components'] },
+      {
+        ignore: [
+          '@',
+          'api',
+          'utils',
+          'pages',
+          'styles',
+          'components',
+          'types',
+          'store',
+        ],
+      },
     ],
     'object-curly-newline': 0,
     'arrow-parens': ['error', 'as-needed'],
     'operator-linebreak': 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    'import/prefer-default-export': 0,
   },
   settings: {
     'import/resolver': {

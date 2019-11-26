@@ -15,6 +15,6 @@ export default (state = defaultState, action: any) => {
       newList.push(action.data);
       return { ...state, userList: newList };
     default:
-      return defaultState;
+      return state;
   }
 };

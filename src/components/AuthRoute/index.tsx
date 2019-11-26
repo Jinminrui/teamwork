@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
+import { Spin } from 'antd';
+import { Store } from 'types';
+import { setLoading } from 'store/app/app.action';
 import { RouteItem } from './route.config';
 
 const AuthRoute: React.FC<any> = props => {
+  const dispatch = useDispatch();
+  const loading: boolean = useSelector((state: Store) => state.app.loading);
+
   const { pathname } = props.location;
   const isLogin = localStorage.getItem('user_token');
+  let timer = 0;
 
-  const targetRouterConfig = props.config.find(
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    dispatch(setLoading(true));
+    clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      dispatch(setLoading(false));
+    }, 1000);
+  }, [pathname]);
+
+  const targetRouterConfig: RouteItem = props.config.find(
     (v: RouteItem) => v.path === pathname
   );
+
   if (targetRouterConfig && !targetRouterConfig.auth && !isLogin) {
     const { component } = targetRouterConfig;
     return <Route exact path={pathname} component={component} />;
@@ -20,7 +38,17 @@ const AuthRoute: React.FC<any> = props => {
     }
     // 如果路由合法，就跳转到相应的路由
     if (targetRouterConfig) {
-      return <Route path={pathname} component={targetRouterConfig.component} />;
+      return (
+        <Spin
+          tip="Loading"
+          size="large"
+          spinning={loading}
+          // indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
+          style={{ maxHeight: 'none' }}
+        >
+          <Route path={pathname} component={targetRouterConfig.component} />
+        </Spin>
+      );
     }
     // 如果路由不合法，重定向到 404 页面
     return <Redirect to="/404" />;
