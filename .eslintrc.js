@@ -62,6 +62,7 @@ module.exports = {
           'components',
           'types',
           'store',
+          'antd/lib/',
         ],
       },
     ],
@@ -70,6 +71,7 @@ module.exports = {
     'operator-linebreak': 0,
     '@typescript-eslint/no-explicit-any': 0,
     'import/prefer-default-export': 0,
+    'no-nested-ternary': 0,
   },
   settings: {
     'import/resolver': {

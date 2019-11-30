@@ -12,11 +12,6 @@ export interface RouteItem {
 
 const RouteConfig: Array<RouteItem> = [
   {
-    path: '/',
-    component: HomePage,
-    auth: true,
-  },
-  {
     path: '/home',
     component: HomePage,
     auth: true,
@@ -32,6 +27,16 @@ const RouteConfig: Array<RouteItem> = [
   {
     path: '/editor',
     component: EditorPage,
+  },
+  {
+    path: '/home/dashboard',
+    component: HomePage,
+    auth: true,
+  },
+  {
+    path: '/home/personal-info',
+    component: HomePage,
+    auth: true,
   },
 ];
 

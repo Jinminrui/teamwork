@@ -1,5 +1,71 @@
-.home-container {
-  width: 100%;
-  height: 100vh;
-  overflow: auto;
+.logo {
+  height: 64px;
+  border-bottom: 1px solid #eff3f4;
+  border-right: 1px solid #eff3f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 32px;
+    height: 32px;
+  }
+  h1 {
+    font-size: 20px;
+    color: #597ef7;
+    margin-left: 16px;
+  }
+}
+
+.ant-layout-sider {
+  background: #ffffff;
+}
+
+.ant-menu-item > a {
+  display: inline;
+}
+
+.header {
+  background: #fff;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 64px;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  .trigger {
+    font-size: 20px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  .trigger:hover {
+    color: #597ef7;
+  }
+  .right-wrapper {
+    float: right;
+    height: 100%;
+    overflow: hidden;
+    .header-actions {
+      display: inline-block;
+      position: relative;
+      height: 64px;
+      line-height: 64px;
+      padding: 0 16px;
+      cursor: pointer;
+      color: #222222;
+      .username {
+        margin-left: 10px;
+      }
+      .badge {
+        width: 28px;
+      }
+    }
+    .header-actions:hover {
+      background: rgba($color: #000000, $alpha: 0.025);
+    }
+  }
+}
+
+.content-wrapper {
 }
