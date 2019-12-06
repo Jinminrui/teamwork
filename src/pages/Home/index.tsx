@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Layout, Menu, Icon, Dropdown, Avatar, Badge } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import { Switch, Route, Redirect } from 'react-router-dom';
-
 import './index.scss';
 import IconFont from 'components/IconFont';
 import Dashboard from 'pages/Dashboard';
@@ -16,18 +15,16 @@ const { Item, ItemGroup } = Menu;
 const Home: React.FC = (props: any) => {
   const [collapsed, setCollapsed] = useState(false);
   const [userMenuVisiable, setUserMenuVisiable] = useState(false);
-  const [marginLeft, setMarginLeft] = useState(256);
-  const [headerMarginLeft, setHeaderMarginLeft] = useState(
-    'calc(100% - 256px)'
-  );
+  const [paddingLeft, setPaddingLeft] = useState(256);
+  const [headerWidth, setHeaderWidth] = useState('calc(100% - 256px)');
 
   const { pathname } = props.location;
   const currentKey = pathname.split('/')[2];
 
   function toggle(): void {
     setCollapsed(!collapsed);
-    setMarginLeft(collapsed ? 256 : 80);
-    setHeaderMarginLeft(collapsed ? 'calc(100% - 256px)' : 'calc(100% - 80px)');
+    setPaddingLeft(collapsed ? 256 : 80);
+    setHeaderWidth(collapsed ? 'calc(100% - 256px)' : 'calc(100% - 80px)');
   }
 
   function handleMenuClick(): void {
@@ -61,6 +58,15 @@ const Home: React.FC = (props: any) => {
         collapsed={collapsed}
         width={256}
         className="sider"
+        breakpoint="lg"
+        collapsedWidth="80"
+        onCollapse={value => {
+          setCollapsed(value);
+          setPaddingLeft(collapsed ? 256 : 80);
+          setHeaderWidth(
+            collapsed ? 'calc(100% - 256px)' : 'calc(100% - 80px)'
+          );
+        }}
         style={{
           overflow: 'auto',
           height: '100vh',
@@ -131,8 +137,8 @@ const Home: React.FC = (props: any) => {
           </ItemGroup>
         </Menu>
       </Sider>
-      <Layout style={{ marginLeft }}>
-        <Header className="header" style={{ width: headerMarginLeft }}>
+      <Layout style={{ paddingLeft }}>
+        <Header className="header" style={{ width: headerWidth }}>
           <Icon
             className="trigger"
             type={collapsed ? 'menu-unfold' : 'menu-fold'}
@@ -152,12 +158,7 @@ const Home: React.FC = (props: any) => {
               onVisibleChange={handleVisibleChange}
             >
               <div className="avatar-wrapper">
-                <Avatar
-                  style={{
-                    backgroundColor: 'orange',
-                    verticalAlign: 'middle',
-                  }}
-                >
+                <Avatar src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png">
                   KK
                 </Avatar>
                 <span className="username">Keen King</span>
@@ -168,11 +169,7 @@ const Home: React.FC = (props: any) => {
         <Content
           className="content-wrapper"
           style={{
-            padding: '0 50px',
-            marginLeft: 16,
-            marginRight: 16,
-            background: '#fff',
-            marginTop: 84,
+            marginTop: 64,
           }}
         >
           <Switch>
@@ -181,8 +178,19 @@ const Home: React.FC = (props: any) => {
               path="/home"
               component={() => <Redirect to="/home/dashboard" />}
             />
-            <Route exact path="/home/dashboard" component={Dashboard} />
-            <Route exact path="/home/personal-info" component={PersonalInfo} />
+
+            <Route
+              exact
+              path="/home/dashboard"
+              key="/home/dashboard"
+              component={Dashboard}
+            />
+            <Route
+              exact
+              path="/home/personal-info"
+              key="/home/personal-info"
+              component={PersonalInfo}
+            />
           </Switch>
         </Content>
       </Layout>

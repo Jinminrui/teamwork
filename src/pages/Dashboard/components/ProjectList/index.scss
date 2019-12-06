@@ -1,0 +1,40 @@
+@import 'static/styles/variable.scss';
+
+.dashborad-project-item-wrapper {
+  width: 100%;
+  text-align: left;
+  .dashborad-project-item-title {
+    padding-bottom: 8px;
+    .avatar {
+      background: #ffd666;
+    }
+    .project-name {
+      padding-left: 12px;
+      height: 24px;
+      line-height: 24px;
+      font-size: 14px;
+      vertical-align: top;
+      overflow: hidden;
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      &:hover {
+        color: $theme-color;
+      }
+    }
+  }
+  .dashborad-project-item-desc {
+    padding-bottom: 8px;
+    color: rgba(0, 0, 0, 0.45);
+    height: 44px;
+    overflow: hidden;
+  }
+  .dashborad-project-item-footer {
+    color: rgba(0, 0, 0, 0.45);
+    .dashborad-project-item-update-time {
+      text-align: right;
+    }
+  }
+}
