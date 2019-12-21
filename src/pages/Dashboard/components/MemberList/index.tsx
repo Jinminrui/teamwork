@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, List, Avatar } from 'antd';
+import { getTeamMemberList } from 'api/team';
+import { getCookies } from 'utils';
+
+interface MemberItem {
+  id: number;
+  name: string;
+  avatarUrl: string;
+}
 
 const MemberList = () => {
   const [loading, setLoading] = useState(false);
-  const [list, setList] = useState<Array<string>>([]);
+  const [list, setList] = useState<Array<MemberItem>>([]);
+  const userToken = getCookies('user-token');
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setList(['金敏睿', '杨志云', '罗飞']);
-      setLoading(false);
-    }, 3000);
-  }, []);
+    if (userToken) {
+      getTeamMemberList(1).then(res => {
+        setList(res.data.list);
+        setLoading(false);
+      });
+    }
+  }, [userToken]);
+
   return (
     <Card
       title="成员"
@@ -26,16 +38,13 @@ const MemberList = () => {
           sm: 2,
           md: 2,
           lg: 2,
-          xl: 2,
+          xl: 1,
           xxl: 2,
         }}
         dataSource={list}
         renderItem={item => (
-          <List.Item>
-            <Avatar
-              src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
-              size={24}
-            />
+          <List.Item key={item.id}>
+            <Avatar src={item.avatarUrl} size={24} />
             <span
               style={{
                 marginLeft: '12px',
@@ -44,7 +53,7 @@ const MemberList = () => {
                 verticalAlign: 'top',
               }}
             >
-              {item}
+              {item.name}
             </span>
           </List.Item>
         )}

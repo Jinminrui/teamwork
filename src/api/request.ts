@@ -1,10 +1,11 @@
+import Cookies from 'js-cookie';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { message } from 'antd';
 
 export const HOST: string =
   window.location.host === 'www.jinminrui.com'
     ? 'http://www.jinminrui.com'
-    : 'http://localhost:8080';
+    : '/api';
 
 const baseConfig: AxiosRequestConfig = {
   baseURL: HOST,
@@ -15,6 +16,7 @@ const baseConfig: AxiosRequestConfig = {
 const request: AxiosInstance = axios.create({
   ...baseConfig,
   timeout: 15000,
+  headers: { Token: Cookies.get('user-token') },
 });
 
 request.interceptors.response.use(
@@ -32,11 +34,11 @@ request.interceptors.response.use(
   }
 );
 
-export function get(url: string, params: any) {
+export function get(url: string, params?: any) {
   return request.get(url, { params });
 }
 
-export function post(url: string, params: any) {
+export function post(url: string, params?: any) {
   return request.post(url, { params });
 }
 

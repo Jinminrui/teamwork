@@ -1,13 +1,8 @@
-const ADD_USER = 'ADD_USER';
-const DELETE_USER = 'DELETE_USER';
+const SET_USER_INFO = 'SET_USER_INFO';
 
 export default {
   /**
-   * 增加一个用户
+   * 设置用户Token
    */
-  ADD_USER,
-  /**
-   * 删除一个用户
-   */
-  DELETE_USER,
+  SET_USER_INFO,
 };

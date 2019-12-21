@@ -1,13 +1,12 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import { Route, Redirect } from 'react-router-dom';
-
 import { RouteItem } from './route.config';
 
 const AuthRoute: React.FC<any> = props => {
   const { pathname } = props.location;
+  const isLogin = Cookies.get('user-token');
   console.log(pathname);
-
-  const isLogin = localStorage.getItem('user_token');
 
   const targetRouterConfig: RouteItem = props.config.find(
     (v: RouteItem) => v.path === pathname
@@ -31,7 +30,7 @@ const AuthRoute: React.FC<any> = props => {
     return <Redirect to="/404" />;
   }
   // 非登陆状态下，当路由合法时且需要权限校验时，跳转到登陆页面，要求登陆
-  if (targetRouterConfig && targetRouterConfig.auth) {
+  if ((targetRouterConfig && targetRouterConfig.auth) || pathname === '/') {
     return <Redirect to="/login" />;
   }
   // 非登陆状态下，路由不合法时，重定向至 404

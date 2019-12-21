@@ -1,3 +1,4 @@
+import { RouteComponentProps } from 'react-router-dom';
 import LoginPage from 'pages/Login';
 import HomePage from 'pages/Home';
 import ErrorPage from 'pages/404';
@@ -6,7 +7,7 @@ import { FC } from 'react';
 
 export interface RouteItem {
   path: string;
-  component?: FC;
+  component?: FC<RouteComponentProps>;
   auth?: boolean;
 }
 

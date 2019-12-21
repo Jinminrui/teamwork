@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { Input, Icon, Button } from 'antd';
+import { Input, Icon, Button, message } from 'antd';
 import './index.scss';
+import { RouteComponentProps } from 'react-router-dom';
+import { login } from 'api/user';
+import Cookies from 'js-cookie';
 import logo from './co-work.svg';
 
-const Login: React.FC<any> = props => {
+interface Props extends RouteComponentProps {
+  children?: React.ReactNode;
+}
+
+const Login: React.FC<Props> = (props: Props) => {
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
-  console.log(props);
 
   const { history } = props;
 
@@ -24,8 +30,15 @@ const Login: React.FC<any> = props => {
 
   const handleLogin = () => {
     if (account && password) {
-      localStorage.setItem('user_token', account + password);
-      history.push('/home');
+      login({ username: account, password }).then((res: any) => {
+        if (res.code === 200) {
+          Cookies.set('user-token', res.data.token);
+          message.success('登录成功', 2);
+          history.push('/home/dashboard');
+        } else {
+          message.error(res.desc, 2);
+        }
+      });
     }
   };
 

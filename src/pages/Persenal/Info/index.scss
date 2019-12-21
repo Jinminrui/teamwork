@@ -1,0 +1,27 @@
+@import 'static/styles/variable.scss';
+
+.personalInfo-wrapper {
+  margin: 24px;
+  .personalInfo-avatar-wrapper {
+    text-align: center;
+    margin-bottom: 24px;
+    .avatar-img {
+      margin-bottom: 20px;
+    }
+    .username {
+      margin-bottom: 4px;
+      color: $title-color;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 28px;
+    }
+    .desc {
+      color: $text-color;
+    }
+  }
+  .personalInfo-detail-wrapper {
+    p {
+      margin-bottom: 8px;
+    }
+  }
+}

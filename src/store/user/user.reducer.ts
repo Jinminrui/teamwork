@@ -1,19 +1,35 @@
 import actionTypes from './actionTypes';
 
 export interface UserState {
-  userList: Array<string>;
+  username: string;
+  email: string;
+  phone: string;
+  gender: number;
+  avatarUrl: string;
+  role: number | undefined;
+  teamId: number | undefined;
+  position: string;
+  description: string;
+  createTime: string;
 }
 
 const defaultState: UserState = {
-  userList: [],
+  username: '',
+  email: '',
+  phone: '',
+  gender: 0,
+  avatarUrl: '',
+  role: undefined,
+  teamId: undefined,
+  position: '',
+  description: '',
+  createTime: '',
 };
 
 export default (state = defaultState, action: any) => {
   switch (action.type) {
-    case actionTypes.ADD_USER:
-      const newList: Array<string> = [...state.userList];
-      newList.push(action.data);
-      return { ...state, userList: newList };
+    case actionTypes.SET_USER_INFO:
+      return { ...defaultState, ...action.data };
     default:
       return state;
   }

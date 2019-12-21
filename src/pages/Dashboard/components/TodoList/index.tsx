@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Tag, Button, Modal, Input, Select, Form } from 'antd';
+import {
+  Card,
+  Button,
+  Modal,
+  Input,
+  Select,
+  Form,
+  List,
+  Typography,
+} from 'antd';
 
 interface TodoItem {
+  id: number;
   level: string;
   content: string;
+  isCompleted: boolean;
 }
 
 const { Option } = Select;
 const { create } = Form;
+const { Text } = Typography;
 
 const TodoList: React.FC<any> = (props: any) => {
   const [list, setList] = useState<Array<TodoItem>>([]);
@@ -22,9 +34,9 @@ const TodoList: React.FC<any> = (props: any) => {
   };
 
   const levelColor: Map<string, string> = new Map([
-    ['first', 'red'],
-    ['second', 'orange'],
-    ['third', 'cyan'],
+    ['first', '#fa541c'],
+    ['second', '#faad14'],
+    ['third', '#a0d911'],
   ]);
 
   useEffect(() => {
@@ -32,16 +44,22 @@ const TodoList: React.FC<any> = (props: any) => {
     setTimeout(() => {
       setList([
         {
+          id: 1,
           level: 'first',
           content: '完成毕业设计的架构设计',
+          isCompleted: false,
         },
         {
+          id: 2,
           level: 'second',
           content: '完成毕业设计的后端开发',
+          isCompleted: false,
         },
         {
+          id: 3,
           level: 'third',
           content: '完成毕业设计的前端开发',
+          isCompleted: false,
         },
       ]);
       setLoading(false);
@@ -61,7 +79,7 @@ const TodoList: React.FC<any> = (props: any) => {
     setTimeout(() => {
       const level = getFieldValue('level');
       const content = getFieldValue('content');
-      const newItem: TodoItem = { level, content };
+      const newItem: TodoItem = { id: 4, level, content, isCompleted: false };
       setList([...list, newItem]);
       setAddingStatus(false);
       setModelVisible(false);
@@ -81,16 +99,42 @@ const TodoList: React.FC<any> = (props: any) => {
         }
         loading={loading}
       >
-        {list.map((item: TodoItem) => (
-          <Tag
-            key={item.content}
-            closable
-            color={levelColor.get(item.level)}
-            style={{ margin: 6 }}
-          >
-            {item.content}
-          </Tag>
-        ))}
+        <List
+          dataSource={list}
+          size="small"
+          split={false}
+          renderItem={(item, index) => (
+            <List.Item
+              actions={[
+                <Button
+                  type="link"
+                  disabled={item.isCompleted}
+                  onClick={() => {
+                    const newList: Array<TodoItem> = JSON.parse(
+                      JSON.stringify(list)
+                    );
+                    newList[index].isCompleted = true;
+                    setList(newList);
+                  }}
+                >
+                  完成
+                </Button>,
+                <Button type="link">删除</Button>,
+              ]}
+            >
+              <List.Item.Meta
+                description={
+                  <Text
+                    delete={item.isCompleted}
+                    style={{ color: levelColor.get(item.level) }}
+                  >
+                    {item.content}
+                  </Text>
+                }
+              />
+            </List.Item>
+          )}
+        />
       </Card>
       <Modal
         title="添加待办事项"

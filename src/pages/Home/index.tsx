@@ -1,25 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import { Layout, Menu, Icon, Dropdown, Avatar, Badge } from 'antd';
+import Cookies from 'js-cookie';
 import { ClickParam } from 'antd/lib/menu';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import './index.scss';
 import IconFont from 'components/IconFont';
 import Dashboard from 'pages/Dashboard';
 import PersonalInfo from 'pages/Persenal/Info';
 
+import { getUesrInfo } from 'api/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserInfo } from 'store/user/user.action';
+import { Store } from 'types';
 import Logo from './logo.svg';
 
 const { Header, Sider, Content } = Layout;
 const { Item, ItemGroup } = Menu;
 
-const Home: React.FC = (props: any) => {
+interface Props extends RouteComponentProps {
+  children?: ReactNode;
+}
+
+const Home: React.FC<Props> = (props: Props) => {
+  const { pathname } = props.location;
   const [collapsed, setCollapsed] = useState(false);
   const [userMenuVisiable, setUserMenuVisiable] = useState(false);
   const [paddingLeft, setPaddingLeft] = useState(256);
   const [headerWidth, setHeaderWidth] = useState('calc(100% - 256px)');
+  const [currentKey, setCurrentKey] = useState(pathname.split('/')[2]);
+  const userInfo = useSelector((store: Store) => store.user);
+  const dispatch = useDispatch();
 
-  const { pathname } = props.location;
-  const currentKey = pathname.split('/')[2];
+  useEffect(() => {
+    getUesrInfo().then(res => {
+      dispatch(setUserInfo(res.data));
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    setCurrentKey(pathname.split('/')[2]);
+  }, [pathname]);
 
   function toggle(): void {
     setCollapsed(!collapsed);
@@ -39,14 +59,31 @@ const Home: React.FC = (props: any) => {
     if (pathname !== `/home/${params.key}`) {
       props.history.push(`/home/${params.key}`);
     }
+    setCurrentKey(params.key);
+  }
+
+  function handleLogout(): void {
+    Cookies.remove('user-token');
+    props.history.push('/login');
+  }
+
+  function handleGotoPersonalCenter() {
+    if (pathname !== '/home/personal-info') {
+      props.history.push('/home/personal-info');
+    }
+    setCurrentKey('personal-info');
   }
 
   const userMenu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">个人中心</Menu.Item>
+      <Menu.Item key="1" onClick={handleGotoPersonalCenter}>
+        个人中心
+      </Menu.Item>
       <Menu.Item key="2">个人设置</Menu.Item>
       <Menu.Item key="3">切换团队</Menu.Item>
-      <Menu.Item key="4">退出登录</Menu.Item>
+      <Menu.Item key="4" onClick={handleLogout}>
+        退出登录
+      </Menu.Item>
     </Menu>
   );
 
@@ -81,7 +118,7 @@ const Home: React.FC = (props: any) => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={[`${currentKey}`]}
+          selectedKeys={[currentKey]}
           onClick={handleMenuItemClick}
           style={{ padding: '16px 0px', width: '100%' }}
         >
@@ -158,10 +195,8 @@ const Home: React.FC = (props: any) => {
               onVisibleChange={handleVisibleChange}
             >
               <div className="avatar-wrapper">
-                <Avatar src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png">
-                  KK
-                </Avatar>
-                <span className="username">Keen King</span>
+                <Avatar src={userInfo.avatarUrl} />
+                <span className="username">{userInfo.username}</span>
               </div>
             </Dropdown>
           </div>
