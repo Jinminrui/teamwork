@@ -17,6 +17,7 @@ post('/api/user/login').to.json({
 get('/api/user/info').to.mock({
   code: 200,
   data: {
+    id: '@increment',
     username: '@name',
     email: '@email',
     phone: '17314976003',
@@ -60,9 +61,37 @@ get('/api/project/list').to.mock({
       {
         id: '@increment',
         title: '毕业设计',
-        desc: '希望是一个好东西，也许是最好的，好东西是不会消亡的',
+        description: '希望是一个好东西，也许是最好的，好东西是不会消亡的',
+        createTime: '@date',
+        updateTime: '@date',
       },
     ],
   },
   desc: 'success',
+});
+
+/**
+ * 获取文章列表
+ */
+get('/api/article/list').to.mock({
+  code: 200,
+  data: {
+    'list|4-6': [
+      {
+        id: '@increment',
+        title: 'Vue从入门到React',
+        description: '@cparagraph(3,5)',
+        tag: ['技术分享'],
+        authorId: 1,
+        authorName: 'Keen King',
+        authorAvatar:
+          'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        'star|1-100': 100,
+        'like|1-100': 100,
+        'comment|1-100': 100,
+        updateTime: '@datetime("yyyy-MM-dd HH:mm")',
+      },
+    ],
+    'total|1-20': 20,
+  },
 });

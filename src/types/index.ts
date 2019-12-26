@@ -5,3 +5,9 @@ export interface Store {
   user: UserState;
   app: AppState;
 }
+
+export interface ProjectListItem {
+  id: number;
+  title: string;
+  description: string;
+}

@@ -3,14 +3,16 @@ import { Row, Col, Card, Avatar, Icon, Divider, List } from 'antd';
 import './index.scss';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
+import ArticleList from './ArticleList';
 
 const PersonalInfo: React.FC = () => {
   const [tabKey, setTabKey] = useState('article');
+  const [articleNum, setArticleNum] = useState(0);
   const userInfo = useSelector((store: Store) => store.user);
   const tabList = [
     {
       key: 'article',
-      tab: '文章',
+      tab: `文章（${articleNum}）`,
     },
     {
       key: 'project',
@@ -18,13 +20,18 @@ const PersonalInfo: React.FC = () => {
     },
   ];
 
+  const contentList: any = {
+    article: <ArticleList setArticleNum={setArticleNum} />,
+    project: <p>project</p>,
+  };
+
   function handleTabChange(key: string) {
     setTabKey(key);
   }
   return (
     <div className="personalInfo-wrapper">
       <Row gutter={24}>
-        <Col md={24} lg={7} style={{ padding: '0 12px' }}>
+        <Col md={24} lg={8} style={{ padding: '0 12px', marginBottom: '24px' }}>
           <Card>
             <div className="personalInfo-avatar-wrapper">
               <Avatar
@@ -39,7 +46,10 @@ const PersonalInfo: React.FC = () => {
               <List
                 grid={{
                   gutter: 16,
-                  xs: 1,
+                  xs: 2,
+                  lg: 1,
+                  xl: 1,
+                  xxl: 2,
                 }}
               >
                 <List.Item className="detail-item">
@@ -83,13 +93,15 @@ const PersonalInfo: React.FC = () => {
             <Divider dashed />
           </Card>
         </Col>
-        <Col md={24} lg={17} style={{ padding: '0 12px' }}>
+        <Col md={24} lg={16} style={{ padding: '0 12px' }}>
           <Card
             style={{ width: '100%' }}
             tabList={tabList}
             activeTabKey={tabKey}
             onTabChange={handleTabChange}
-          />
+          >
+            {contentList[tabKey]}
+          </Card>
         </Col>
       </Row>
     </div>

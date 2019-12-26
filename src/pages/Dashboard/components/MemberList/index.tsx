@@ -22,6 +22,8 @@ const MemberList = () => {
         setLoading(false);
       });
     }
+
+    return () => {};
   }, [userToken]);
 
   return (

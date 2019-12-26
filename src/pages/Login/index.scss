@@ -59,6 +59,20 @@
         height: 40px;
         margin-top: 32px;
       }
+      .verifyCode {
+        width: 360px;
+        height: 40px;
+        margin-top: 32px;
+        .verifyCode-input {
+          width: 230px;
+          height: 40px;
+        }
+        .verifyCode-btn {
+          width: 120px;
+          height: 40px;
+          margin-left: 10px;
+        }
+      }
       .btn-start {
         width: 360px;
         height: 40px;
@@ -67,8 +81,6 @@
       }
       .bottom-link {
         width: 360px;
-        display: flex;
-        justify-content: flex-end;
         margin-top: 10px;
         .link {
           font-size: 14px;

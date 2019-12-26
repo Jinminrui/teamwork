@@ -1,6 +1,7 @@
 import actionTypes from './actionTypes';
 
 export interface UserState {
+  id: number | undefined;
   username: string;
   email: string;
   phone: string;
@@ -14,6 +15,7 @@ export interface UserState {
 }
 
 const defaultState: UserState = {
+  id: undefined,
   username: '',
   email: '',
   phone: '',

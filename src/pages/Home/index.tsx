@@ -7,11 +7,13 @@ import './index.scss';
 import IconFont from 'components/IconFont';
 import Dashboard from 'pages/Dashboard';
 import PersonalInfo from 'pages/Persenal/Info';
+import ErrorPage from 'pages/404';
 
 import { getUesrInfo } from 'api/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo } from 'store/user/user.action';
 import { Store } from 'types';
+import { getCookies } from 'utils';
 import Logo from './logo.svg';
 
 const { Header, Sider, Content } = Layout;
@@ -23,6 +25,7 @@ interface Props extends RouteComponentProps {
 
 const Home: React.FC<Props> = (props: Props) => {
   const { pathname } = props.location;
+  const token = getCookies('user-token');
   const [collapsed, setCollapsed] = useState(false);
   const [userMenuVisiable, setUserMenuVisiable] = useState(false);
   const [paddingLeft, setPaddingLeft] = useState(256);
@@ -35,7 +38,7 @@ const Home: React.FC<Props> = (props: Props) => {
     getUesrInfo().then(res => {
       dispatch(setUserInfo(res.data));
     });
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   useEffect(() => {
     setCurrentKey(pathname.split('/')[2]);
@@ -225,6 +228,12 @@ const Home: React.FC<Props> = (props: Props) => {
               path="/home/personal-info"
               key="/home/personal-info"
               component={PersonalInfo}
+            />
+            <Route
+              exact
+              path="/home/404"
+              key="/home/404"
+              component={ErrorPage}
             />
           </Switch>
         </Content>

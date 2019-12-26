@@ -22,12 +22,25 @@ const RouteConfig: Array<RouteItem> = [
     component: LoginPage,
   },
   {
+    path: '/login/account',
+    component: LoginPage,
+  },
+  {
+    path: '/login/phone',
+    component: LoginPage,
+  },
+  {
     path: '/404',
     component: ErrorPage,
   },
   {
     path: '/editor',
     component: EditorPage,
+  },
+  {
+    path: '/home/404',
+    component: HomePage,
+    auth: true,
   },
   {
     path: '/home/dashboard',
