@@ -1,6 +1,7 @@
 import actionTypes from './actionTypes';
 
 export interface UserState {
+  [index: string]: any;
   id: number | undefined;
   username: string;
   email: string;

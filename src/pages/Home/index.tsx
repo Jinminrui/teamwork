@@ -7,13 +7,16 @@ import './index.scss';
 import IconFont from 'components/IconFont';
 import Dashboard from 'pages/Dashboard';
 import PersonalInfo from 'pages/Persenal/Info';
+import PersonalSetting from 'pages/Persenal/Settings';
 import ErrorPage from 'pages/404';
 
 import { getUesrInfo } from 'api/user';
 import { useDispatch, useSelector } from 'react-redux';
+import { throttle } from 'lodash';
 import { setUserInfo } from 'store/user/user.action';
 import { Store } from 'types';
 import { getCookies } from 'utils';
+import { setScreenWidth } from 'store/app/app.action';
 import Logo from './logo.svg';
 
 const { Header, Sider, Content } = Layout;
@@ -33,6 +36,22 @@ const Home: React.FC<Props> = (props: Props) => {
   const [currentKey, setCurrentKey] = useState(pathname.split('/')[2]);
   const userInfo = useSelector((store: Store) => store.user);
   const dispatch = useDispatch();
+
+  const [clientWidth, setClientWidth] = useState(
+    window.document.documentElement.getBoundingClientRect().width
+  );
+
+  function handleResize() {
+    setClientWidth(
+      window.document.documentElement.getBoundingClientRect().width
+    );
+  }
+
+  window.onresize = throttle(handleResize, 2000);
+
+  useEffect(() => {
+    dispatch(setScreenWidth(clientWidth));
+  }, [clientWidth, dispatch]);
 
   useEffect(() => {
     getUesrInfo().then(res => {
@@ -228,6 +247,22 @@ const Home: React.FC<Props> = (props: Props) => {
               path="/home/personal-info"
               key="/home/personal-info"
               component={PersonalInfo}
+            />
+            <Route
+              exact
+              path="/home/personal-settings"
+              key="/home/personal-settings"
+              component={PersonalSetting}
+            />
+            <Route
+              path="/home/personal-settings/base"
+              component={PersonalSetting}
+              exact
+            />
+            <Route
+              path="/home/personal-settings/security"
+              component={PersonalSetting}
+              exact
             />
             <Route
               exact

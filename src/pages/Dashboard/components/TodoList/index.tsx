@@ -8,6 +8,7 @@ import {
   Form,
   List,
   Typography,
+  Empty,
 } from 'antd';
 
 interface TodoItem {
@@ -40,30 +41,30 @@ const TodoList: React.FC<any> = (props: any) => {
   ]);
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setList([
-        {
-          id: 1,
-          level: 'first',
-          content: '完成毕业设计的架构设计',
-          isCompleted: false,
-        },
-        {
-          id: 2,
-          level: 'second',
-          content: '完成毕业设计的后端开发',
-          isCompleted: false,
-        },
-        {
-          id: 3,
-          level: 'third',
-          content: '完成毕业设计的前端开发',
-          isCompleted: false,
-        },
-      ]);
-      setLoading(false);
-    }, 3000);
+    // setLoading(true);
+    // setTimeout(() => {
+    //   setList([
+    //     {
+    //       id: 1,
+    //       level: 'first',
+    //       content: '完成毕业设计的架构设计',
+    //       isCompleted: false,
+    //     },
+    //     {
+    //       id: 2,
+    //       level: 'second',
+    //       content: '完成毕业设计的后端开发',
+    //       isCompleted: false,
+    //     },
+    //     {
+    //       id: 3,
+    //       level: 'third',
+    //       content: '完成毕业设计的前端开发',
+    //       isCompleted: false,
+    //     },
+    //   ]);
+    //   setLoading(false);
+    // }, 3000);
   }, []);
 
   function handleAddTodoItem(): void {
@@ -99,42 +100,25 @@ const TodoList: React.FC<any> = (props: any) => {
         }
         loading={loading}
       >
-        <List
-          dataSource={list}
-          size="small"
-          split={false}
-          renderItem={(item, index) => (
-            <List.Item
-              actions={[
-                <Button
-                  type="link"
-                  disabled={item.isCompleted}
-                  onClick={() => {
-                    const newList: Array<TodoItem> = JSON.parse(
-                      JSON.stringify(list)
-                    );
-                    newList[index].isCompleted = true;
-                    setList(newList);
-                  }}
+        {list.length ? (
+          <List
+            dataSource={list}
+            size="small"
+            split={false}
+            renderItem={(item, index) => (
+              <List.Item>
+                <Text
+                  delete={item.isCompleted}
+                  style={{ color: levelColor.get(item.level) }}
                 >
-                  完成
-                </Button>,
-                <Button type="link">删除</Button>,
-              ]}
-            >
-              <List.Item.Meta
-                description={
-                  <Text
-                    delete={item.isCompleted}
-                    style={{ color: levelColor.get(item.level) }}
-                  >
-                    {item.content}
-                  </Text>
-                }
-              />
-            </List.Item>
-          )}
-        />
+                  {item.content}
+                </Text>
+              </List.Item>
+            )}
+          />
+        ) : (
+          <Empty description="暂无待办工作" />
+        )}
       </Card>
       <Modal
         title="添加待办事项"

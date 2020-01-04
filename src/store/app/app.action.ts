@@ -1,6 +1,6 @@
 import actionTypes from './actionTypes';
 
-export const setLoading = (newStatus: boolean) => ({
-  type: actionTypes.SET_LOADING,
+export const setScreenWidth = (newStatus: number) => ({
+  type: actionTypes.SET_SCREEN_WIDTH,
   data: newStatus,
 });

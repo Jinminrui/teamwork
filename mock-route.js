@@ -57,7 +57,7 @@ get('/api/team/memberList/:id').to.mock({
 get('/api/project/list').to.mock({
   code: 200,
   data: {
-    'list|6-8': [
+    'list|4': [
       {
         id: '@increment',
         title: '毕业设计',
@@ -66,6 +66,7 @@ get('/api/project/list').to.mock({
         updateTime: '@date',
       },
     ],
+    total: 4,
   },
   desc: 'success',
 });
@@ -76,7 +77,7 @@ get('/api/project/list').to.mock({
 get('/api/article/list').to.mock({
   code: 200,
   data: {
-    'list|4-6': [
+    'list|10': [
       {
         id: '@increment',
         title: 'Vue从入门到React',
@@ -92,6 +93,11 @@ get('/api/article/list').to.mock({
         updateTime: '@datetime("yyyy-MM-dd HH:mm")',
       },
     ],
-    'total|1-20': 20,
+    total: 10,
   },
 });
+
+/**
+ * 获取最新动态
+ */
+get('/api/getLatestActivities');

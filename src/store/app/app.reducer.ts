@@ -1,17 +1,17 @@
 import actionTypes from './actionTypes';
 
 export interface AppState {
-  loading: boolean;
+  screenWidth: number;
 }
 
 const defaultState: AppState = {
-  loading: false,
+  screenWidth: window.document.documentElement.getBoundingClientRect().width,
 };
 
 export default (state = defaultState, action: any) => {
   switch (action.type) {
-    case actionTypes.SET_LOADING:
-      return { ...state, loading: action.data };
+    case actionTypes.SET_SCREEN_WIDTH:
+      return { ...state, screenWidth: action.data };
     default:
       return state;
   }

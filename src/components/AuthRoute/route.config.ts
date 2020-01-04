@@ -52,6 +52,21 @@ const RouteConfig: Array<RouteItem> = [
     component: HomePage,
     auth: true,
   },
+  {
+    path: '/home/personal-settings',
+    component: HomePage,
+    auth: true,
+  },
+  {
+    path: '/home/personal-settings/base',
+    component: HomePage,
+    auth: true,
+  },
+  {
+    path: '/home/personal-settings/security',
+    component: HomePage,
+    auth: true,
+  },
 ];
 
 export default RouteConfig;

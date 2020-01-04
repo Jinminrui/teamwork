@@ -1,14 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Avatar, Icon, Divider, List } from 'antd';
 import './index.scss';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
-import ArticleList from './ArticleList';
+import ArticleList from 'components/ArticleList';
+import { getArticleList } from 'api/article';
+import ProjectList from 'components/ProjectList';
+import { getProjectList } from 'api/project';
 
 const PersonalInfo: React.FC = () => {
   const [tabKey, setTabKey] = useState('article');
   const [articleNum, setArticleNum] = useState(0);
+  const [articleLsit, setArticleList] = useState([]);
+  const [projectList, setProjectList] = useState([]);
+  const [projectNum, setProjectNum] = useState(0);
+  const [pageSize] = useState(8);
+  const [pageNum] = useState(1);
   const userInfo = useSelector((store: Store) => store.user);
+  const userId = userInfo.id;
+
+  useEffect(() => {
+    getArticleList({ userId, pageNum, pageSize }).then(res => {
+      setArticleList(res.data.list);
+      setArticleNum(res.data.total);
+    });
+  }, [userId, pageNum, pageSize]);
+
+  useEffect(() => {
+    getProjectList().then(res => {
+      setProjectList(res.data.list);
+      setProjectNum(res.data.total);
+    });
+  }, [userId]);
+
   const tabList = [
     {
       key: 'article',
@@ -16,13 +40,13 @@ const PersonalInfo: React.FC = () => {
     },
     {
       key: 'project',
-      tab: '项目',
+      tab: `项目（${projectNum}）`,
     },
   ];
 
   const contentList: any = {
-    article: <ArticleList setArticleNum={setArticleNum} />,
-    project: <p>project</p>,
+    article: <ArticleList articleList={articleLsit} />,
+    project: <ProjectList projectList={projectList} />,
   };
 
   function handleTabChange(key: string) {

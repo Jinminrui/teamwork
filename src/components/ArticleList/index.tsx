@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { getArticleList } from 'api/article';
-import { List, Avatar, Tag } from 'antd';
+import React, { useState } from 'react';
+import { List, Avatar, Tag, Empty } from 'antd';
 import IconText from 'components/IconText';
-import { useSelector } from 'react-redux';
-import { Store } from 'types';
 
 interface ArticleItem {
   id: number;
@@ -20,27 +17,22 @@ interface ArticleItem {
 }
 
 interface Props {
-  setArticleNum: Function;
+  articleList: Array<ArticleItem>;
 }
 
 const ArticleList: React.FC<Props> = (props: Props) => {
-  const [list, setList] = useState<Array<ArticleItem>>([]);
-  const [pageSize, setPageSize] = useState(8);
-  const [pageNum, setPageNum] = useState(1);
-  const userId = useSelector((store: Store) => store.user.id);
-  const { setArticleNum } = props;
-  useEffect(() => {
-    getArticleList({ userId, pageSize, pageNum }).then(res => {
-      setList(res.data.list);
-      setArticleNum(res.data.total);
-    });
-  }, [userId, pageSize, pageNum, setArticleNum]);
+  const [pageSize] = useState(5);
+  const { articleList } = props;
+
+  if (!articleList.length) {
+    return <Empty description="还没有发表过文章喔～快去写一篇吧^_^" />;
+  }
+
   return (
     <List
       itemLayout="vertical"
       size="large"
-      dataSource={list}
-      locale={{ emptyText: '还没有发表过文章喔～快去写一篇吧^_^' }}
+      dataSource={articleList}
       pagination={{ pageSize }}
       renderItem={item => (
         <List.Item
@@ -66,7 +58,7 @@ const ArticleList: React.FC<Props> = (props: Props) => {
           <List.Item.Meta
             title={<p>{item.title}</p>}
             description={item.tag.map(e => (
-              <Tag>{e}</Tag>
+              <Tag key={e}>{e}</Tag>
             ))}
           />
           {item.description}

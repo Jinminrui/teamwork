@@ -10,4 +10,6 @@ export interface ProjectListItem {
   id: number;
   title: string;
   description: string;
+  createTime: string;
+  updateTime: string;
 }
