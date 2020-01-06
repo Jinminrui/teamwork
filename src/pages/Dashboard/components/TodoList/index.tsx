@@ -24,7 +24,7 @@ const { Text } = Typography;
 
 const TodoList: React.FC<any> = (props: any) => {
   const [list, setList] = useState<Array<TodoItem>>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [modelVisible, setModelVisible] = useState(false);
   const [addingStatus, setAddingStatus] = useState(false);
   const { getFieldDecorator, getFieldValue, resetFields } = props.form;
