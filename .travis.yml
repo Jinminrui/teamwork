@@ -6,4 +6,5 @@ script:
   - npm run build
   - docker build -t teamwork .
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker push jinminrui/teamwork:latest
+  - docker tag teamwork jinminrui/teamwork
+  - docker push jinminrui/teamwork
