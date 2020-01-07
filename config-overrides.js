@@ -5,7 +5,9 @@ const {
   fixBabelImports,
   addLessLoader,
   addWebpackAlias,
+  addWebpackPlugin,
 } = require('customize-cra');
+const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 
 function resolve(dir) {
   return path.join(__dirname, '.', dir);
@@ -23,5 +25,6 @@ module.exports = override(
   }),
   addWebpackAlias({
     '@': resolve('src'),
-  })
+  }),
+  addWebpackPlugin(new AntdDayjsWebpackPlugin())
 );

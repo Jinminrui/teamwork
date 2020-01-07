@@ -2,10 +2,13 @@ import Cookies from 'js-cookie';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { message } from 'antd';
 
-export const HOST: string =
-  window.location.host === 'www.jinminrui.com'
-    ? 'http://www.jinminrui.com'
-    : '/api';
+const env = process.env.NODE_ENV;
+let HOST = '';
+if (env === 'development') {
+  HOST = '/api';
+} else if (env === 'production') {
+  HOST = 'http://www.jinminrui.cn';
+}
 
 const baseConfig: AxiosRequestConfig = {
   baseURL: HOST,
