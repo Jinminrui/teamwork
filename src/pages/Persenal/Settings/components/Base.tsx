@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-// import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
 import { Avatar, Input, Upload, Button, Form } from 'antd';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';

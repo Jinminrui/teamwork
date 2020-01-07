@@ -51,7 +51,7 @@ const AccountLogin: React.FC<RouteComponentProps> = (
           onChange={handleAccountChange}
           value={account}
         />
-        <Input
+        <Input.Password
           placeholder="密码"
           className="pwd-input"
           prefix={<LockOutlined />}

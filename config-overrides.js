@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const {
@@ -8,6 +9,7 @@ const {
   addWebpackPlugin,
 } = require('customize-cra');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 function resolve(dir) {
   return path.join(__dirname, '.', dir);
@@ -27,4 +29,5 @@ module.exports = override(
     '@': resolve('src'),
   }),
   addWebpackPlugin(new AntdDayjsWebpackPlugin())
+  // addWebpackPlugin(new BundleAnalyzerPlugin())
 );
