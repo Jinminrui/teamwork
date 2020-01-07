@@ -1,5 +1,6 @@
 import React, { useState, ReactNode, useEffect } from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { throttle } from 'lodash';
 import {
   CalendarOutlined,
   DashboardOutlined,
@@ -11,14 +12,15 @@ import {
   StarOutlined,
   TeamOutlined,
   UserOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
 } from '@ant-design/icons';
 
-import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Layout, Menu, Dropdown, Avatar, Badge } from 'antd';
 import Cookies from 'js-cookie';
 import { ClickParam } from 'antd/lib/menu';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
-import './index.scss';
+
 import IconFont from 'components/IconFont';
 import Dashboard from 'pages/Dashboard';
 import PersonalInfo from 'pages/Persenal/Info';
@@ -26,13 +28,12 @@ import PersonalSetting from 'pages/Persenal/Settings';
 import ErrorPage from 'pages/404';
 
 import { getUesrInfo } from 'api/user';
-import { useDispatch, useSelector } from 'react-redux';
-import { throttle } from 'lodash';
-import { setUserInfo } from 'store/user/user.action';
 import { Store } from 'types';
 import { getCookies } from 'utils';
+import { setUserInfo } from 'store/user/user.action';
 import { setScreenWidth } from 'store/app/app.action';
 import Logo from './logo.svg';
+import './index.scss';
 
 const { Header, Sider, Content } = Layout;
 const { Item, ItemGroup } = Menu;
@@ -213,12 +214,11 @@ const Home: React.FC<Props> = (props: Props) => {
       </Sider>
       <Layout style={{ paddingLeft }}>
         <Header className="header" style={{ width: headerWidth }}>
-          <LegacyIcon
-            className="trigger"
-            type={collapsed ? 'menu-unfold' : 'menu-fold'}
-            onClick={toggle}
-          />
-
+          {collapsed ? (
+            <MenuUnfoldOutlined className="trigger" onClick={toggle} />
+          ) : (
+            <MenuFoldOutlined className="trigger" onClick={toggle} />
+          )}
           <div className="right-wrapper">
             <div className="header-actions">
               <Badge count={10} className="badge">

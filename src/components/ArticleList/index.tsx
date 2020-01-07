@@ -39,12 +39,12 @@ const ArticleList: React.FC<Props> = (props: Props) => {
           key={item.id}
           actions={[
             <IconText
-              type="star-o"
+              type="star"
               text={`${item.star}`}
               key="list-vertical-star-o"
             />,
             <IconText
-              type="like-o"
+              type="like"
               text={`${item.like}`}
               key="list-vertical-like-o"
             />,

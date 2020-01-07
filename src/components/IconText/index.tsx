@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 
 interface Props {
   type: string;
@@ -8,10 +8,14 @@ interface Props {
 
 const IconText: React.FC<Props> = (props: Props) => {
   const { type, text } = props;
+  const map: Record<string, any> = {
+    star: <StarOutlined />,
+    like: <LikeOutlined />,
+    message: <MessageOutlined />,
+  };
   return (
     <span>
-      <LegacyIcon type={type} style={{ marginRight: 8 }} />
-      {text}
+      {map[type]} {text}
     </span>
   );
 };

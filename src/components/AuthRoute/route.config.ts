@@ -1,13 +1,26 @@
-import { RouteComponentProps } from 'react-router-dom';
-import LoginPage from 'pages/Login';
-import HomePage from 'pages/Home';
+import Loadable from 'react-loadable';
+
 import ErrorPage from 'pages/404';
-import EditorPage from 'pages/Editor';
-import { FC } from 'react';
+import Loading from 'components/Loading';
+
+const LoginPage = Loadable({
+  loader: () => import('pages/Login'),
+  loading: Loading,
+});
+
+const HomePage = Loadable({
+  loader: () => import('pages/Home'),
+  loading: Loading,
+});
+
+const EditorPage = Loadable({
+  loader: () => import('pages/Editor'),
+  loading: Loading,
+});
 
 export interface RouteItem {
   path: string;
-  component?: FC<RouteComponentProps>;
+  component?: any;
   auth?: boolean;
 }
 
