@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import { Input, Icon, Button } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { Input, Button } from 'antd';
 import { useInterval } from 'utils/hooks';
 
 const PhoneLogin: React.FC<RouteComponentProps> = (
@@ -45,7 +46,7 @@ const PhoneLogin: React.FC<RouteComponentProps> = (
         <p className="title">验证手机以开始</p>
         <Input
           placeholder="请输入手机号"
-          prefix={<Icon type="user" />}
+          prefix={<UserOutlined />}
           className="account-input"
           onChange={handlePhoneChange}
           value={phone}

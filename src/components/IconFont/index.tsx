@@ -1,6 +1,6 @@
-import { Icon } from 'antd';
+import { createFromIconfontCN } from '@ant-design/icons';
 
-const IconFont = Icon.createFromIconfontCN({
+const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1537540_akw1w2aatbn.js', // 在 iconfont.cn 上生成
 });
 

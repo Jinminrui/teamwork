@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Input, Icon, Button, message } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Input, Button, message } from 'antd';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { login } from 'api/user';
 import Cookies from 'js-cookie';
@@ -45,7 +46,7 @@ const AccountLogin: React.FC<RouteComponentProps> = (
         <p className="title">登录以开始使用</p>
         <Input
           placeholder="手机号或者邮箱"
-          prefix={<Icon type="user" />}
+          prefix={<UserOutlined />}
           className="account-input"
           onChange={handleAccountChange}
           value={account}
@@ -53,7 +54,7 @@ const AccountLogin: React.FC<RouteComponentProps> = (
         <Input
           placeholder="密码"
           className="pwd-input"
-          prefix={<Icon type="lock" />}
+          prefix={<LockOutlined />}
           value={password}
           onChange={handlePasswordChange}
         />

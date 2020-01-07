@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Form, Input, Upload, Button, Icon } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+// import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Avatar, Input, Upload, Button, Form } from 'antd';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
 
@@ -83,7 +86,7 @@ const Base = (props: any) => {
             <Avatar src={avatarUrl} size={144} />
             <Upload className="upload-btn">
               <Button>
-                <Icon type="upload" /> 更换头像
+                <UploadOutlined /> 更换头像
               </Button>
             </Upload>
           </div>

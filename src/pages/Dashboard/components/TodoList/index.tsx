@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Card,
-  Button,
-  Modal,
-  Input,
-  Select,
-  Form,
-  List,
-  Typography,
-  Empty,
-} from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Card, Button, Modal, Input, Select, List, Typography, Empty } from 'antd';
 
 interface TodoItem {
   id: number;

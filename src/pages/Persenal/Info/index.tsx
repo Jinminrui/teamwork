@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Avatar, Icon, Divider, List } from 'antd';
+import {
+  EnvironmentOutlined,
+  IdcardOutlined,
+  MailOutlined,
+  PhoneOutlined,
+} from '@ant-design/icons';
+import { Row, Col, Card, Avatar, Divider, List } from 'antd';
 import './index.scss';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
@@ -78,17 +84,13 @@ const PersonalInfo: React.FC = () => {
               >
                 <List.Item className="detail-item">
                   <p>
-                    <Icon
-                      type="idcard"
-                      style={{ marginRight: 12, fontSize: 14 }}
-                    />
+                    <IdcardOutlined style={{ marginRight: 12, fontSize: 14 }} />
                     {userInfo.position}
                   </p>
                 </List.Item>
                 <List.Item className="detail-item">
                   <p>
-                    <Icon
-                      type="environment"
+                    <EnvironmentOutlined
                       style={{ marginRight: 12, fontSize: 14 }}
                     />
                     江苏省 南京市
@@ -96,19 +98,13 @@ const PersonalInfo: React.FC = () => {
                 </List.Item>
                 <List.Item className="detail-item">
                   <p>
-                    <Icon
-                      type="mail"
-                      style={{ marginRight: 12, fontSize: 14 }}
-                    />
+                    <MailOutlined style={{ marginRight: 12, fontSize: 14 }} />
                     {userInfo.email}
                   </p>
                 </List.Item>
                 <List.Item className="detail-item">
                   <p>
-                    <Icon
-                      type="phone"
-                      style={{ marginRight: 12, fontSize: 14 }}
-                    />
+                    <PhoneOutlined style={{ marginRight: 12, fontSize: 14 }} />
                     {userInfo.phone}
                   </p>
                 </List.Item>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Avatar, Icon, Row, Col } from 'antd';
+import { IdcardOutlined } from '@ant-design/icons';
+import { Avatar, Row, Col } from 'antd';
 import './index.scss';
 
 import { useSelector } from 'react-redux';
@@ -27,7 +28,7 @@ const Dashbord: React.FC = () => {
               早安，{userInfo.username}，祝你开心每一天！
             </div>
             <div className="desc">
-              <Icon type="idcard" style={{ marginRight: 8, fontSize: 20 }} />
+              <IdcardOutlined style={{ marginRight: 8, fontSize: 20 }} />
               {userInfo.position}
             </div>
           </div>

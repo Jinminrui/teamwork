@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 
 interface Props {
   type: string;
@@ -10,7 +10,7 @@ const IconText: React.FC<Props> = (props: Props) => {
   const { type, text } = props;
   return (
     <span>
-      <Icon type={type} style={{ marginRight: 8 }} />
+      <LegacyIcon type={type} style={{ marginRight: 8 }} />
       {text}
     </span>
   );

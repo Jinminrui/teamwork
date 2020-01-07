@@ -1,5 +1,20 @@
 import React, { useState, ReactNode, useEffect } from 'react';
-import { Layout, Menu, Icon, Dropdown, Avatar, Badge } from 'antd';
+
+import {
+  CalendarOutlined,
+  DashboardOutlined,
+  DeleteOutlined,
+  FolderOutlined,
+  LineChartOutlined,
+  ProjectOutlined,
+  SettingOutlined,
+  StarOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Layout, Menu, Dropdown, Avatar, Badge } from 'antd';
 import Cookies from 'js-cookie';
 import { ClickParam } from 'antd/lib/menu';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
@@ -145,52 +160,52 @@ const Home: React.FC<Props> = (props: Props) => {
           style={{ padding: '16px 0px', width: '100%' }}
         >
           <Menu.Item key="dashboard">
-            <Icon type="dashboard" />
+            <DashboardOutlined />
             <span>首页-工作台</span>
           </Menu.Item>
           <ItemGroup key="persenal" title="个人中心">
             <Item key="personal-info">
-              <Icon type="user" />
+              <UserOutlined />
               <span>个人信息</span>
             </Item>
             <Item key="personal-settings">
-              <Icon type="setting" />
+              <SettingOutlined />
               <span>个人设置</span>
             </Item>
           </ItemGroup>
           <ItemGroup key="team" title="团队建设">
             <Menu.Item key="team-info">
-              <Icon type="team" />
+              <TeamOutlined />
               <span>基础信息</span>
             </Menu.Item>
             <Menu.Item key="team-doc">
-              <Icon type="folder" />
+              <FolderOutlined />
               <span>团队文档</span>
             </Menu.Item>
             <Menu.Item key="weekly-report">
-              <Icon type="calendar" />
+              <CalendarOutlined />
               <span>成员周报</span>
             </Menu.Item>
           </ItemGroup>
 
           <ItemGroup key="project" title="项目中心">
             <Menu.Item key="project-list">
-              <Icon type="project" />
+              <ProjectOutlined />
               <span>项目列表</span>
             </Menu.Item>
             <Menu.Item key="project-analyze">
-              <Icon type="line-chart" />
+              <LineChartOutlined />
               <span>项目统计</span>
             </Menu.Item>
           </ItemGroup>
 
           <ItemGroup key="other" title="其他功能">
             <Menu.Item key="mystart">
-              <Icon type="star" />
+              <StarOutlined />
               <span>我的收藏</span>
             </Menu.Item>
             <Menu.Item key="">
-              <Icon type="delete" />
+              <DeleteOutlined />
               <span>回收站</span>
             </Menu.Item>
           </ItemGroup>
@@ -198,7 +213,7 @@ const Home: React.FC<Props> = (props: Props) => {
       </Sider>
       <Layout style={{ paddingLeft }}>
         <Header className="header" style={{ width: headerWidth }}>
-          <Icon
+          <LegacyIcon
             className="trigger"
             type={collapsed ? 'menu-unfold' : 'menu-fold'}
             onClick={toggle}
