@@ -2,26 +2,26 @@ import actionTypes from './actionTypes';
 
 export interface UserState {
   [index: string]: any;
-  id: number | undefined;
-  username: string;
-  email: string;
-  phone: string;
-  gender: number;
-  avatarUrl: string;
-  role: number | undefined;
-  teamId: number | undefined;
-  position: string;
-  description: string;
-  createTime: string;
+  pkId?: number | undefined;
+  username?: string;
+  email?: string;
+  phone?: string;
+  gender?: number;
+  avatar?: string;
+  role?: number | undefined;
+  teamId?: number | undefined;
+  position?: string;
+  description?: string;
+  createTime?: string;
 }
 
 const defaultState: UserState = {
-  id: undefined,
+  pkId: undefined,
   username: '',
   email: '',
   phone: '',
   gender: 0,
-  avatarUrl: '',
+  avatar: '',
   role: undefined,
   teamId: undefined,
   position: '',

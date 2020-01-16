@@ -3,7 +3,7 @@
 /**
  * 用户登录
  */
-post('/api/user/login').to.json({
+post('user/login').to.json({
   code: 200,
   data: {
     token: 'user-token',
@@ -14,7 +14,7 @@ post('/api/user/login').to.json({
 /**
  * 用户信息
  */
-get('/api/user/info').to.mock({
+get('/user/info').to.mock({
   code: 200,
   data: {
     id: '@increment',
@@ -36,7 +36,7 @@ get('/api/user/info').to.mock({
 /**
  * 获取团队成员列表
  */
-get('/api/team/memberList/:id').to.mock({
+get('/team/memberList/:id').to.mock({
   code: 200,
   data: {
     'list|3-8': [
@@ -54,7 +54,7 @@ get('/api/team/memberList/:id').to.mock({
 /**
  * 获取项目列表
  */
-get('/api/project/list').to.mock({
+get('/project/list').to.mock({
   code: 200,
   data: {
     'list|4': [
@@ -74,7 +74,7 @@ get('/api/project/list').to.mock({
 /**
  * 获取文章列表
  */
-get('/api/article/list').to.mock({
+get('/article/list').to.mock({
   code: 200,
   data: {
     'list|10': [
@@ -100,4 +100,4 @@ get('/api/article/list').to.mock({
 /**
  * 获取最新动态
  */
-get('/api/getLatestActivities');
+get('/getLatestActivities');

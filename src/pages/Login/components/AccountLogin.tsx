@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Input, Button, message } from 'antd';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import { login } from 'api/user';
+import { loginByAccount } from 'api/user';
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from 'store/user/user.action';
 
 const AccountLogin: React.FC<RouteComponentProps> = (
   props: RouteComponentProps
 ) => {
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const { history } = props;
 
@@ -27,13 +30,15 @@ const AccountLogin: React.FC<RouteComponentProps> = (
 
   const handleLogin = () => {
     if (account && password) {
-      login({ username: account, password }).then((res: any) => {
-        if (res.code === 200) {
-          Cookies.set('user-token', res.data.token);
-          message.success('登录成功', 2);
+      loginByAccount({ username: account, password }).then((res: any) => {
+        if (res.code === 200 && res.data) {
+          Cookies.set('user-token', res.data.token.token);
+          localStorage.setItem('userId', res.data.user.pkId);
+          dispatch(setUserInfo({ id: res.data.user.pkId }));
+          message.success('登录成功');
           history.push('/home/dashboard');
         } else {
-          message.error(res.desc, 2);
+          message.error(res.desc);
         }
       });
     }

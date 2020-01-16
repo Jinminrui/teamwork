@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
-import { Input, Button } from 'antd';
+import { Input, Button, message } from 'antd';
 import { useInterval } from 'utils/hooks';
+import { getVerifyCode, loginByPhone } from 'api/user';
+import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from 'store/user/user.action';
 
 const PhoneLogin: React.FC<RouteComponentProps> = (
   props: RouteComponentProps
@@ -11,6 +15,9 @@ const PhoneLogin: React.FC<RouteComponentProps> = (
   const [code, setCode] = useState('');
   const [codeGetable, setCodeGetable] = useState(true);
   const [time, setTime] = useState(0);
+  const dispatch = useDispatch();
+
+  const { history } = props;
 
   const handlePhoneChange: React.ChangeEventHandler = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -24,7 +31,21 @@ const PhoneLogin: React.FC<RouteComponentProps> = (
     setCode(e.target.value);
   };
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    if (phone && code) {
+      loginByPhone({ phoneNum: phone, code }).then((res: any) => {
+        if (res.code === 200 && res.data) {
+          Cookies.set('user-token', res.data.token.token);
+          localStorage.setItem('userId', res.data.user.pkId);
+          dispatch(setUserInfo({ id: res.data.user.pkId }));
+          message.success('登录成功');
+          history.push('/home/dashboard');
+        } else {
+          message.error(res.desc);
+        }
+      });
+    }
+  };
 
   useInterval(() => {
     if (time <= 0) {
@@ -36,7 +57,11 @@ const PhoneLogin: React.FC<RouteComponentProps> = (
 
   const handleGetVerifyCode = () => {
     setTime(60);
-    setCodeGetable(false);
+    getVerifyCode({ phoneNum: phone }).then((res: any) => {
+      if (res.Code === 'OK') {
+        setCodeGetable(false);
+      }
+    });
   };
 
   return (
@@ -75,7 +100,7 @@ const PhoneLogin: React.FC<RouteComponentProps> = (
           即刻开始
         </Button>
         <div className="bottom-link">
-          <Button type="link" style={{ float: 'right' }}>
+          <Button type="link" style={{ float: 'right' }} onClick={handleLogin}>
             <Link to="/login/account">账号密码登录</Link>
           </Button>
         </div>

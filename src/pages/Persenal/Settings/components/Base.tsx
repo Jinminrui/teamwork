@@ -1,28 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Avatar, Input, Upload, Button, Form } from 'antd';
+import { Avatar, Input, Upload, Button, Form, message } from 'antd';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
+import { UserState } from 'store/user/user.reducer';
+import { update } from 'api/user';
 
 const Base = (props: any) => {
-  const userInfo = useSelector((store: Store) => store.user);
-  const [username, setUsername] = useState(userInfo.username);
-  const [position, setPosition] = useState(userInfo.position);
-  const [email, setEmail] = useState(userInfo.email);
-  const [phone, setPhone] = useState(userInfo.phone);
-  const [description, setDescription] = useState(userInfo.description);
-  const [avatarUrl, setAvatarUrl] = useState(userInfo.avatarUrl);
+  const {
+    pkId,
+    username,
+    position,
+    email,
+    phone,
+    description,
+    avatar,
+  } = useSelector((store: Store) => store.user);
+  const [currUsername, setCurrUsername] = useState(username);
+  const [currPosition, setCurrPosition] = useState(position);
+  const [currEmail, setCurrEmail] = useState(email);
+  const [currPhone, setCurrPhone] = useState(phone);
+  const [currDescription, setCurrDescription] = useState(description);
+  const [currAvatar, setCurrAvatar] = useState(avatar);
+
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const mapKeyToMethod = new Map<string, Function | undefined>([
-    ['username', setUsername],
-    ['position', setPosition],
-    ['email', setEmail],
-    ['phone', setPhone],
-    ['description', setDescription],
-    ['avatarUrl', setAvatarUrl],
+    ['username', setCurrUsername],
+    ['position', setCurrPosition],
+    ['email', setCurrEmail],
+    ['phone', setCurrPhone],
+    ['description', setCurrDescription],
+    ['avatar', setCurrAvatar],
   ]);
 
   useEffect(() => {
+    const userInfo: UserState = {
+      username,
+      position,
+      email,
+      phone,
+      description,
+      avatar,
+    };
     const keys = Object.keys(userInfo);
     keys.forEach(item => {
       const fn = mapKeyToMethod.get(item);
@@ -30,7 +50,8 @@ const Base = (props: any) => {
         fn(userInfo[item]);
       }
     });
-  }, [userInfo, mapKeyToMethod]);
+    // eslint-disable-next-line
+  }, [pkId]);
 
   function handleFormItemChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -42,6 +63,61 @@ const Base = (props: any) => {
     }
   }
 
+  function beforeUpload(file: any) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+  }
+
+  function handleChange(info: any) {
+    if (info.file.status === 'uploading') {
+      return;
+    }
+    if (info.file.status === 'done') {
+      setCurrAvatar(info.file.response.data);
+      message.success('上传成功');
+    }
+  }
+
+  function canUpdate() {
+    return (
+      username !== currUsername ||
+      position !== currPosition ||
+      email !== currEmail ||
+      phone !== currPhone ||
+      description !== currDescription ||
+      avatar !== currAvatar
+    );
+  }
+
+  function handleUpdate() {
+    const params: any = {
+      pkId,
+      username: currUsername,
+      email: currEmail,
+      phone: currPhone,
+      position: currPosition,
+      description: currDescription,
+      avatar: currAvatar,
+    };
+    setUpdateLoading(true);
+    update(params).then((res: any) => {
+      if (res.code === 200) {
+        message.success('更新成功');
+      } else {
+        message.error('更新失败');
+      }
+      setUpdateLoading(false);
+      window.location.reload();
+    });
+  }
+
   return (
     <div>
       <div className="setting-title">基本设置</div>
@@ -51,38 +127,62 @@ const Base = (props: any) => {
             <Form.Item label="用户名">
               <Input
                 id="username"
-                value={username}
+                value={currUsername}
                 onChange={handleFormItemChange}
               />
             </Form.Item>
             <Form.Item label="职位">
               <Input
                 id="position"
-                value={position}
+                value={currPosition}
                 onChange={handleFormItemChange}
               />
             </Form.Item>
             <Form.Item label="邮箱">
-              <Input id="email" value={email} onChange={handleFormItemChange} />
+              <Input
+                id="email"
+                value={currEmail}
+                onChange={handleFormItemChange}
+              />
             </Form.Item>
             <Form.Item label="手机号">
-              <Input id="phone" value={phone} onChange={handleFormItemChange} />
+              <Input
+                id="phone"
+                value={currPhone}
+                onChange={handleFormItemChange}
+              />
             </Form.Item>
             <Form.Item label="个人简介">
               <Input.TextArea
                 id="description"
-                value={description}
+                value={currDescription}
                 onChange={handleFormItemChange}
                 rows={4}
               />
             </Form.Item>
           </Form>
+          <Button
+            type="primary"
+            disabled={!canUpdate()}
+            loading={updateLoading}
+            onClick={handleUpdate}
+          >
+            更新信息
+          </Button>
         </div>
         <div className="avatar-setting">
           <div className="avatar-setting-title">头像</div>
           <div className="avatar-setting-view">
-            <Avatar src={avatarUrl} size={144} />
-            <Upload className="upload-btn">
+            <Avatar src={currAvatar} size={144} />
+            <Upload
+              className="upload-btn"
+              showUploadList={false}
+              action="http://localhost:8081/oss/uploadAvatar"
+              // customRequest={uploadRequest}
+              data={{ userId: pkId }}
+              beforeUpload={beforeUpload}
+              onChange={handleChange}
+            >
               <Button>
                 <UploadOutlined /> 更换头像
               </Button>

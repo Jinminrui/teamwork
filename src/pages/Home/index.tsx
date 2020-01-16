@@ -29,7 +29,6 @@ import ErrorPage from 'pages/404';
 
 import { getUesrInfo } from 'api/user';
 import { Store } from 'types';
-import { getCookies } from 'utils';
 import { setUserInfo } from 'store/user/user.action';
 import { setScreenWidth } from 'store/app/app.action';
 import Logo from './logo.svg';
@@ -44,7 +43,6 @@ interface Props extends RouteComponentProps {
 
 const Home: React.FC<Props> = (props: Props) => {
   const { pathname } = props.location;
-  const token = getCookies('user-token');
   const [collapsed, setCollapsed] = useState(false);
   const [userMenuVisiable, setUserMenuVisiable] = useState(false);
   const [paddingLeft, setPaddingLeft] = useState(256);
@@ -70,10 +68,13 @@ const Home: React.FC<Props> = (props: Props) => {
   }, [clientWidth, dispatch]);
 
   useEffect(() => {
-    getUesrInfo().then(res => {
-      dispatch(setUserInfo(res.data));
-    });
-  }, [dispatch, token]);
+    const id = localStorage.getItem('userId');
+    if (id) {
+      getUesrInfo(id).then(res => {
+        dispatch(setUserInfo(res.data));
+      });
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     setCurrentKey(pathname.split('/')[2]);
@@ -232,7 +233,7 @@ const Home: React.FC<Props> = (props: Props) => {
               onVisibleChange={handleVisibleChange}
             >
               <div className="avatar-wrapper">
-                <Avatar src={userInfo.avatarUrl} />
+                <Avatar src={userInfo.avatar} />
                 <span className="username">{userInfo.username}</span>
               </div>
             </Dropdown>

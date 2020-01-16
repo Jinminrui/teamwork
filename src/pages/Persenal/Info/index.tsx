@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   EnvironmentOutlined,
   IdcardOutlined,
@@ -10,34 +10,34 @@ import './index.scss';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
 import ArticleList from 'components/ArticleList';
-import { getArticleList } from 'api/article';
+// import { getArticleList } from 'api/article';
 import ProjectList from 'components/ProjectList';
-import { getProjectList } from 'api/project';
+// import { getProjectList } from 'api/project';
 
 const PersonalInfo: React.FC = () => {
   const [tabKey, setTabKey] = useState('article');
-  const [articleNum, setArticleNum] = useState(0);
-  const [articleLsit, setArticleList] = useState([]);
-  const [projectList, setProjectList] = useState([]);
-  const [projectNum, setProjectNum] = useState(0);
-  const [pageSize] = useState(8);
-  const [pageNum] = useState(1);
+  const [articleNum] = useState(0);
+  const [articleLsit] = useState([]);
+  const [projectList] = useState([]);
+  const [projectNum] = useState(0);
+  // const [pageSize] = useState(8);
+  // const [pageNum] = useState(1);
   const userInfo = useSelector((store: Store) => store.user);
-  const userId = userInfo.id;
+  // const userId = userInfo.id;
 
-  useEffect(() => {
-    getArticleList({ userId, pageNum, pageSize }).then(res => {
-      setArticleList(res.data.list);
-      setArticleNum(res.data.total);
-    });
-  }, [userId, pageNum, pageSize]);
+  // useEffect(() => {
+  //   getArticleList({ userId, pageNum, pageSize }).then(res => {
+  //     setArticleList(res.data.list);
+  //     setArticleNum(res.data.total);
+  //   });
+  // }, [userId, pageNum, pageSize]);
 
-  useEffect(() => {
-    getProjectList().then(res => {
-      setProjectList(res.data.list);
-      setProjectNum(res.data.total);
-    });
-  }, [userId]);
+  // useEffect(() => {
+  //   getProjectList().then(res => {
+  //     setProjectList(res.data.list);
+  //     setProjectNum(res.data.total);
+  //   });
+  // }, [userId]);
 
   const tabList = [
     {
@@ -64,11 +64,7 @@ const PersonalInfo: React.FC = () => {
         <Col md={24} lg={8} style={{ padding: '0 12px', marginBottom: '24px' }}>
           <Card>
             <div className="personalInfo-avatar-wrapper">
-              <Avatar
-                src={userInfo.avatarUrl}
-                size={104}
-                className="avatar-img"
-              />
+              <Avatar src={userInfo.avatar} size={104} className="avatar-img" />
               <div className="username">{userInfo.username}</div>
               <div className="desc">{userInfo.description}</div>
             </div>

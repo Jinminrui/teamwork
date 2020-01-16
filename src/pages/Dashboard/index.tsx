@@ -12,20 +12,33 @@ import MemberList from './components/MemberList';
 
 const Dashbord: React.FC = () => {
   const userInfo = useSelector((store: Store) => store.user);
+
+  function getGreetingByTime(username: string | undefined) {
+    const date = new Date();
+    const hour = date.getHours();
+    if (hour >= 6 && hour <= 11) {
+      return `早上好，${username}！`;
+    }
+    if (hour > 11 && hour < 14) {
+      return `中午好，${username}！`;
+    }
+    if (hour > 14 && hour < 18) {
+      return `下午好，${username}！`;
+    }
+    return `晚上好，${username}！`;
+  }
+
   return (
     <div className="dashboard-wrapper">
       <div className="dashboard-header">
         <div className="left-wrapper">
           <div className="avatar">
-            <Avatar
-              src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
-              size={72}
-            />
+            <Avatar src={userInfo.avatar} size={72} />
           </div>
 
           <div className="text-wrapper">
             <div className="hello-title">
-              早安，{userInfo.username}，祝你开心每一天！
+              {getGreetingByTime(userInfo.username)}
             </div>
             <div className="desc">
               <IdcardOutlined style={{ marginRight: 8, fontSize: 20 }} />
