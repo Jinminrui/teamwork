@@ -1,3 +1,4 @@
+import { removeCookies } from 'utils';
 import { post, get, upload } from './request';
 
 interface LoginParams {
@@ -33,4 +34,9 @@ export function update(params: any) {
 
 export function getVerifyCode(params: GetVerifyCodeParams) {
   return post('/sms/verifyCode', params);
+}
+
+export function logout() {
+  removeCookies('user-token');
+  window.location.href = '/login';
 }

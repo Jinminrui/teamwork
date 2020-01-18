@@ -2,32 +2,21 @@ import actionTypes from './actionTypes';
 
 export interface UserState {
   [index: string]: any;
-  pkId?: number | undefined;
+  pkId?: number;
   username?: string;
   email?: string;
   phone?: string;
   gender?: number;
   avatar?: string;
-  role?: number | undefined;
-  teamId?: number | undefined;
+  role?: number;
+  teamId?: number;
   position?: string;
   description?: string;
   createTime?: string;
+  hasPassword?: boolean;
 }
 
-const defaultState: UserState = {
-  pkId: undefined,
-  username: '',
-  email: '',
-  phone: '',
-  gender: 0,
-  avatar: '',
-  role: undefined,
-  teamId: undefined,
-  position: '',
-  description: '',
-  createTime: '',
-};
+const defaultState: UserState = {};
 
 export default (state = defaultState, action: any) => {
   switch (action.type) {

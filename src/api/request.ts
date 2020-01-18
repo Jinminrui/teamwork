@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { message } from 'antd';
+import { removeCookies } from 'utils';
 
 const env = process.env.NODE_ENV;
 let HOST = '';
@@ -38,17 +39,18 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     const res = response.data;
-    if (res.code === 401) {
-      window.location.href = '/';
-      message.error(res.desc);
-    }
     if (res.code !== 200) {
       message.error(res.data);
     }
     return res;
   },
   error => {
-    console.log(`err${error}`); // for debug
+    console.log(`${error}`); // for debug
+    if (error.response.status === 401) {
+      removeCookies('user-token');
+      window.location.href = '/';
+      message.warn('登录权限失效，请重新登录！');
+    }
     message.error(error.message);
     return Promise.reject(error);
   }

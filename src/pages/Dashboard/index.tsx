@@ -10,6 +10,12 @@ import ActivityList from './components/ActivityList';
 import TodoList from './components/TodoList';
 import MemberList from './components/MemberList';
 
+function getJoinTime(startTime: string) {
+  const now = new Date();
+  const duration = now.getDate() - new Date(startTime).getDate();
+  return duration;
+}
+
 const Dashbord: React.FC = () => {
   const userInfo = useSelector((store: Store) => store.user);
 
@@ -38,7 +44,7 @@ const Dashbord: React.FC = () => {
 
           <div className="text-wrapper">
             <div className="hello-title">
-              {getGreetingByTime(userInfo.username)}
+              {getGreetingByTime(userInfo.username || userInfo.phone)}
             </div>
             <div className="desc">
               <IdcardOutlined style={{ marginRight: 8, fontSize: 20 }} />
@@ -48,8 +54,10 @@ const Dashbord: React.FC = () => {
         </div>
         <div className="right-wrapper">
           <div className="state-item">
-            <p className="title">加入时间</p>
-            <p className="data">100</p>
+            <p className="title">加入时间（天）</p>
+            <p className="data">
+              {userInfo.createTime && getJoinTime(userInfo.createTime)}
+            </p>
           </div>
           <div className="state-item">
             <p className="title">项目数</p>

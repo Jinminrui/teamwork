@@ -17,7 +17,6 @@ import {
 } from '@ant-design/icons';
 
 import { Layout, Menu, Dropdown, Avatar, Badge } from 'antd';
-import Cookies from 'js-cookie';
 import { ClickParam } from 'antd/lib/menu';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 
@@ -27,7 +26,7 @@ import PersonalInfo from 'pages/Persenal/Info';
 import PersonalSetting from 'pages/Persenal/Settings';
 import ErrorPage from 'pages/404';
 
-import { getUesrInfo } from 'api/user';
+import { getUesrInfo, logout } from 'api/user';
 import { Store } from 'types';
 import { setUserInfo } from 'store/user/user.action';
 import { setScreenWidth } from 'store/app/app.action';
@@ -48,6 +47,7 @@ const Home: React.FC<Props> = (props: Props) => {
   const [paddingLeft, setPaddingLeft] = useState(256);
   const [headerWidth, setHeaderWidth] = useState('calc(100% - 256px)');
   const [currentKey, setCurrentKey] = useState(pathname.split('/')[2]);
+
   const userInfo = useSelector((store: Store) => store.user);
   const dispatch = useDispatch();
 
@@ -102,8 +102,7 @@ const Home: React.FC<Props> = (props: Props) => {
   }
 
   function handleLogout(): void {
-    Cookies.remove('user-token');
-    props.history.push('/login');
+    logout();
   }
 
   function handleGotoPersonalCenter() {
@@ -113,14 +112,22 @@ const Home: React.FC<Props> = (props: Props) => {
     setCurrentKey('personal-info');
   }
 
+  function handleGotoPersonalSetting() {
+    if (pathname !== '/home/personal-settings') {
+      props.history.push('/home/personal-settings');
+    }
+    setCurrentKey('personal-settings');
+  }
+
   const userMenu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="1" onClick={handleGotoPersonalCenter}>
         个人中心
       </Menu.Item>
-      <Menu.Item key="2">个人设置</Menu.Item>
-      <Menu.Item key="3">切换团队</Menu.Item>
-      <Menu.Item key="4" onClick={handleLogout}>
+      <Menu.Item key="2" onClick={handleGotoPersonalSetting}>
+        个人设置
+      </Menu.Item>
+      <Menu.Item key="3" onClick={handleLogout}>
         退出登录
       </Menu.Item>
     </Menu>

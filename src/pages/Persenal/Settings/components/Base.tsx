@@ -15,15 +15,18 @@ const Base = (props: any) => {
     phone,
     description,
     avatar,
-  } = useSelector((store: Store) => store.user);
+    wxName,
+  }: UserState = useSelector((store: Store) => store.user);
   const [currUsername, setCurrUsername] = useState(username);
   const [currPosition, setCurrPosition] = useState(position);
   const [currEmail, setCurrEmail] = useState(email);
   const [currPhone, setCurrPhone] = useState(phone);
   const [currDescription, setCurrDescription] = useState(description);
   const [currAvatar, setCurrAvatar] = useState(avatar);
+  const [currWxName, setCurrWxName] = useState(wxName);
 
   const [updateLoading, setUpdateLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   const mapKeyToMethod = new Map<string, Function | undefined>([
     ['username', setCurrUsername],
@@ -32,6 +35,7 @@ const Base = (props: any) => {
     ['phone', setCurrPhone],
     ['description', setCurrDescription],
     ['avatar', setCurrAvatar],
+    ['wxName', setCurrWxName],
   ]);
 
   useEffect(() => {
@@ -42,6 +46,7 @@ const Base = (props: any) => {
       phone,
       description,
       avatar,
+      wxName,
     };
     const keys = Object.keys(userInfo);
     keys.forEach(item => {
@@ -77,12 +82,15 @@ const Base = (props: any) => {
 
   function handleChange(info: any) {
     if (info.file.status === 'uploading') {
+      setUploadLoading(true);
       return;
     }
     if (info.file.status === 'done') {
       setCurrAvatar(info.file.response.data);
       message.success('上传成功');
+      setUploadLoading(false);
     }
+    setUploadLoading(false);
   }
 
   function canUpdate() {
@@ -92,7 +100,8 @@ const Base = (props: any) => {
       email !== currEmail ||
       phone !== currPhone ||
       description !== currDescription ||
-      avatar !== currAvatar
+      avatar !== currAvatar ||
+      wxName !== currWxName
     );
   }
 
@@ -105,6 +114,7 @@ const Base = (props: any) => {
       position: currPosition,
       description: currDescription,
       avatar: currAvatar,
+      wxName: currWxName,
     };
     setUpdateLoading(true);
     update(params).then((res: any) => {
@@ -152,6 +162,13 @@ const Base = (props: any) => {
                 onChange={handleFormItemChange}
               />
             </Form.Item>
+            <Form.Item label="微信号">
+              <Input
+                id="wxName"
+                value={currWxName}
+                onChange={handleFormItemChange}
+              />
+            </Form.Item>
             <Form.Item label="个人简介">
               <Input.TextArea
                 id="description"
@@ -183,7 +200,7 @@ const Base = (props: any) => {
               beforeUpload={beforeUpload}
               onChange={handleChange}
             >
-              <Button>
+              <Button loading={uploadLoading}>
                 <UploadOutlined /> 更换头像
               </Button>
             </Upload>
