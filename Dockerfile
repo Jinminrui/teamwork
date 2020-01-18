@@ -1,5 +1,5 @@
 from nginx
 label maintainer "jinminrui"
 copy ./build/ /usr/share/nginx/html/
-expose 80
+expose 3009
 
