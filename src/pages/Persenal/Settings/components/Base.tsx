@@ -120,11 +120,9 @@ const Base = (props: any) => {
     update(params).then((res: any) => {
       if (res.code === 200) {
         message.success('更新成功');
-      } else {
-        message.error('更新失败');
+        window.location.reload();
       }
       setUpdateLoading(false);
-      window.location.reload();
     });
   }
 

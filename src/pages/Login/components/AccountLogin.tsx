@@ -30,15 +30,13 @@ const AccountLogin: React.FC<RouteComponentProps> = (
 
   const handleLogin = () => {
     if (account && password) {
-      loginByAccount({ username: account, password }).then((res: any) => {
+      loginByAccount({ phoneNum: account, password }).then((res: any) => {
         if (res.code === 200 && res.data) {
           Cookies.set('user-token', res.data.token.token);
           localStorage.setItem('userId', res.data.user.pkId);
           dispatch(setUserInfo({ id: res.data.user.pkId }));
           message.success('登录成功');
           history.push('/home/dashboard');
-        } else {
-          message.error(res.desc);
         }
       });
     }

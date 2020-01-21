@@ -11,3 +11,9 @@ export function getCookies(name: string) {
 export function removeCookies(name: string) {
   Cookies.remove(name);
 }
+
+export function getTimeGap(startTime: string) {
+  const now = new Date();
+  const duration = now.getDate() - new Date(startTime).getDate();
+  return duration;
+}

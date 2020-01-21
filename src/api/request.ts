@@ -40,13 +40,13 @@ request.interceptors.response.use(
   response => {
     const res = response.data;
     if (res.code !== 200) {
-      message.error(res.data);
+      message.error(res.desc);
     }
-    return res;
+    return res as any;
   },
   error => {
-    console.log(`${error}`); // for debug
-    if (error.response.status === 401) {
+    console.log(error.response); // for debug
+    if (error.response?.status === 401) {
       removeCookies('user-token');
       window.location.href = '/';
       message.warn('登录权限失效，请重新登录！');

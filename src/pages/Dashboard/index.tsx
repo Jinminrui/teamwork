@@ -5,16 +5,11 @@ import './index.scss';
 
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
+import { getTimeGap } from 'utils';
 import ProjectList from './components/ProjectList';
 import ActivityList from './components/ActivityList';
 import TodoList from './components/TodoList';
 import MemberList from './components/MemberList';
-
-function getJoinTime(startTime: string) {
-  const now = new Date();
-  const duration = now.getDate() - new Date(startTime).getDate();
-  return duration;
-}
 
 const Dashbord: React.FC = () => {
   const userInfo = useSelector((store: Store) => store.user);
@@ -25,7 +20,7 @@ const Dashbord: React.FC = () => {
     if (hour >= 6 && hour <= 11) {
       return `早上好，${username}！`;
     }
-    if (hour > 11 && hour < 14) {
+    if (hour > 11 && hour <= 14) {
       return `中午好，${username}！`;
     }
     if (hour > 14 && hour < 18) {
@@ -44,7 +39,7 @@ const Dashbord: React.FC = () => {
 
           <div className="text-wrapper">
             <div className="hello-title">
-              {getGreetingByTime(userInfo.username || userInfo.phone)}
+              {getGreetingByTime(userInfo.username || userInfo.phone || '')}
             </div>
             <div className="desc">
               <IdcardOutlined style={{ marginRight: 8, fontSize: 20 }} />
@@ -56,7 +51,7 @@ const Dashbord: React.FC = () => {
           <div className="state-item">
             <p className="title">加入时间（天）</p>
             <p className="data">
-              {userInfo.createTime && getJoinTime(userInfo.createTime)}
+              {userInfo.createTime ? getTimeGap(userInfo.createTime) : 0}
             </p>
           </div>
           <div className="state-item">

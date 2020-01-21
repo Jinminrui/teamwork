@@ -57,17 +57,22 @@ const PhoneLogin: React.FC<RouteComponentProps> = (
 
   const handleGetVerifyCode = () => {
     setTime(60);
-    getVerifyCode({ phoneNum: phone }).then((res: any) => {
-      if (res.Code === 'OK') {
-        setCodeGetable(false);
-      }
-    });
+    setCodeGetable(false);
+    if (phone) {
+      getVerifyCode({ phoneNum: phone }).then((res: any) => {
+        if (res.code === 200) {
+          message.success('验证码已发送');
+        }
+      });
+    } else {
+      message.warn('请填写手机号');
+    }
   };
 
   return (
     <div>
       <div className="form-wrapper">
-        <p className="app-name">Team-Work Platform</p>
+        <p className="app-name"> Let&apos;s Work Together</p>
         <p className="title">验证手机以开始</p>
         <Input
           placeholder="请输入手机号"

@@ -7,6 +7,7 @@ const {
   addLessLoader,
   addWebpackAlias,
   addWebpackPlugin,
+  addBabelPlugins,
 } = require('customize-cra');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -14,6 +15,8 @@ const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 function resolve(dir) {
   return path.join(__dirname, '.', dir);
 }
+
+process.env.GENERATE_SOURCEMAP = 'false';
 
 module.exports = override(
   fixBabelImports('import', {
@@ -28,6 +31,7 @@ module.exports = override(
   addWebpackAlias({
     '@': resolve('src'),
   }),
-  addWebpackPlugin(new AntdDayjsWebpackPlugin())
+  addWebpackPlugin(new AntdDayjsWebpackPlugin()),
+  addBabelPlugins('@babel/plugin-proposal-optional-chaining')
   // addWebpackPlugin(new BundleAnalyzerPlugin())
 );

@@ -24,7 +24,7 @@ import IconFont from 'components/IconFont';
 import Dashboard from 'pages/Dashboard';
 import PersonalInfo from 'pages/Persenal/Info';
 import PersonalSetting from 'pages/Persenal/Settings';
-import ErrorPage from 'pages/404';
+import TeamInfo from 'pages/Team/TeamInfo';
 
 import { getUesrInfo, logout } from 'api/user';
 import { Store } from 'types';
@@ -187,11 +187,11 @@ const Home: React.FC<Props> = (props: Props) => {
               <TeamOutlined />
               <span>基础信息</span>
             </Menu.Item>
-            <Menu.Item key="team-doc">
+            <Menu.Item key="team-doc" disabled={!userInfo.teamId}>
               <FolderOutlined />
               <span>团队文档</span>
             </Menu.Item>
-            <Menu.Item key="weekly-report">
+            <Menu.Item key="weekly-report" disabled={!userInfo.teamId}>
               <CalendarOutlined />
               <span>成员周报</span>
             </Menu.Item>
@@ -289,9 +289,9 @@ const Home: React.FC<Props> = (props: Props) => {
             />
             <Route
               exact
-              path="/home/404"
-              key="/home/404"
-              component={ErrorPage}
+              path="/home/team-info"
+              key="/home/team-info"
+              component={TeamInfo}
             />
           </Switch>
         </Content>

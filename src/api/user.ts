@@ -2,7 +2,6 @@ import { removeCookies } from 'utils';
 import { post, get, upload } from './request';
 
 interface LoginParams {
-  username?: string;
   password?: string;
   phoneNum?: string;
   code?: string;
@@ -39,4 +38,8 @@ export function getVerifyCode(params: GetVerifyCodeParams) {
 export function logout() {
   removeCookies('user-token');
   window.location.href = '/login';
+}
+
+export function getAllUsersByTeam(teamId: string) {
+  return get('/users/getAllUsersByTeam', { teamId });
 }
