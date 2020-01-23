@@ -8,7 +8,7 @@ let HOST = '';
 if (env === 'development') {
   HOST = 'http://localhost:8081';
 } else if (env === 'production') {
-  HOST = 'http://www.jinminrui.cn';
+  HOST = 'http://47.100.221.250:8081';
 }
 
 const baseConfig: AxiosRequestConfig = {
