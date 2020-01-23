@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable react/jsx-indent */
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
@@ -11,18 +13,23 @@ import {
   List,
   Avatar,
   Card,
+  Popconfirm,
 } from 'antd';
 import { getTimeGap } from 'utils';
-import { update } from 'api/team';
+import { update, deleteMember } from 'api/team';
 import { getAllUsersByTeam } from 'api/user';
 import { UserState } from 'store/user/user.reducer';
+import { PhoneOutlined } from '@ant-design/icons';
+import { RouteComponentProps } from 'react-router-dom';
 import NoTeam from './components/NoTeam';
 import TeamInfoFormModal from './components/TeamInfoFormModal';
 
-const { Paragraph, Title } = Typography;
+const { Paragraph } = Typography;
 
-const TeamInfo = () => {
-  const { team } = useSelector((store: Store) => store.user);
+const TeamInfo: React.FC<RouteComponentProps> = (
+  props: RouteComponentProps
+) => {
+  const { team, role, pkId } = useSelector((store: Store) => store.user);
   const [visible, setVisible] = useState(false);
   const [list, setList] = useState<Array<UserState>>([]);
 
@@ -54,6 +61,15 @@ const TeamInfo = () => {
     setVisible(false);
   }
 
+  function handleDeleteMember(item: UserState) {
+    if (teamId && item.pkId) {
+      deleteMember({ teamId, userId: item.pkId }).then((res: any) => {
+        message.success(res.desc);
+        window.location.reload();
+      });
+    }
+  }
+
   if (!team) {
     return <NoTeam />;
   }
@@ -72,6 +88,7 @@ const TeamInfo = () => {
             onClick={() => {
               setVisible(true);
             }}
+            disabled={role !== 1}
           >
             修改信息
           </Button>,
@@ -85,12 +102,31 @@ const TeamInfo = () => {
       <Card
         title="成员列表"
         style={{ padding: 0, marginTop: 24 }}
-        extra={[<Button type="primary">邀请成员</Button>]}
+        extra={role === 1 && [<Button type="primary">邀请成员</Button>]}
       >
         <List
           dataSource={list}
           renderItem={item => (
-            <List.Item>
+            <List.Item
+              actions={
+                role === 1 && item.pkId !== pkId
+                  ? [
+                      <Popconfirm
+                        title="您确定要移除该成员吗？"
+                        onConfirm={() => {
+                          handleDeleteMember(item);
+                        }}
+                        okText="确认"
+                        cancelText="取消"
+                      >
+                        <Button type="danger" size="small">
+                          移除
+                        </Button>
+                      </Popconfirm>,
+                    ]
+                  : undefined
+              }
+            >
               <List.Item.Meta
                 avatar={<Avatar src={item.avatar} size={64} />}
                 title={
@@ -98,12 +134,16 @@ const TeamInfo = () => {
                     <span style={{ fontSize: 18, marginRight: 12 }}>
                       {item.username || item.phone || ''}
                     </span>
-                    <Tag color="green">{item.position}</Tag>
+                    {item.position && <Tag color="green">{item.position}</Tag>}
                   </div>
                 }
-                description={item.description}
+                description={
+                  <div>
+                    <PhoneOutlined />
+                    <span style={{ marginLeft: 10 }}>{item.phone}</span>
+                  </div>
+                }
               />
-              <div>content</div>
             </List.Item>
           )}
         />

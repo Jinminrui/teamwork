@@ -187,11 +187,11 @@ const Home: React.FC<Props> = (props: Props) => {
               <TeamOutlined />
               <span>基础信息</span>
             </Menu.Item>
-            <Menu.Item key="team-doc" disabled={!userInfo.teamId}>
+            <Menu.Item key="team-doc" disabled={!userInfo.team}>
               <FolderOutlined />
               <span>团队文档</span>
             </Menu.Item>
-            <Menu.Item key="weekly-report" disabled={!userInfo.teamId}>
+            <Menu.Item key="weekly-report" disabled={!userInfo.team}>
               <CalendarOutlined />
               <span>成员周报</span>
             </Menu.Item>

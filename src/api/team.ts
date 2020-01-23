@@ -16,10 +16,19 @@ interface UpdateParams {
   description: string;
 }
 
+interface DeleteParams {
+  teamId: string;
+  userId: string;
+}
+
 export function create(params: CreateParams) {
   return post('/team/create', params);
 }
 
 export function update(params: UpdateParams) {
   return post('/team/update', params);
+}
+
+export function deleteMember(params: DeleteParams) {
+  return post('/team/deleteMember', params);
 }

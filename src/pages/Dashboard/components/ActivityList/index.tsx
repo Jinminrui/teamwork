@@ -9,7 +9,7 @@ const ActivityList: React.FC = () => {
     setTimeout(() => {
       setList([1, 2, 3, 4, 5, 6]);
       setLoading(false);
-    }, 3000);
+    }, 400);
   }, []);
 
   return (
