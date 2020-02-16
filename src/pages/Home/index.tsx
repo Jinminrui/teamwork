@@ -26,12 +26,12 @@ import PersonalInfo from 'pages/Persenal/Info';
 import PersonalSetting from 'pages/Persenal/Settings';
 import TeamInfo from 'pages/Team/TeamInfo';
 
-import { getUesrInfo, logout } from 'api/user';
+import { logout } from 'api/user';
 import { Store } from 'types';
-import { setUserInfo } from 'store/user/user.action';
 import { setScreenWidth } from 'store/app/app.action';
-import Logo from './logo.svg';
 import './index.scss';
+import { connectWebsocket, disconnect } from 'store/websocket/websocket.action';
+import Logo from './logo.svg';
 
 const { Header, Sider, Content } = Layout;
 const { Item, ItemGroup } = Menu;
@@ -68,12 +68,11 @@ const Home: React.FC<Props> = (props: Props) => {
   }, [clientWidth, dispatch]);
 
   useEffect(() => {
-    const id = localStorage.getItem('userId');
-    if (id) {
-      getUesrInfo(id).then(res => {
-        dispatch(setUserInfo(res.data));
-      });
-    }
+    dispatch({ type: 'SET_USER_INFO_SAGA' });
+    dispatch(connectWebsocket());
+    return () => {
+      dispatch(disconnect());
+    };
   }, [dispatch]);
 
   useEffect(() => {

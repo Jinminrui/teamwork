@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Avatar, Input, Upload, Button, Form, message } from 'antd';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
 import { UserState } from 'store/user/user.reducer';
 import { update } from 'api/user';
@@ -27,6 +27,8 @@ const Base = (props: any) => {
 
   const [updateLoading, setUpdateLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const mapKeyToMethod = new Map<string, Function | undefined>([
     ['username', setCurrUsername],
@@ -120,7 +122,7 @@ const Base = (props: any) => {
     update(params).then((res: any) => {
       if (res.code === 200) {
         message.success('更新成功');
-        window.location.reload();
+        dispatch({ type: 'SET_USER_INFO_SAGA' });
       }
       setUpdateLoading(false);
     });

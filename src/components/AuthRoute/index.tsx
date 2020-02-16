@@ -1,6 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 import { Route, Redirect } from 'react-router-dom';
+import { message } from 'antd';
 import { RouteItem } from './route.config';
 
 const AuthRoute: React.FC<any> = props => {
@@ -31,6 +32,7 @@ const AuthRoute: React.FC<any> = props => {
   }
   // 非登陆状态下，当路由合法时且需要权限校验时，跳转到登陆页面，要求登陆
   if ((targetRouterConfig && targetRouterConfig.auth) || pathname === '/') {
+    message.warning('请先登录');
     return <Redirect to="/login" />;
   }
   // 非登陆状态下，路由不合法时，重定向至 404

@@ -59,9 +59,6 @@ const NoTeam = () => {
       {username && (
         <TeamInfoFormModal
           title="创建团队"
-          initialValues={{
-            name: `${username}的团队`,
-          }}
           visible={visible}
           onOk={onCreate}
           onCancel={onCancel}

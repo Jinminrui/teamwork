@@ -1,5 +1,7 @@
 import React from 'react';
 import { Modal, Input, Form } from 'antd';
+import { useSelector } from 'react-redux';
+import { Store } from 'types';
 
 export interface Values {
   name: string;
@@ -9,7 +11,6 @@ export interface Values {
 
 interface FormModalProps {
   title: string;
-  initialValues: any;
   visible: boolean;
   onOk: (values: Values) => void;
   onCancel: () => void;
@@ -17,12 +18,13 @@ interface FormModalProps {
 
 const TeamInfoFormModal: React.FC<FormModalProps> = ({
   title,
-  initialValues,
   visible,
   onOk,
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const { team } = useSelector((store: Store) => store.user);
+
   return (
     <Modal
       title={title}
@@ -31,8 +33,8 @@ const TeamInfoFormModal: React.FC<FormModalProps> = ({
       cancelText="取消"
       onOk={() => {
         form.validateFields().then((values: any) => {
+          // form.resetFields();
           onOk(values);
-          form.resetFields();
         });
       }}
       onCancel={onCancel}
@@ -41,10 +43,12 @@ const TeamInfoFormModal: React.FC<FormModalProps> = ({
         form={form}
         layout="vertical"
         name="create_team_form"
-        initialValues={{
-          name: initialValues.name,
-          description: initialValues.description,
-        }}
+        initialValues={
+          team && {
+            name: team.name,
+            description: team.description,
+          }
+        }
       >
         <Form.Item
           name="name"
