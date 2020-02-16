@@ -70,9 +70,9 @@ const Home: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     dispatch({ type: 'SET_USER_INFO_SAGA' });
     dispatch(connectWebsocket());
-    return () => {
-      dispatch(disconnect());
-    };
+    // return () => {
+    //   dispatch(disconnect());
+    // };
   }, [dispatch]);
 
   useEffect(() => {
