@@ -17,8 +17,16 @@ async function init() {
   }
 
   const userId = localStorage.getItem('userId');
+  const env = process.env.NODE_ENV;
+  let HOST = '';
+  if (env === 'development') {
+    HOST = 'localhost:8081';
+  } else if (env === 'production') {
+    HOST = '47.100.221.250:8081';
+  }
 
-  const url = `ws://localhost:8081/message/${userId}`;
+  const url = `ws://${HOST}/message/${userId}`;
+
   if (ws !== null) {
     ws.close();
     ws = null;
