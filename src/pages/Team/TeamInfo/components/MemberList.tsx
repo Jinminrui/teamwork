@@ -96,6 +96,9 @@ const MemberList: React.FC<MemberListProps> = ({
         onCancel={() => {
           setMessageModalVisible(false);
         }}
+        onOk={() => {
+          setMessageModalVisible(false);
+        }}
       />
     </div>
   );

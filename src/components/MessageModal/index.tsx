@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Modal, Form, Mentions, Input } from 'antd';
 import { UserState } from 'store/user/user.reducer';
 import { Message, MessageType } from 'types';
+import { useDispatch } from 'react-redux';
+import { sendMessage } from 'store/websocket/websocket.action';
 
 const { Option, getMentions } = Mentions;
 
@@ -10,16 +12,20 @@ interface MessageModalProps {
   visible: boolean;
   memberList: Array<UserState>;
   onCancel: () => void;
+  onOk: () => void;
 }
 
 const MessageModal: React.FC<MessageModalProps> = ({
   title,
   visible,
   onCancel,
+  onOk,
   memberList,
 }) => {
   const [form] = Form.useForm();
   const [ids, setIds] = useState<Array<string>>([]);
+
+  const dispatch = useDispatch();
 
   const checkMention = async (rule: any, value: any, callback: any) => {
     const mentions = getMentions(value);
@@ -52,6 +58,8 @@ const MessageModal: React.FC<MessageModalProps> = ({
           const messageParams: Message = { ...values };
           messageParams.mentions = ids;
           messageParams.type = MessageType.NOTICE;
+          dispatch(sendMessage(messageParams));
+          onOk();
         });
       }}
       okText="发送"
