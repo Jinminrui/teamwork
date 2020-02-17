@@ -30,7 +30,7 @@ import { logout } from 'api/user';
 import { Store } from 'types';
 import { setScreenWidth } from 'store/app/app.action';
 import './index.scss';
-import { connectWebsocket, disconnect } from 'store/websocket/websocket.action';
+import { connectWebsocket } from 'store/websocket/websocket.action';
 import Logo from './logo.svg';
 
 const { Header, Sider, Content } = Layout;
