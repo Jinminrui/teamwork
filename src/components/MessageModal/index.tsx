@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, Form, Mentions, Input } from 'antd';
 import { UserState } from 'store/user/user.reducer';
-import { Message, MessageType } from 'types';
+import { Message, MessageType, Receiver } from 'types';
 import { useDispatch } from 'react-redux';
-import { sendMessage } from 'store/websocket/websocket.action';
+import { sendMessage } from 'store/message/message.action';
 
 const { Option, getMentions } = Mentions;
 
@@ -23,7 +23,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
   memberList,
 }) => {
   const [form] = Form.useForm();
-  const [ids, setIds] = useState<Array<string>>([]);
+  const [reveivers, setReveivers] = useState<Array<Receiver>>([]);
 
   const dispatch = useDispatch();
 
@@ -39,7 +39,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
     const name = option.value;
     memberList.forEach(item => {
       if (item.username === name && item.pkId) {
-        setIds([...ids, item.pkId]);
+        setReveivers([...reveivers, { id: item.pkId, username: name }]);
       }
     });
   };
@@ -51,12 +51,12 @@ const MessageModal: React.FC<MessageModalProps> = ({
       onCancel={() => {
         onCancel();
         form.resetFields();
-        setIds([]);
+        setReveivers([]);
       }}
       onOk={() => {
         form.validateFields().then((values: any) => {
           const messageParams: Message = { ...values };
-          messageParams.mentions = ids;
+          messageParams.receivers = reveivers;
           messageParams.type = MessageType.NOTICE;
           dispatch(sendMessage(messageParams));
           onOk();

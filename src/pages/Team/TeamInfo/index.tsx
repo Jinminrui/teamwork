@@ -49,6 +49,7 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
   }
   return (
     <div className="teamInfo-wrapper">
+      {!team && <NoTeam />}
       <PageHeader
         className="teamInfo-header"
         title={team.name}

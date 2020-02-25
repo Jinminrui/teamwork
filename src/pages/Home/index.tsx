@@ -14,9 +14,20 @@ import {
   UserOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 
-import { Layout, Menu, Dropdown, Avatar, Badge } from 'antd';
+import {
+  Layout,
+  Menu,
+  Dropdown,
+  Avatar,
+  Badge,
+  Modal,
+  Form,
+  Input,
+  message,
+} from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 
@@ -26,12 +37,14 @@ import PersonalInfo from 'pages/Persenal/Info';
 import PersonalSetting from 'pages/Persenal/Settings';
 import TeamInfo from 'pages/Team/TeamInfo';
 
-import { logout } from 'api/user';
+import { logout, update } from 'api/user';
 import { Store } from 'types';
 import { setScreenWidth } from 'store/app/app.action';
 import './index.scss';
-import { connectWebsocket } from 'store/websocket/websocket.action';
+import { connectWebsocket } from 'store/message/message.action';
+import { GET_REVEIVED_MESSAGE_LIST_SAGE } from 'store/message/actionTypes';
 import Logo from './logo.svg';
+import MessageOverlay from './components/MessageOverlay';
 
 const { Header, Sider, Content } = Layout;
 const { Item, ItemGroup } = Menu;
@@ -47,8 +60,10 @@ const Home: React.FC<Props> = (props: Props) => {
   const [paddingLeft, setPaddingLeft] = useState(256);
   const [headerWidth, setHeaderWidth] = useState('calc(100% - 256px)');
   const [currentKey, setCurrentKey] = useState(pathname.split('/')[2]);
+  const [updateInfoFormVisible, setUpdateInfoFormVisible] = useState(true);
 
   const userInfo = useSelector((store: Store) => store.user);
+  const messageInfo = useSelector((store: Store) => store.message);
   const dispatch = useDispatch();
 
   const [clientWidth, setClientWidth] = useState(
@@ -74,6 +89,12 @@ const Home: React.FC<Props> = (props: Props) => {
     //   dispatch(disconnect());
     // };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (userInfo.pkId) {
+      dispatch({ type: GET_REVEIVED_MESSAGE_LIST_SAGE, data: userInfo.pkId });
+    }
+  }, [dispatch, userInfo.pkId]);
 
   useEffect(() => {
     setCurrentKey(pathname.split('/')[2]);
@@ -121,19 +142,55 @@ const Home: React.FC<Props> = (props: Props) => {
   const userMenu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="1" onClick={handleGotoPersonalCenter}>
+        <UserOutlined />
         个人中心
       </Menu.Item>
       <Menu.Item key="2" onClick={handleGotoPersonalSetting}>
+        <SettingOutlined />
         个人设置
       </Menu.Item>
       <Menu.Item key="3" onClick={handleLogout}>
+        <LogoutOutlined />
         退出登录
       </Menu.Item>
     </Menu>
   );
 
+  const [form] = Form.useForm();
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
+      {!userInfo.username && (
+        <Modal
+          title="请完善个人信息"
+          visible={updateInfoFormVisible}
+          closable={false}
+          maskClosable={false}
+          okText="确定"
+          cancelText="取消"
+          onOk={() => {
+            form.validateFields().then(value => {
+              update({ ...value, pkId: userInfo.pkId }).then((res: any) => {
+                if (res.code === 200) {
+                  message.success('更新成功');
+                  dispatch({ type: 'SET_USER_INFO_SAGA' });
+                  setUpdateInfoFormVisible(false);
+                }
+              });
+            });
+          }}
+        >
+          <Form form={form} layout="vertical" name="update-info">
+            <Form.Item
+              name="username"
+              label="用户名"
+              rules={[{ required: true, message: '请填写用户名' }]}
+            >
+              <Input placeholder="请完善用户名" />
+            </Form.Item>
+          </Form>
+        </Modal>
+      )}
       <Sider
         trigger={null}
         collapsible
@@ -227,11 +284,13 @@ const Home: React.FC<Props> = (props: Props) => {
             <MenuFoldOutlined className="trigger" onClick={toggle} />
           )}
           <div className="right-wrapper">
-            <div className="header-actions">
-              <Badge count={10} className="badge">
-                <IconFont style={{ fontSize: '20px' }} type="icon-tongzhi" />
-              </Badge>
-            </div>
+            <Dropdown overlay={<MessageOverlay list={messageInfo.list} />} overlayClassName="message-overlay-container" placement="bottomRight" trigger={['click']}>
+              <div className="header-actions">
+                <Badge count={messageInfo?.notRead}>
+                  <IconFont style={{ fontSize: '20px' }} type="icon-tongzhi" />
+                </Badge>
+              </div>
+            </Dropdown>
             <Dropdown
               className="header-actions"
               overlay={userMenu}

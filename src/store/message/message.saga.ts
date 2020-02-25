@@ -1,12 +1,17 @@
-import { takeEvery } from 'redux-saga/effects';
-
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
+import { takeEvery, put } from 'redux-saga/effects';
 import { notification } from 'antd';
-
+import store from 'store';
+import { getMessageListByReceiver } from 'api/message';
+import { setReceivedMessageList } from './message.action';
 import {
   CONNECT_WEBSOCKET,
   DISCONNECT_WEBSOCKET,
   SEND_MESSAGE,
+  GET_REVEIVED_MESSAGE_LIST_SAGE,
 } from './actionTypes';
+
 
 /* eslint-disable import/no-mutable-exports */
 export let ws: WebSocket | null = null;
@@ -40,13 +45,20 @@ async function init() {
   };
   // 获得消息事件
   ws.onmessage = msg => {
-    console.log(`服务端消息：${msg.data}`);
-    const data = JSON.parse(msg.data);
-    notification.info({
-      message: data.messageTitle,
-      description: data.messageContent,
-    });
-    // 发现消息进入    开始处理前端触发逻辑
+    let data;
+    try {
+      data = JSON.parse(msg.data);
+      console.log(data);
+      const senderName = data.sender;
+      store.dispatch({ type: GET_REVEIVED_MESSAGE_LIST_SAGE, data: localStorage.getItem('userId') });
+      notification.info({
+        key: data.messageId,
+        message: `收到来自${senderName}的一条消息`,
+        description: data.title,
+      });
+    } catch (error) {
+      console.log(msg.data);
+    }
   };
   // 关闭事件
   ws.onclose = () => {
@@ -75,8 +87,14 @@ function sendMessage(action: any) {
   }
 }
 
+function* getMessageListSaga(action: any) {
+  const res = yield getMessageListByReceiver(action.data);
+  yield put(setReceivedMessageList(res.data));
+}
+
 export default function* watchWebSocket() {
   yield takeEvery(CONNECT_WEBSOCKET, connect);
   yield takeEvery(DISCONNECT_WEBSOCKET, disconnect);
   yield takeEvery(SEND_MESSAGE, sendMessage);
+  yield takeEvery(GET_REVEIVED_MESSAGE_LIST_SAGE, getMessageListSaga);
 }
