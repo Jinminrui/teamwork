@@ -59,6 +59,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
           messageParams.receivers = reveivers;
           messageParams.type = MessageType.NOTICE;
           dispatch(sendMessage(messageParams));
+          form.resetFields();
           onOk();
         });
       }}

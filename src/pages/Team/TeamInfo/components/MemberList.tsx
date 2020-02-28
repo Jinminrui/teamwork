@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Popconfirm, Button, Avatar, Tag, List, message } from 'antd';
-import { MessageFilled, PhoneOutlined } from '@ant-design/icons';
+import { MessageFilled, PhoneOutlined, MailOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { UserState } from 'store/user/user.reducer';
 import { deleteMember } from 'api/team';
@@ -80,9 +80,15 @@ const MemberList: React.FC<MemberListProps> = ({
                 </div>
               }
               description={
-                <div style={{ paddingTop: 3 }}>
-                  <PhoneOutlined />
-                  <span style={{ marginLeft: 6 }}>{item.phone}</span>
+                <div>
+                  <div style={{ paddingTop: 3 }}>
+                    <PhoneOutlined />
+                    <span style={{ marginLeft: 6 }}>{item.phone}</span>
+                  </div>
+                  <div style={{ paddingTop: 3 }}>
+                    <MailOutlined />
+                    <span style={{ marginLeft: 6 }}>{item.email}</span>
+                  </div>
                 </div>
               }
             />

@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /* eslint-disable react/jsx-indent */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
 import './index.scss';
@@ -21,12 +21,6 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
   const dispatch = useDispatch();
 
   const teamId = team?.pkId;
-
-  useEffect(() => {
-    if (teamId) {
-      dispatch({ type: 'SET_MEMBER_LIST_SAGA', teamId });
-    }
-  }, [teamId, dispatch]);
 
   function onUpdate(value: any) {
     if (team?.pkId) {

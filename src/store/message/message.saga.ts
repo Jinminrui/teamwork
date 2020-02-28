@@ -12,7 +12,6 @@ import {
   GET_REVEIVED_MESSAGE_LIST_SAGE,
 } from './actionTypes';
 
-
 /* eslint-disable import/no-mutable-exports */
 export let ws: WebSocket | null = null;
 
@@ -49,8 +48,15 @@ async function init() {
     try {
       data = JSON.parse(msg.data);
       console.log(data);
-      const senderName = data.sender;
-      store.dispatch({ type: GET_REVEIVED_MESSAGE_LIST_SAGE, data: localStorage.getItem('userId') });
+      const senderName = data.senderId;
+      store.dispatch({
+        type: GET_REVEIVED_MESSAGE_LIST_SAGE,
+        data: {
+          receiverId: localStorage.getItem('userId'),
+          pageNum: 0,
+          pageSize: 0,
+        },
+      });
       notification.info({
         key: data.messageId,
         message: `收到来自${senderName}的一条消息`,
@@ -88,7 +94,8 @@ function sendMessage(action: any) {
 }
 
 function* getMessageListSaga(action: any) {
-  const res = yield getMessageListByReceiver(action.data);
+  const { receiverId, pageSize, pageNum } = action.data;
+  const res = yield getMessageListByReceiver(receiverId, pageSize, pageNum);
   yield put(setReceivedMessageList(res.data));
 }
 

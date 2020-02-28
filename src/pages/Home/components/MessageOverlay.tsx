@@ -7,10 +7,11 @@ const { TabPane } = Tabs;
 
 interface Props {
   list: Array<MessageItem>;
+  receiver: string;
 }
 
 const MessageOverlay = (props: Props) => {
-  const { list } = props;
+  const { list, receiver } = props;
   const messageList = list.filter(item => item.type === 1);
   const noticeList = list.filter(item => item.type === 2);
   return (
@@ -28,7 +29,7 @@ const MessageOverlay = (props: Props) => {
             description="您已读完所有消息"
           />
         ) : (
-          <MessageList list={messageList} type="消息" />
+          <MessageList list={messageList} type="消息" receiver={receiver} />
         )}
       </TabPane>
       <TabPane tab={noticeList.length !== 0 ? `通知（${noticeList.length}}）` : '通知'} key="notice">
@@ -39,7 +40,7 @@ const MessageOverlay = (props: Props) => {
             description="您已查看所有通知"
           />
         ) : (
-          <MessageList list={noticeList} type="通知" />
+          <MessageList list={noticeList} type="通知" receiver={receiver} />
         )}
       </TabPane>
     </Tabs>

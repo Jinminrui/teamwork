@@ -12,7 +12,7 @@ export interface TeamInfo {
 export interface UserState {
   [index: string]: any;
   pkId?: string;
-  username?: string;
+  username: string;
   email?: string;
   phone?: string;
   gender?: number;
@@ -25,7 +25,19 @@ export interface UserState {
   hasPassword?: boolean;
 }
 
-const defaultState: UserState = {};
+const defaultState: UserState = {
+  pkId: '',
+  username: '',
+  email: '',
+  phone: '',
+  gender: 0,
+  avatar: '',
+  role: 1,
+  team: undefined,
+  position: '',
+  description: '',
+  hasPassword: false,
+};
 
 export default (state = defaultState, action: any) => {
   switch (action.type) {

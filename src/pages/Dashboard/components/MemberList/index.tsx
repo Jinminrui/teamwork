@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, List, Avatar, Empty } from 'antd';
+import { useSelector } from 'react-redux';
+import { Store } from 'types';
 
 interface MemberItem {
   id: number;
@@ -9,30 +11,14 @@ interface MemberItem {
 }
 
 const MemberList = () => {
-  // const [loading, setLoading] = useState(false);
-  const [list] = useState<Array<MemberItem>>([]);
-  // const userToken = getCookies('user-token');
-  // useEffect(() => {
-  //   setLoading(true);
-  //   if (userToken) {
-  //     getTeamMemberList(1).then(res => {
-  //       if (res.data) {
-  //         setList(res.data.list);
-  //         setLoading(false);
-  //       }
-  //     });
-  //   }
-
-  //   return () => {};
-  // }, [userToken]);
-
+  const { memberList } = useSelector((store: Store) => store.team);
   return (
     <Card
       title="成员"
       style={{ padding: 0 }}
       extra={<Link to="/team">全部成员</Link>}
     >
-      {list.length === 0 ? (
+      {memberList.length === 0 ? (
         <Empty description="快去邀请你的团队成员吧！" />
       ) : (
         <List
@@ -45,10 +31,10 @@ const MemberList = () => {
             xl: 1,
             xxl: 2,
           }}
-          dataSource={list}
+          dataSource={memberList}
           renderItem={item => (
             <List.Item key={item.id}>
-              <Avatar src={item.avatarUrl} size={24} />
+              <Avatar src={item.avatar} size={24} />
               <span
                 style={{
                   marginLeft: '12px',
@@ -57,7 +43,7 @@ const MemberList = () => {
                   verticalAlign: 'top',
                 }}
               >
-                {item.name}
+                {item.username}
               </span>
             </List.Item>
           )}

@@ -60,7 +60,7 @@ const Home: React.FC<Props> = (props: Props) => {
   const [paddingLeft, setPaddingLeft] = useState(256);
   const [headerWidth, setHeaderWidth] = useState('calc(100% - 256px)');
   const [currentKey, setCurrentKey] = useState(pathname.split('/')[2]);
-  const [updateInfoFormVisible, setUpdateInfoFormVisible] = useState(true);
+  const [updateInfoFormVisible, setUpdateInfoFormVisible] = useState(false);
 
   const userInfo = useSelector((store: Store) => store.user);
   const messageInfo = useSelector((store: Store) => store.message);
@@ -92,9 +92,18 @@ const Home: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (userInfo.pkId) {
-      dispatch({ type: GET_REVEIVED_MESSAGE_LIST_SAGE, data: userInfo.pkId });
+      dispatch({
+        type: GET_REVEIVED_MESSAGE_LIST_SAGE,
+        data: { receiverId: userInfo.pkId, pageSize: 0, pageNum: 0 },
+      });
     }
   }, [dispatch, userInfo.pkId]);
+
+  useEffect(() => {
+    if (userInfo.team) {
+      dispatch({ type: 'SET_MEMBER_LIST_SAGA', teamId: userInfo.team.pkId });
+    }
+  }, [userInfo.team, dispatch]);
 
   useEffect(() => {
     setCurrentKey(pathname.split('/')[2]);
@@ -191,6 +200,7 @@ const Home: React.FC<Props> = (props: Props) => {
           </Form>
         </Modal>
       )}
+
       <Sider
         trigger={null}
         collapsible
@@ -284,7 +294,17 @@ const Home: React.FC<Props> = (props: Props) => {
             <MenuFoldOutlined className="trigger" onClick={toggle} />
           )}
           <div className="right-wrapper">
-            <Dropdown overlay={<MessageOverlay list={messageInfo.list} />} overlayClassName="message-overlay-container" placement="bottomRight" trigger={['click']}>
+            <Dropdown
+              overlay={
+                <MessageOverlay
+                  list={messageInfo.list}
+                  receiver={userInfo.username}
+                />
+              }
+              overlayClassName="message-overlay-container"
+              placement="bottomRight"
+              trigger={['click']}
+            >
               <div className="header-actions">
                 <Badge count={messageInfo?.notRead}>
                   <IconFont style={{ fontSize: '20px' }} type="icon-tongzhi" />

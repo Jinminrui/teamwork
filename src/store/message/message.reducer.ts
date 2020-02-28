@@ -7,14 +7,16 @@ export interface MessageState {
 }
 
 export interface MessageItem {
-  messageId: string;
+  pkId: string;
   type: number;
-  sender: string;
-  receiver: string;
+  senderId: string;
+  receiverId: string;
   title: string;
   content: string;
   status: boolean;
-  sendTime: string;
+  createTime: string;
+  updateTime: string;
+  senderRole: number;
 }
 
 const defaultState: MessageState = {
