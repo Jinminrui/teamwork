@@ -21,6 +21,11 @@ interface DeleteParams {
   userId: string;
 }
 
+interface InviteParams {
+  teamId: string;
+  phones: Array<string>;
+}
+
 export function create(params: CreateParams) {
   return post('/team/create', params);
 }
@@ -31,4 +36,12 @@ export function update(params: UpdateParams) {
 
 export function deleteMember(params: DeleteParams) {
   return post('/team/deleteMember', params);
+}
+
+export function inviteMember(params: InviteParams) {
+  return post('/team/inviteMember', params);
+}
+
+export function sureToJoinTeam(phone: string) {
+  return post(`/team/sureToJoin/${phone}`);
 }

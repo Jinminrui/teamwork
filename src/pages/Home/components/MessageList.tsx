@@ -1,22 +1,27 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
-import { List, Avatar, message } from 'antd';
+import { List, Avatar, message, Modal } from 'antd';
 import { MessageItem } from 'store/message/message.reducer';
-import { deleteMessage, readOneMessage } from 'api/message';
+import { deleteMessage, readOneMessage, deleteOneMessage } from 'api/message';
 import { GET_REVEIVED_MESSAGE_LIST_SAGE } from 'store/message/actionTypes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { sureToJoinTeam } from 'api/team';
+import { Store } from 'types';
+
+const { confirm } = Modal;
 
 interface Props {
   list: Array<MessageItem>;
   type: string;
-  receiver: string;
 }
 
 const MessageList = (props: Props) => {
-  const { list, type, receiver } = props;
+  const { list, type } = props;
 
   const receiverId = localStorage.getItem('userId');
   const dispatch = useDispatch();
+  const userInfo = useSelector((store: Store) => store.user);
 
   const handleDelete = () => {
     if (receiverId) {
@@ -27,7 +32,7 @@ const MessageList = (props: Props) => {
       if (type === '通知') {
         typeNum = 2;
       }
-      deleteMessage({ receiver, type: typeNum }).then((res: any) => {
+      deleteMessage({ receiverId, type: typeNum }).then((res: any) => {
         message.success(res.desc);
         dispatch({
           type: GET_REVEIVED_MESSAGE_LIST_SAGE,
@@ -37,15 +42,35 @@ const MessageList = (props: Props) => {
     }
   };
 
+  const okText = ['我知道了', '同意'];
+
   const readIt = (item: MessageItem) => {
-    if (!item.status) {
-      readOneMessage(item.pkId).then(res => {
-        dispatch({
-          type: GET_REVEIVED_MESSAGE_LIST_SAGE,
-          data: { receiverId, pageSize: 0, pageNum: 0 },
-        });
-      });
-    }
+    confirm({
+      title: item.title,
+      icon: <ExclamationCircleOutlined />,
+      content: item.content,
+      okText: okText[item.type - 1],
+      cancelText: '取消',
+      onOk() {
+        if (!item.status) {
+          readOneMessage(item.pkId).then(res => {
+            dispatch({
+              type: GET_REVEIVED_MESSAGE_LIST_SAGE,
+              data: { receiverId, pageSize: 0, pageNum: 0 },
+            });
+          });
+        }
+        if (item.type === 2 && userInfo.phone) {
+          sureToJoinTeam(userInfo.phone).then((res: any) => {
+            message.success(res.desc);
+            deleteOneMessage(item.pkId);
+            window.location.reload();
+          });
+        }
+      },
+      onCancel() {
+      },
+    });
   };
 
   return (
@@ -68,7 +93,7 @@ const MessageList = (props: Props) => {
                   />
                   }
                 title={
-                  <span className="message-title">{`来自 ${item.senderId}`}</span>
+                  <span className="message-title">{`来自 ${item.senderName}`}</span>
                   }
                 description={
                   <div>

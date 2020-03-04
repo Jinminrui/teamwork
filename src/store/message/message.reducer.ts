@@ -17,6 +17,7 @@ export interface MessageItem {
   createTime: string;
   updateTime: string;
   senderRole: number;
+  senderName: string;
 }
 
 const defaultState: MessageState = {

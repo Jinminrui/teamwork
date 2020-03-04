@@ -71,13 +71,6 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
       <Card
         title="成员列表"
         style={{ padding: 0, marginTop: 24 }}
-        extra={
-          role === 1 && [
-            <Button type="primary" key="1">
-              邀请成员
-            </Button>,
-          ]
-        }
       >
         {teamId && pkId && (
           <MemberList teamId={teamId} myId={pkId} isTeamCreator={role === 1} />

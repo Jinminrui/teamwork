@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  EnvironmentOutlined,
-  IdcardOutlined,
-  MailOutlined,
-  PhoneOutlined,
-} from '@ant-design/icons';
+import { IdcardOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { Row, Col, Card, Avatar, Divider, List } from 'antd';
 import './index.scss';
 import { useSelector } from 'react-redux';
@@ -81,21 +76,13 @@ const PersonalInfo: React.FC = () => {
                 <List.Item className="detail-item">
                   <p>
                     <IdcardOutlined style={{ marginRight: 12, fontSize: 14 }} />
-                    {userInfo.position}
-                  </p>
-                </List.Item>
-                <List.Item className="detail-item">
-                  <p>
-                    <EnvironmentOutlined
-                      style={{ marginRight: 12, fontSize: 14 }}
-                    />
-                    江苏省 南京市
+                    {userInfo.position || '尚未填写职位'}
                   </p>
                 </List.Item>
                 <List.Item className="detail-item">
                   <p>
                     <MailOutlined style={{ marginRight: 12, fontSize: 14 }} />
-                    {userInfo.email}
+                    {userInfo.email || '尚未填写邮箱'}
                   </p>
                 </List.Item>
                 <List.Item className="detail-item">

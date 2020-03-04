@@ -60,10 +60,12 @@ const MessageModal: React.FC<MessageModalProps> = ({
           messageParams.type = MessageType.NOTICE;
           dispatch(sendMessage(messageParams));
           form.resetFields();
+          setReveivers([]);
           onOk();
         });
       }}
       okText="发送"
+      cancelText="取消"
     >
       <Form form={form} layout="vertical" name="message_form">
         <Form.Item

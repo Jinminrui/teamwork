@@ -15,6 +15,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   LogoutOutlined,
+  UserAddOutlined,
 } from '@ant-design/icons';
 
 import {
@@ -27,6 +28,7 @@ import {
   Form,
   Input,
   message,
+  Tooltip,
 } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
@@ -43,6 +45,7 @@ import { setScreenWidth } from 'store/app/app.action';
 import './index.scss';
 import { connectWebsocket } from 'store/message/message.action';
 import { GET_REVEIVED_MESSAGE_LIST_SAGE } from 'store/message/actionTypes';
+import InviteModal from 'components/InviteModal';
 import Logo from './logo.svg';
 import MessageOverlay from './components/MessageOverlay';
 
@@ -61,6 +64,7 @@ const Home: React.FC<Props> = (props: Props) => {
   const [headerWidth, setHeaderWidth] = useState('calc(100% - 256px)');
   const [currentKey, setCurrentKey] = useState(pathname.split('/')[2]);
   const [updateInfoFormVisible, setUpdateInfoFormVisible] = useState(false);
+  const [inviteModalVisible, setInviteModalVisible] = useState(false);
 
   const userInfo = useSelector((store: Store) => store.user);
   const messageInfo = useSelector((store: Store) => store.message);
@@ -201,6 +205,19 @@ const Home: React.FC<Props> = (props: Props) => {
         </Modal>
       )}
 
+      {userInfo.team && (
+        <InviteModal
+          teamId={userInfo.team?.pkId}
+          visible={inviteModalVisible}
+          onOk={() => {
+            setInviteModalVisible(false);
+          }}
+          onCancel={() => {
+            setInviteModalVisible(false);
+          }}
+        />
+      )}
+
       <Sider
         trigger={null}
         collapsible
@@ -298,7 +315,6 @@ const Home: React.FC<Props> = (props: Props) => {
               overlay={
                 <MessageOverlay
                   list={messageInfo.list}
-                  receiver={userInfo.username}
                 />
               }
               overlayClassName="message-overlay-container"
@@ -311,6 +327,22 @@ const Home: React.FC<Props> = (props: Props) => {
                 </Badge>
               </div>
             </Dropdown>
+            <Tooltip placement="bottom" title="邀请团队成员">
+              <div
+                className="header-actions"
+                onClick={() => {
+                  if (userInfo.team) {
+                    setInviteModalVisible(true);
+                  } else {
+                    message.warn('您尚未拥有团队，请先创建或加入');
+                  }
+                }}
+              >
+                <UserAddOutlined
+                  style={{ fontSize: '20px', color: '#595959' }}
+                />
+              </div>
+            </Tooltip>
             <Dropdown
               className="header-actions"
               overlay={userMenu}
