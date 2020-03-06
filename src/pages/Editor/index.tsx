@@ -1,63 +1,73 @@
-import React from 'react';
-import MdEditor from 'react-markdown-editor-lite';
-import MarkdownIt from 'markdown-it';
-import hljs from 'highlight.js';
-import './index.scss';
-import 'highlight.js/styles/atom-one-dark.css';
+import React, { useState, useEffect } from 'react';
 import { Button, Input } from 'antd';
+import { throttle } from 'lodash';
+import BraftEditor from 'braft-editor';
+// eslint-disable-next-line import/no-unresolved
+import 'braft-editor/dist/index.css';
 
-const MOCK_DATA =
-  'Hello.\n\n * This is markdown.\n * It is fun\n * Love it or leave it.';
+import './index.scss';
+
 const Editor: React.FC = () => {
-  const mdParser = new MarkdownIt({
-    html: true,
-    linkify: true,
-    typographer: true,
-    highlight(str, lang) {
-      if (lang && hljs.getLanguage(lang)) {
-        try {
-          return hljs.highlight(lang, str).value;
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      return ''; // use external default escaping
-    },
-  });
-  const handleEditorChange = ({ html, text }: any) => {
-    console.log('handleEditorChange', html, text);
+  const [editorState, setEditorState] = useState(
+    BraftEditor.createEditorState('')
+  );
+  const [outputHtml, setOutputHtml] = useState('<p></p>');
+  const [editHeight, setEditHeight] = useState(0);
+
+  const handleResize = throttle(() => {
+    const controllerBarHeight = document
+      .getElementsByClassName('bf-controlbar')[0]
+      .getBoundingClientRect().height;
+    const initHeight =
+      document.documentElement.getBoundingClientRect().height -
+      controllerBarHeight -
+      120;
+    setEditHeight(initHeight);
+  }, 1000);
+
+  useEffect(() => {
+    const controllerBarHeight = document
+      .getElementsByClassName('bf-controlbar')[0]
+      .getBoundingClientRect().height;
+    const initHeight =
+      document.documentElement.getBoundingClientRect().height -
+      controllerBarHeight -
+      120;
+    setEditHeight(initHeight);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [handleResize]);
+
+  const handleChange = (newEditorState: any) => {
+    setEditorState(newEditorState);
+    setOutputHtml(editorState.toHTML());
   };
-  function renderHTML(text: string) {
-    // 模拟异步渲染Markdown
-    return new Promise<string>(resolve => {
-      setTimeout(() => {
-        resolve(mdParser.render(text));
-      }, 0);
-    });
-  }
+
   return (
-    <div className="editor-wrapper">
-      <div className="header">
-        <Input placeholder="文章标题" className="title-input" />
+    <div>
+      <div className="editor-wrapper">
+        <div className="header">
+          <Input placeholder="文章标题" className="title-input" />
+        </div>
+        <BraftEditor
+          value={editorState}
+          onChange={handleChange}
+          contentClassName="editor-style"
+          contentStyle={{ height: editHeight }}
+        />
       </div>
-      <MdEditor
-        name="editor"
-        value={MOCK_DATA}
-        renderHTML={renderHTML}
-        onChange={handleEditorChange}
-        config={{
-          view: {
-            menu: true,
-            md: true,
-            html: true,
-          },
-          imageUrl: 'https://octodex.github.com/images/minion.png',
-        }}
-        style={{ height: 'calc(100vh - 100px)' }}
-      />
       <div className="footer">
         <Button className="btn">放弃</Button>
-        <Button type="primary" className="btn">
+        <Button
+          type="primary"
+          className="btn"
+          onClick={() => {
+            console.log(outputHtml);
+          }}
+        >
           保存
         </Button>
       </div>

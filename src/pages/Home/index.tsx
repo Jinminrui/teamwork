@@ -38,7 +38,7 @@ import Dashboard from 'pages/Dashboard';
 import PersonalInfo from 'pages/Persenal/Info';
 import PersonalSetting from 'pages/Persenal/Settings';
 import TeamInfo from 'pages/Team/TeamInfo';
-
+import Docs from 'pages/Team/docs';
 import { logout, update } from 'api/user';
 import { Store } from 'types';
 import { setScreenWidth } from 'store/app/app.action';
@@ -46,6 +46,7 @@ import './index.scss';
 import { connectWebsocket } from 'store/message/message.action';
 import { GET_REVEIVED_MESSAGE_LIST_SAGE } from 'store/message/actionTypes';
 import InviteModal from 'components/InviteModal';
+
 import Logo from './logo.svg';
 import MessageOverlay from './components/MessageOverlay';
 
@@ -74,13 +75,18 @@ const Home: React.FC<Props> = (props: Props) => {
     window.document.documentElement.getBoundingClientRect().width
   );
 
-  function handleResize() {
+  const handleResize = throttle(() => {
     setClientWidth(
       window.document.documentElement.getBoundingClientRect().width
     );
-  }
+  }, 1000);
 
-  window.onresize = throttle(handleResize, 2000);
+  useEffect(() => {
+    document.addEventListener('resize', handleResize);
+    return () => {
+      document.removeEventListener('resize', handleResize);
+    };
+  }, [handleResize]);
 
   useEffect(() => {
     dispatch(setScreenWidth(clientWidth));
@@ -270,7 +276,7 @@ const Home: React.FC<Props> = (props: Props) => {
               <TeamOutlined />
               <span>基础信息</span>
             </Menu.Item>
-            <Menu.Item key="team-doc" disabled={!userInfo.team}>
+            <Menu.Item key="team-docs" disabled={!userInfo.team}>
               <FolderOutlined />
               <span>团队文档</span>
             </Menu.Item>
@@ -312,11 +318,7 @@ const Home: React.FC<Props> = (props: Props) => {
           )}
           <div className="right-wrapper">
             <Dropdown
-              overlay={
-                <MessageOverlay
-                  list={messageInfo.list}
-                />
-              }
+              overlay={<MessageOverlay list={messageInfo.list} />}
               overlayClassName="message-overlay-container"
               placement="bottomRight"
               trigger={['click']}
@@ -402,6 +404,12 @@ const Home: React.FC<Props> = (props: Props) => {
               path="/home/team-info"
               key="/home/team-info"
               component={TeamInfo}
+            />
+            <Route
+              exact
+              path="/home/team-docs"
+              key="/home/team-docs"
+              component={Docs}
             />
           </Switch>
         </Content>

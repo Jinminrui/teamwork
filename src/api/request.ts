@@ -6,7 +6,7 @@ import { removeCookies } from 'utils';
 const env = process.env.NODE_ENV;
 let HOST = '';
 if (env === 'development') {
-  HOST = 'http://localhost:8081';
+  HOST = 'http://localhost:8040';
 } else if (env === 'production') {
   HOST = 'http://47.100.221.250:8081';
 }

@@ -85,6 +85,11 @@ const RouteConfig: Array<RouteItem> = [
     component: HomePage,
     auth: true,
   },
+  {
+    path: '/home/team-docs',
+    component: HomePage,
+    auth: true,
+  },
 ];
 
 export default RouteConfig;

@@ -6,17 +6,17 @@ export interface DeleteMessageParams {
 }
 
 export function getMessageListByReceiver(receiverId: string, pageSize: number, pageNum: number) {
-  return get('/getMessageListByReceiver', { receiverId, pageSize, pageNum });
+  return get('/user-center/getMessageListByReceiver', { receiverId, pageSize, pageNum });
 }
 
 export function deleteMessage(params: DeleteMessageParams) {
-  return post('/deleteMessage', params);
+  return post('/user-center/deleteMessage', params);
 }
 
 export function deleteOneMessage(id: string) {
-  return post(`/deleteOneMessage/${id}`);
+  return post(`/user-center/deleteOneMessage/${id}`);
 }
 
 export function readOneMessage(messageId: string) {
-  return post(`/readOneMessage/${messageId}`);
+  return post(`/user-center/readOneMessage/${messageId}`);
 }

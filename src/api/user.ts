@@ -12,27 +12,27 @@ interface GetVerifyCodeParams {
 }
 
 export function loginByAccount(params: LoginParams) {
-  return post('/users/loginByAccount', params);
+  return post('/user-center/users/loginByAccount', params);
 }
 
 export function loginByPhone(params: LoginParams) {
-  return post('/users/loginByPhone', params);
+  return post('/user-center/users/loginByPhone', params);
 }
 
 export function getUesrInfo(id: number | string) {
-  return get(`/users/${id}`);
+  return get(`/user-center/users/${id}`);
 }
 
 export function uploadAvatar(data: FormData) {
-  return upload('/oss/uploadAvatar', data);
+  return upload('/user-center/oss/uploadAvatar', data);
 }
 
 export function update(params: any) {
-  return post('/users/update', params);
+  return post('/user-center/users/update', params);
 }
 
 export function getVerifyCode(params: GetVerifyCodeParams) {
-  return post('/sms/verifyCode', params);
+  return post('/user-center/sms/verifyCode', params);
 }
 
 export function logout() {
@@ -41,5 +41,5 @@ export function logout() {
 }
 
 export function getAllUsersByTeam(teamId: string) {
-  return get('/users/getAllUsersByTeam', { teamId });
+  return get('/user-center/users/getAllUsersByTeam', { teamId });
 }

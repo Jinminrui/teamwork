@@ -27,21 +27,21 @@ interface InviteParams {
 }
 
 export function create(params: CreateParams) {
-  return post('/team/create', params);
+  return post('/user-center/team/create', params);
 }
 
 export function update(params: UpdateParams) {
-  return post('/team/update', params);
+  return post('/user-center/team/update', params);
 }
 
 export function deleteMember(params: DeleteParams) {
-  return post('/team/deleteMember', params);
+  return post('/user-center/team/deleteMember', params);
 }
 
 export function inviteMember(params: InviteParams) {
-  return post('/team/inviteMember', params);
+  return post('/user-center/team/inviteMember', params);
 }
 
 export function sureToJoinTeam(phone: string) {
-  return post(`/team/sureToJoin/${phone}`);
+  return post(`/user-center/team/sureToJoin/${phone}`);
 }
