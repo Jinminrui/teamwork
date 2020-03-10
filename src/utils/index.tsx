@@ -44,3 +44,15 @@ export function getMetionsNames(mentions: string) {
   match();
   return result;
 }
+
+export function getUrlParams(url: string) {
+  const temp = url.split('?')[1];
+  const params = temp.split('&');
+  const obj: Record<string, any> = {};
+  params.forEach(item => {
+    const key = item.split('=')[0];
+    const value = item.split('=')[1];
+    obj[key] = value;
+  });
+  return obj;
+}

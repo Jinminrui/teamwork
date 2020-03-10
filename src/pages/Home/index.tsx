@@ -39,6 +39,8 @@ import PersonalInfo from 'pages/Persenal/Info';
 import PersonalSetting from 'pages/Persenal/Settings';
 import TeamInfo from 'pages/Team/TeamInfo';
 import Docs from 'pages/Team/docs';
+import Editor from 'pages/Editor';
+
 import { logout, update } from 'api/user';
 import { Store } from 'types';
 import { setScreenWidth } from 'store/app/app.action';
@@ -47,6 +49,7 @@ import { connectWebsocket } from 'store/message/message.action';
 import { GET_REVEIVED_MESSAGE_LIST_SAGE } from 'store/message/actionTypes';
 import InviteModal from 'components/InviteModal';
 
+import DocDetail from 'pages/Team/docs/components/DocDetail';
 import Logo from './logo.svg';
 import MessageOverlay from './components/MessageOverlay';
 
@@ -68,6 +71,7 @@ const Home: React.FC<Props> = (props: Props) => {
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
 
   const userInfo = useSelector((store: Store) => store.user);
+  const team = useSelector((store: Store) => store.team);
   const messageInfo = useSelector((store: Store) => store.message);
   const dispatch = useDispatch();
 
@@ -110,10 +114,10 @@ const Home: React.FC<Props> = (props: Props) => {
   }, [dispatch, userInfo.pkId]);
 
   useEffect(() => {
-    if (userInfo.team) {
-      dispatch({ type: 'SET_MEMBER_LIST_SAGA', teamId: userInfo.team.pkId });
+    if (team.teamId) {
+      dispatch({ type: 'SET_MEMBER_LIST_SAGA', teamId: team.teamId });
     }
-  }, [userInfo.team, dispatch]);
+  }, [team.teamId, dispatch]);
 
   useEffect(() => {
     setCurrentKey(pathname.split('/')[2]);
@@ -211,9 +215,9 @@ const Home: React.FC<Props> = (props: Props) => {
         </Modal>
       )}
 
-      {userInfo.team && (
+      {team.teamId && (
         <InviteModal
-          teamId={userInfo.team?.pkId}
+          teamId={team.teamId}
           visible={inviteModalVisible}
           onOk={() => {
             setInviteModalVisible(false);
@@ -276,11 +280,11 @@ const Home: React.FC<Props> = (props: Props) => {
               <TeamOutlined />
               <span>基础信息</span>
             </Menu.Item>
-            <Menu.Item key="team-docs" disabled={!userInfo.team}>
+            <Menu.Item key="team-docs" disabled={!team.teamId}>
               <FolderOutlined />
               <span>团队文档</span>
             </Menu.Item>
-            <Menu.Item key="weekly-report" disabled={!userInfo.team}>
+            <Menu.Item key="weekly-report" disabled={!team.teamId}>
               <CalendarOutlined />
               <span>成员周报</span>
             </Menu.Item>
@@ -333,7 +337,7 @@ const Home: React.FC<Props> = (props: Props) => {
               <div
                 className="header-actions"
                 onClick={() => {
-                  if (userInfo.team) {
+                  if (team.teamId) {
                     setInviteModalVisible(true);
                   } else {
                     message.warn('您尚未拥有团队，请先创建或加入');
@@ -410,6 +414,17 @@ const Home: React.FC<Props> = (props: Props) => {
               path="/home/team-docs"
               key="/home/team-docs"
               component={Docs}
+            />
+            <Route
+              exact
+              path="/home/editor"
+              key="/home/editor"
+              component={Editor}
+            />
+            <Route
+              path="/home/doc-detail"
+              key="/home/doc-detail"
+              component={DocDetail}
             />
           </Switch>
         </Content>

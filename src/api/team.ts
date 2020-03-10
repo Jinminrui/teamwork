@@ -26,6 +26,10 @@ interface InviteParams {
   phones: Array<string>;
 }
 
+export function getTeamInfo(id: string) {
+  return get(`/user-center/team/${id}`);
+}
+
 export function create(params: CreateParams) {
   return post('/user-center/team/create', params);
 }

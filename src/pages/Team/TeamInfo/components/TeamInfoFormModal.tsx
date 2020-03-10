@@ -23,7 +23,7 @@ const TeamInfoFormModal: React.FC<FormModalProps> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const { team } = useSelector((store: Store) => store.user);
+  const { teamInfo } = useSelector((store: Store) => store.team);
 
   return (
     <Modal
@@ -44,9 +44,9 @@ const TeamInfoFormModal: React.FC<FormModalProps> = ({
         layout="vertical"
         name="create_team_form"
         initialValues={
-          team && {
-            name: team.name,
-            description: team.description,
+          teamInfo && {
+            name: teamInfo.name,
+            description: teamInfo.description,
           }
         }
       >

@@ -1,28 +1,18 @@
 import actionTypes from './actionTypes';
 
-export interface TeamInfo {
-  pkId: string;
-  name: string;
-  description: string;
-  creatorId: string;
-  createTime: string;
-  updateTime: string;
-}
-
 export interface UserState {
   [index: string]: any;
-  pkId?: string;
+  pkId: string;
   username: string;
   email?: string;
   phone?: string;
   gender?: number;
   avatar?: string;
   role?: number;
-  team?: TeamInfo;
+  teams: Array<string>;
   position?: string;
   description?: string;
   createTime?: string;
-  hasPassword?: boolean;
 }
 
 const defaultState: UserState = {
@@ -33,16 +23,15 @@ const defaultState: UserState = {
   gender: 0,
   avatar: '',
   role: 1,
-  team: undefined,
+  teams: [],
   position: '',
   description: '',
-  hasPassword: false,
 };
 
 export default (state = defaultState, action: any) => {
   switch (action.type) {
     case actionTypes.SET_USER_INFO:
-      return { ...defaultState, ...action.data };
+      return { ...state, ...action.data };
     default:
       return state;
   }

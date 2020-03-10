@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IdcardOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { Row, Col, Card, Avatar, Divider, List } from 'antd';
 import './index.scss';
@@ -7,25 +7,42 @@ import { Store } from 'types';
 import ArticleList from 'components/ArticleList';
 // import { getArticleList } from 'api/article';
 import ProjectList from 'components/ProjectList';
+import { getDocList, GetDocListParams } from 'api/doc';
 // import { getProjectList } from 'api/project';
 
 const PersonalInfo: React.FC = () => {
   const [tabKey, setTabKey] = useState('article');
-  const [articleNum] = useState(0);
-  const [articleLsit] = useState([]);
+  const [articleTotal, setArticleTotal] = useState(0);
+  const [articleLsit, setArticleList] = useState([]);
   const [projectList] = useState([]);
   const [projectNum] = useState(0);
   // const [pageSize] = useState(8);
   // const [pageNum] = useState(1);
   const userInfo = useSelector((store: Store) => store.user);
+  const { teamId } = useSelector((store: Store) => store.team);
+  const [articlePageNum, setArticlePageNum] = useState<any>(1);
+  const [articleLoading, setArticleLoading] = useState(false);
   // const userId = userInfo.id;
 
-  // useEffect(() => {
-  //   getArticleList({ userId, pageNum, pageSize }).then(res => {
-  //     setArticleList(res.data.list);
-  //     setArticleNum(res.data.total);
-  //   });
-  // }, [userId, pageNum, pageSize]);
+  const pageSize = 5;
+
+  useEffect(() => {
+    if (teamId) {
+      const params: GetDocListParams = {
+        authorIds: [userInfo.pkId],
+        types: [],
+        pageNum: articlePageNum,
+        pageSize,
+        teamId,
+      };
+      setArticleLoading(true);
+      getDocList(params).then(res => {
+        setArticleList(res.data.list);
+        setArticleTotal(res.data.total);
+        setArticleLoading(false);
+      });
+    }
+  }, [teamId, articlePageNum, userInfo.pkId]);
 
   // useEffect(() => {
   //   getProjectList().then(res => {
@@ -37,7 +54,7 @@ const PersonalInfo: React.FC = () => {
   const tabList = [
     {
       key: 'article',
-      tab: `文章（${articleNum}）`,
+      tab: `文章（${articleTotal}）`,
     },
     {
       key: 'project',
@@ -45,8 +62,20 @@ const PersonalInfo: React.FC = () => {
     },
   ];
 
+  const handleArticlePageChange = (page: any) => {
+    setArticlePageNum(page);
+  };
+
   const contentList: any = {
-    article: <ArticleList articleList={articleLsit} />,
+    article: (
+      <ArticleList
+        articleList={articleLsit}
+        total={articleTotal}
+        loading={articleLoading}
+        pageSize={pageSize}
+        onPageChange={handleArticlePageChange}
+      />
+    ),
     project: <ProjectList projectList={projectList} />,
   };
 

@@ -13,11 +13,6 @@ const HomePage = Loadable({
   loading: Loading,
 });
 
-const EditorPage = Loadable({
-  loader: () => import('pages/Editor'),
-  loading: Loading,
-});
-
 export interface RouteItem {
   path: string;
   component?: any;
@@ -47,8 +42,9 @@ const RouteConfig: Array<RouteItem> = [
     component: ErrorPage,
   },
   {
-    path: '/editor',
-    component: EditorPage,
+    path: '/home/editor',
+    component: HomePage,
+    auth: true,
   },
   {
     path: '/home/not-found',
@@ -87,6 +83,11 @@ const RouteConfig: Array<RouteItem> = [
   },
   {
     path: '/home/team-docs',
+    component: HomePage,
+    auth: true,
+  },
+  {
+    path: '/home/doc-detail',
     component: HomePage,
     auth: true,
   },

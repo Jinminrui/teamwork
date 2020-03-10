@@ -1,3 +1,53 @@
 .teamDocs-wrapper {
   margin: 24px;
+  .search-docs-form-row {
+    display: flex;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    width: 100%;
+    border-bottom: 1px dashed #f0f0f0;
+    .form-row-label {
+      flex: 0 0 auto;
+      margin-right: 24px;
+      color: rgba(0,0,0,.85);
+      font-size: 14px;
+      text-align: right;
+      span {
+        display: inline-block;
+        height: 32px;
+        line-height: 32px;
+        &::after {
+          content: "\FF1A";
+        }
+      }
+    }
+    .form-row-content {
+      flex: 1 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-height: 32px;
+      flex-wrap: wrap;
+      .ant-tag {
+        margin-right: 24px;
+        padding: 0 8px;
+        font-size: 14px;
+      }
+    }
+  }
 }
+
+.teamDocs-pageHeader {
+  background: #ffffff;
+  .header-content {
+    display: flex;
+    width: 100%;
+    padding: 20px 0;
+    .header-detail-wrap {
+      width: 100%;
+      text-align: center;
+      overflow: auto;
+    }
+  }
+}
+

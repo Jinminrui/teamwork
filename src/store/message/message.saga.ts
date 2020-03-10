@@ -48,7 +48,7 @@ async function init() {
     try {
       data = JSON.parse(msg.data);
       console.log(data);
-      const senderName = data.senderId;
+      const { senderName } = data;
       store.dispatch({
         type: GET_REVEIVED_MESSAGE_LIST_SAGE,
         data: {

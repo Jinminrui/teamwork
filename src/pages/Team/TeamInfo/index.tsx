@@ -15,20 +15,19 @@ import MemberList from './components/MemberList';
 const { Paragraph } = Typography;
 
 const TeamInfo: React.FC<RouteComponentProps> = () => {
-  const { team, role, pkId } = useSelector((store: Store) => store.user);
+  const { role, pkId } = useSelector((store: Store) => store.user);
+  const { teamId, teamInfo } = useSelector((store: Store) => store.team);
   const [visible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
 
-  const teamId = team?.pkId;
-
   function onUpdate(value: any) {
-    if (team?.pkId) {
-      update({ ...value, pkId: team.pkId }).then((res: any) => {
+    if (teamId) {
+      update({ ...value, pkId: teamId }).then((res: any) => {
         if (res.code === 200) {
           setVisible(false);
           message.success(res.desc);
-          dispatch({ type: 'SET_USER_INFO_SAGA' });
+          dispatch({ type: 'SET_TEAM_INFO_SAGA', teamId });
         }
       });
     }
@@ -38,17 +37,16 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
     setVisible(false);
   }
 
-  if (!team) {
+  if (!teamInfo) {
     return <NoTeam />;
   }
   return (
-    <div className="teamInfo-wrapper">
-      {!team && <NoTeam />}
+    <div>
       <PageHeader
         className="teamInfo-header"
-        title={team.name}
+        title={teamInfo.name}
         tags={
-          <Tag color="blue">{`已成立${getTimeGap(team.createTime)}天`}</Tag>
+          <Tag color="blue">{`已成立${getTimeGap(teamInfo.createTime)}天`}</Tag>
         }
         extra={[
           <Button
@@ -58,6 +56,7 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
               setVisible(true);
             }}
             disabled={role !== 1}
+            ghost
           >
             修改信息
           </Button>,
@@ -66,23 +65,26 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
           </Button>,
         ]}
       >
-        <Paragraph>{team.description}</Paragraph>
+        <Paragraph>{teamInfo.description}</Paragraph>
       </PageHeader>
-      <Card
-        title="成员列表"
-        style={{ padding: 0, marginTop: 24 }}
-      >
-        {teamId && pkId && (
-          <MemberList teamId={teamId} myId={pkId} isTeamCreator={role === 1} />
-        )}
-      </Card>
+      <div className="teamInfo-wrapper">
+        <Card title="成员列表" style={{ padding: 0, marginTop: 24 }}>
+          {teamId && pkId && (
+            <MemberList
+              teamId={teamId}
+              myId={pkId}
+              isTeamCreator={role === 1}
+            />
+          )}
+        </Card>
 
-      <TeamInfoFormModal
-        title="修改团队信息"
-        visible={visible}
-        onOk={onUpdate}
-        onCancel={onCancel}
-      />
+        <TeamInfoFormModal
+          title="修改团队信息"
+          visible={visible}
+          onOk={onUpdate}
+          onCancel={onCancel}
+        />
+      </div>
     </div>
   );
 };

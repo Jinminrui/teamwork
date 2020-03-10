@@ -41,7 +41,7 @@ const Base = (props: any) => {
   ]);
 
   useEffect(() => {
-    const userInfo: UserState = {
+    const userInfo: any = {
       username,
       position,
       email,
