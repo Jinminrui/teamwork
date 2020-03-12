@@ -74,13 +74,15 @@ const PhoneLogin: React.FC<RouteComponentProps> = (
       <div className="form-wrapper">
         <p className="app-name"> Let&apos;s Work Together</p>
         <p className="title">验证手机以开始</p>
-        <Input
-          placeholder="请输入手机号"
-          prefix={<UserOutlined />}
-          className="account-input"
-          onChange={handlePhoneChange}
-          value={phone}
-        />
+        <div className="input-wrapper">
+          <Input
+            placeholder="请输入手机号"
+            prefix={<UserOutlined />}
+            className="account-input"
+            onChange={handlePhoneChange}
+            value={phone}
+          />
+        </div>
         <div className="verifyCode">
           <Input
             placeholder="验证码"

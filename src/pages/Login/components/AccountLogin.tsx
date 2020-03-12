@@ -47,20 +47,25 @@ const AccountLogin: React.FC<RouteComponentProps> = (
       <div className="form-wrapper">
         <p className="app-name">Team-Work Platform</p>
         <p className="title">登录以开始使用</p>
-        <Input
-          placeholder="手机号或者邮箱"
-          prefix={<UserOutlined />}
-          className="account-input"
-          onChange={handleAccountChange}
-          value={account}
-        />
-        <Input.Password
-          placeholder="密码"
-          className="pwd-input"
-          prefix={<LockOutlined />}
-          value={password}
-          onChange={handlePasswordChange}
-        />
+        <div className="input-wrapper">
+          <Input
+            placeholder="手机号或者邮箱"
+            prefix={<UserOutlined />}
+            className="account-input"
+            onChange={handleAccountChange}
+            value={account}
+          />
+        </div>
+        <div className="input-wrapper">
+          <Input.Password
+            placeholder="密码"
+            className="pwd-input"
+            prefix={<LockOutlined />}
+            value={password}
+            onChange={handlePasswordChange}
+          />
+        </div>
+
         <Button
           type="primary"
           className="btn-start"

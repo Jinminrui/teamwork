@@ -47,16 +47,20 @@
         color: #000000;
         font-size: 24px;
       }
-      .account-input {
-        width: 360px;
-        height: 40px;
-        margin-top: 22px;
+      .input-wrapper {
+        display: block;
+        .account-input {
+          margin-top: 22px;
+          width: 360px;
+          height: 40px;
+        }
+        .pwd-input {
+          width: 360px;
+          height: 40px;
+          margin-top: 32px;
+        }
       }
-      .pwd-input {
-        width: 360px;
-        height: 40px;
-        margin-top: 32px;
-      }
+      
       .verifyCode {
         width: 360px;
         height: 40px;
