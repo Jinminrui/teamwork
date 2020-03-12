@@ -8,7 +8,7 @@ let HOST = '';
 if (env === 'development') {
   HOST = 'http://localhost:8040';
 } else if (env === 'production') {
-  HOST = 'http://47.100.221.250:8040';
+  HOST = 'http://localhost:8040';
 }
 
 const baseConfig: AxiosRequestConfig = {
