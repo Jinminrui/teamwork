@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './index.scss';
-import { PageHeader, Input, Button, Card, Form, Select, Modal } from 'antd';
+import { PageHeader, Input, Button, Card, Form, Select } from 'antd';
 import { FileAddOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
@@ -8,20 +8,22 @@ import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { RouteComponentProps } from 'react-router-dom';
 import { GetDocListParams, getDocList } from 'api/doc';
 import ArticleList from 'components/ArticleList';
+import EditorModal from 'components/EditorModal';
 
 const { Option } = Select;
 
-const docsTag = ['全部', '技术分享', '项目文档', '团队规范', '会议记录'];
+export const docsTag = ['全部', '技术分享', '项目文档', '团队规范', '会议记录'];
 
 const Docs = (props: RouteComponentProps) => {
   const [tags, setTags] = useState<Array<string>>([]);
   const [authors, setAuthors] = useState<Array<string>>([]);
-  const [newDocModalVisibel, setNewDocModalVisible] = useState(false);
   const [list, setList] = useState([]);
   const [total, setTotal] = useState<number>(0);
   const [pageNum, setpageNum] = useState<any>(1);
   const [loading, setLoading] = useState(false);
+  const [editorModalVisible, setEditorModalVisible] = useState(false);
   const { memberList, teamId } = useSelector((store: Store) => store.team);
+
   const Content = () => (
     <div className="header-content">
       <span className="header-detail-wrap">
@@ -30,7 +32,20 @@ const Docs = (props: RouteComponentProps) => {
           enterButton="搜索"
           size="large"
           style={{ maxWidth: '552px', width: '100%' }}
-          onSearch={value => console.log(value)}
+          onSearch={value => {
+            let title;
+            if (value === '') {
+              title = undefined;
+            } else {
+              title = value;
+            }
+            setLoading(true);
+            getDocList({ title, teamId }).then(res => {
+              setList(res.data.list);
+              setTotal(res.data.total);
+              setLoading(false);
+            });
+          }}
         />
       </span>
     </div>
@@ -78,52 +93,14 @@ const Docs = (props: RouteComponentProps) => {
     }
   }, [tags, authors, teamId, pageNum]);
 
-  const [newDoc] = Form.useForm();
-  const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 16, offset: 1 },
-  };
-
   return (
     <div>
-      <Modal
-        title="新建文档"
-        visible={newDocModalVisibel}
-        okText="创建"
-        cancelText="取消"
-        onCancel={() => {
-          newDoc.resetFields();
-          setNewDocModalVisible(false);
+      <EditorModal
+        visible={editorModalVisible}
+        setVisibleFalse={() => {
+          setEditorModalVisible(false);
         }}
-        onOk={() => {
-          newDoc.validateFields().then(value => {
-            newDoc.resetFields();
-            localStorage.setItem('editorInfo', JSON.stringify(value));
-            props.history.push({ pathname: '/home/editor' });
-          });
-        }}
-      >
-        <Form name="newDoc" form={newDoc} {...layout}>
-          <Form.Item
-            label="文档标题"
-            name="title"
-            rules={[{ required: true, message: '请输入文档标题' }]}
-          >
-            <Input placeholder="请输入文档标题" />
-          </Form.Item>
-          <Form.Item
-            label="文档类型"
-            name="type"
-            rules={[{ required: true, message: '请选择文档类型' }]}
-          >
-            <Select placeholder="请选择文档类型">
-              {docsTag.slice(1).map(item => (
-                <Option key={item} value={item}>{item}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
+      />
       <PageHeader
         className="teamDocs-pageHeader"
         title="团队文档"
@@ -134,7 +111,7 @@ const Docs = (props: RouteComponentProps) => {
             icon={<FileAddOutlined />}
             type="link"
             onClick={() => {
-              setNewDocModalVisible(true);
+              setEditorModalVisible(true);
             }}
           >
             新建文档

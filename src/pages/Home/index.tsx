@@ -39,7 +39,6 @@ import PersonalInfo from 'pages/Persenal/Info';
 import PersonalSetting from 'pages/Persenal/Settings';
 import TeamInfo from 'pages/Team/TeamInfo';
 import Docs from 'pages/Team/docs';
-import Editor from 'pages/Editor';
 
 import { logout, update } from 'api/user';
 import { Store } from 'types';
@@ -75,26 +74,10 @@ const Home: React.FC<Props> = (props: Props) => {
   const messageInfo = useSelector((store: Store) => store.message);
   const dispatch = useDispatch();
 
-  const [clientWidth, setClientWidth] = useState(
-    window.document.documentElement.getBoundingClientRect().width
-  );
-
-  const handleResize = throttle(() => {
-    setClientWidth(
-      window.document.documentElement.getBoundingClientRect().width
-    );
+  window.onresize = throttle(() => {
+    dispatch(setScreenWidth(window.document.documentElement.getBoundingClientRect().width));
   }, 1000);
 
-  useEffect(() => {
-    document.addEventListener('resize', handleResize);
-    return () => {
-      document.removeEventListener('resize', handleResize);
-    };
-  }, [handleResize]);
-
-  useEffect(() => {
-    dispatch(setScreenWidth(clientWidth));
-  }, [clientWidth, dispatch]);
 
   useEffect(() => {
     dispatch({ type: 'SET_USER_INFO_SAGA' });
@@ -414,12 +397,6 @@ const Home: React.FC<Props> = (props: Props) => {
               path="/home/team-docs"
               key="/home/team-docs"
               component={Docs}
-            />
-            <Route
-              exact
-              path="/home/editor"
-              key="/home/editor"
-              component={Editor}
             />
             <Route
               path="/home/doc-detail"

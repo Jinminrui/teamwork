@@ -3,11 +3,13 @@ import { RouteComponentProps } from 'react-router-dom';
 import { getDetail, deleteDoc } from 'api/doc';
 import { PageHeader, Tag, Button, Popconfirm, message } from 'antd';
 import './DocDetail.scss';
+import EditorModal from 'components/EditorModal';
 
 const DocDetail = (props: RouteComponentProps) => {
   const id = window.location.hash.split('?')[1].split('=')[1];
   const userId = localStorage.getItem('userId');
   const [detail, setDetail] = useState<any>({});
+  const [editorModalVisible, setEditorModalVisible] = useState(false);
 
   useEffect(() => {
     getDetail(id).then(res => {
@@ -27,6 +29,12 @@ const DocDetail = (props: RouteComponentProps) => {
 
   return (
     <div>
+      <EditorModal
+        visible={editorModalVisible}
+        setVisibleFalse={() => {
+          setEditorModalVisible(false);
+        }}
+      />
       <PageHeader
         title={detail.title}
         onBack={() => window.history.back()}
@@ -40,7 +48,6 @@ const DocDetail = (props: RouteComponentProps) => {
                 type="link"
                 key="1"
                 onClick={() => {
-                  props.history.push(`/home/editor?id=${detail.pkId}`);
                   const editorInfo = {
                     content: detail.content,
                     pkId: detail.pkId,
@@ -51,6 +58,7 @@ const DocDetail = (props: RouteComponentProps) => {
                     'editorInfo',
                     JSON.stringify(editorInfo)
                   );
+                  setEditorModalVisible(true);
                 }}
               >
                   编辑

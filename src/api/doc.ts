@@ -10,17 +10,20 @@ export interface AddDocParams {
 }
 
 export interface GetDocListParams {
-  authorIds: Array<string>;
-  types: Array<string>;
-  teamId: string;
+  authorIds?: Array<string>;
+  types?: Array<string>;
+  teamId?: string;
   projectId?: string;
-  pageSize: number;
-  pageNum: number;
+  pageSize?: number;
+  pageNum?: number;
+  title?: string;
 }
 
 export interface UpdateDocParams {
   pkId: string;
+  title: string;
   content: string;
+  type: string;
 }
 
 export function addDoc(params: AddDocParams) {

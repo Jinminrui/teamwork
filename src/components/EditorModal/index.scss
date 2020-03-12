@@ -1,0 +1,36 @@
+.editor-modal-main-wrapper {
+  width: 100%;
+  .editor-container {
+    margin: 0 auto;
+    max-width: 800px;
+    .title-input-wrapper {
+      .editor-input {
+        border: none;
+        font-size: 18px;
+        height: 40px;
+        line-height: 26px;
+        background-color: #fff;
+        padding: 8px 15px;
+        color: #262626;
+        box-shadow: none;
+        outline: none;
+        max-width: 800px;
+        width: 100%;
+      }
+    }
+    .editor-area {
+      background: #ffffff;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.model-wrapper{
+  height: 100vh;
+}
+
+.ant-modal {
+  padding-bottom: 0;
+}

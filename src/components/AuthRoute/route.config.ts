@@ -42,11 +42,6 @@ const RouteConfig: Array<RouteItem> = [
     component: ErrorPage,
   },
   {
-    path: '/home/editor',
-    component: HomePage,
-    auth: true,
-  },
-  {
     path: '/home/not-found',
     component: HomePage,
     auth: true,

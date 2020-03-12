@@ -10,6 +10,7 @@ function* setUserInfoSaga() {
     yield put(setUserInfo(res.data));
     if (res.data.teams.length !== 0) {
       yield put(setTeamId(res.data.teams[0]));
+      localStorage.setItem('teamId', res.data.teams[0]);
       yield put({ type: 'SET_TEAM_INFO_SAGA', teamId: res.data.teams[0] });
     }
   }
