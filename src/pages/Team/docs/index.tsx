@@ -101,26 +101,29 @@ const Docs = (props: RouteComponentProps) => {
           setEditorModalVisible(false);
         }}
       />
-      <PageHeader
-        className="teamDocs-pageHeader"
-        title="团队文档"
-        subTitle="建立属于团队的知识库"
-        extra={[
-          <Button
-            key="1"
-            icon={<FileAddOutlined />}
-            type="link"
-            onClick={() => {
-              setEditorModalVisible(true);
-            }}
-          >
+      <div className="teamDocs-pageHeader">
+        <PageHeader
+          className="content"
+          title="团队文档"
+          subTitle="建立属于团队的知识库"
+          extra={[
+            <Button
+              key="1"
+              icon={<FileAddOutlined />}
+              type="link"
+              onClick={() => {
+                setEditorModalVisible(true);
+              }}
+            >
             新建文档
-          </Button>,
-        ]}
-      >
-        <Content />
-      </PageHeader>
-      <div className="teamDocs-wrapper">
+            </Button>,
+          ]}
+        >
+          <Content />
+        </PageHeader>
+      </div>
+
+      <div className="teamDocs-wrapper content" style={{ marginTop: 24, marginBottom: 24 }}>
         <Card>
           <Form layout="inline">
             <div className="search-docs-form-row">

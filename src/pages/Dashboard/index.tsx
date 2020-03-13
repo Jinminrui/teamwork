@@ -31,52 +31,54 @@ const Dashbord: React.FC = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <div className="dashboard-header">
-        <div className="left-wrapper">
-          <div className="avatar">
-            <Avatar src={userInfo.avatar} size={72} />
-          </div>
+      <div className="header-wrapper">
+        <div className="dashboard-header content">
+          <div className="left-wrapper">
+            <div className="avatar">
+              <Avatar src={userInfo.avatar} size={72} />
+            </div>
 
-          <div className="text-wrapper">
-            <div className="hello-title">
-              {getGreetingByTime(userInfo.username || userInfo.phone || '')}
+            <div className="text-wrapper">
+              <div className="hello-title">
+                {getGreetingByTime(userInfo.username || userInfo.phone || '')}
+              </div>
+              <div className="desc">
+                <IdcardOutlined style={{ marginRight: 8, fontSize: 20 }} />
+                {userInfo.position}
+              </div>
             </div>
-            <div className="desc">
-              <IdcardOutlined style={{ marginRight: 8, fontSize: 20 }} />
-              {userInfo.position}
+          </div>
+          <div className="right-wrapper">
+            <div className="state-item">
+              <p className="title">加入时间（天）</p>
+              <p className="data">
+                {userInfo.createTime ? getTimeGap(userInfo.createTime) : 0}
+              </p>
             </div>
-          </div>
-        </div>
-        <div className="right-wrapper">
-          <div className="state-item">
-            <p className="title">加入时间（天）</p>
-            <p className="data">
-              {userInfo.createTime ? getTimeGap(userInfo.createTime) : 0}
-            </p>
-          </div>
-          <div className="state-item">
-            <p className="title">项目数</p>
-            <p className="data">32</p>
-          </div>
-          <div className="state-item">
-            <p className="title">团队排名</p>
-            <p className="data">
+            <div className="state-item">
+              <p className="title">项目数</p>
+              <p className="data">32</p>
+            </div>
+            <div className="state-item">
+              <p className="title">团队排名</p>
+              <p className="data">
               8
-              <span
-                style={{
-                  color: 'rgba(0, 0, 0, 0.45)',
-                  fontSize: '24px',
-                  fontWeight: 300,
-                  padding: '0 2px',
-                }}
-              >
+                <span
+                  style={{
+                    color: 'rgba(0, 0, 0, 0.45)',
+                    fontSize: '24px',
+                    fontWeight: 300,
+                    padding: '0 2px',
+                  }}
+                >
                 / 24
-              </span>
-            </p>
+                </span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      <div className="dashboard-content">
+      <div className="dashboard-content content" style={{ marginTop: 24 }}>
         <div className="content-main">
           <Row gutter={24}>
             <Col

@@ -86,6 +86,11 @@ const RouteConfig: Array<RouteItem> = [
     component: HomePage,
     auth: true,
   },
+  {
+    path: '/home/project-center',
+    component: HomePage,
+    auth: true,
+  },
 ];
 
 export default RouteConfig;

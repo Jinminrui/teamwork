@@ -1,5 +1,4 @@
 .teamDocs-wrapper {
-  margin: 24px;
   .search-docs-form-row {
     display: flex;
     margin-bottom: 16px;
@@ -39,6 +38,8 @@
 
 .teamDocs-pageHeader {
   background: #ffffff;
+  margin-left: -24px;
+  margin-right: -24px;
   .header-content {
     display: flex;
     width: 100%;

@@ -1,12 +1,12 @@
 @import 'static/styles/variable.scss';
 .personal-setting-wrapper {
-  margin: 24px;
   .main-container {
     display: flex;
     width: 100%;
     height: 100%;
     padding-top: 16px;
     padding-bottom: 16px;
+    margin-top: 24px;
     overflow: auto;
     background-color: #fff;
     @media screen and (max-width: 769px) {

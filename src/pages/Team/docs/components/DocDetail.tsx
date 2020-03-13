@@ -35,13 +35,14 @@ const DocDetail = (props: RouteComponentProps) => {
           setEditorModalVisible(false);
         }}
       />
-      <PageHeader
-        title={detail.title}
-        onBack={() => window.history.back()}
-        subTitle={<Tag>{detail.type}</Tag>}
-        style={{ background: '#ffffff' }}
-        avatar={{ src: detail.authorInfo?.avatar }}
-        extra={
+      <div className="docDetail-header">
+        <PageHeader
+          title={detail.title}
+          className="content"
+          onBack={() => window.history.back()}
+          subTitle={<Tag>{detail.type}</Tag>}
+          avatar={{ src: detail.authorInfo?.avatar }}
+          extra={
           detail.authorId === userId
             ? [
               <Button
@@ -81,12 +82,13 @@ const DocDetail = (props: RouteComponentProps) => {
             ]
             : undefined
         }
-      >
-        <div style={{ textAlign: 'right', color: 'rgba(0,0,0,.25)' }}>
-          <span>{detail.authorInfo?.username}</span>
-          <span style={{ marginLeft: 4 }}>发布于 {detail.updateTime}</span>
-        </div>
-      </PageHeader>
+        >
+          <div style={{ textAlign: 'right', color: 'rgba(0,0,0,.25)' }}>
+            <span>{detail.authorInfo?.username}</span>
+            <span style={{ marginLeft: 4 }}>发布于 {detail.updateTime}</span>
+          </div>
+        </PageHeader>
+      </div>
       <div className="detail-content" />
     </div>
   );

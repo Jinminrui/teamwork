@@ -83,7 +83,7 @@ const PersonalInfo: React.FC = () => {
     setTabKey(key);
   }
   return (
-    <div className="personalInfo-wrapper">
+    <div className="personalInfo-wrapper content" style={{ marginTop: 24 }}>
       <Row gutter={24}>
         <Col md={24} lg={8} style={{ padding: '0 12px', marginBottom: '24px' }}>
           <Card>

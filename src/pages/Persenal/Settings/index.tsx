@@ -35,7 +35,7 @@ const PersonalSetting: React.FC<RouteComponentProps> = props => {
   }
 
   return (
-    <div className="personal-setting-wrapper">
+    <div className="personal-setting-wrapper content">
       <div className="main-container">
         <Menu
           defaultSelectedKeys={['base']}

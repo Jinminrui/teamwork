@@ -2,20 +2,16 @@ import React, { useState, ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { throttle } from 'lodash';
 import {
-  CalendarOutlined,
   DashboardOutlined,
-  DeleteOutlined,
   FolderOutlined,
-  LineChartOutlined,
   ProjectOutlined,
   SettingOutlined,
   StarOutlined,
   TeamOutlined,
   UserOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
   LogoutOutlined,
   UserAddOutlined,
+  ScheduleOutlined,
 } from '@ant-design/icons';
 
 import {
@@ -49,11 +45,12 @@ import { GET_REVEIVED_MESSAGE_LIST_SAGE } from 'store/message/actionTypes';
 import InviteModal from 'components/InviteModal';
 
 import DocDetail from 'pages/Team/docs/components/DocDetail';
+import Project from 'pages/Project';
 import Logo from './logo.svg';
 import MessageOverlay from './components/MessageOverlay';
 
 const { Header, Sider, Content } = Layout;
-const { Item, ItemGroup } = Menu;
+const { Item } = Menu;
 
 interface Props extends RouteComponentProps {
   children?: ReactNode;
@@ -61,10 +58,7 @@ interface Props extends RouteComponentProps {
 
 const Home: React.FC<Props> = (props: Props) => {
   const { pathname } = props.location;
-  const [collapsed, setCollapsed] = useState(false);
   const [userMenuVisiable, setUserMenuVisiable] = useState(false);
-  const [paddingLeft, setPaddingLeft] = useState(256);
-  const [headerWidth, setHeaderWidth] = useState('calc(100% - 256px)');
   const [currentKey, setCurrentKey] = useState(pathname.split('/')[2]);
   const [updateInfoFormVisible, setUpdateInfoFormVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
@@ -75,9 +69,12 @@ const Home: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
 
   window.onresize = throttle(() => {
-    dispatch(setScreenWidth(window.document.documentElement.getBoundingClientRect().width));
+    dispatch(
+      setScreenWidth(
+        window.document.documentElement.getBoundingClientRect().width
+      )
+    );
   }, 1000);
-
 
   useEffect(() => {
     dispatch({ type: 'SET_USER_INFO_SAGA' });
@@ -106,11 +103,6 @@ const Home: React.FC<Props> = (props: Props) => {
     setCurrentKey(pathname.split('/')[2]);
   }, [pathname]);
 
-  function toggle(): void {
-    setCollapsed(!collapsed);
-    setPaddingLeft(collapsed ? 256 : 80);
-    setHeaderWidth(collapsed ? 'calc(100% - 256px)' : 'calc(100% - 80px)');
-  }
 
   function handleMenuClick(): void {
     setUserMenuVisiable(false);
@@ -162,6 +154,68 @@ const Home: React.FC<Props> = (props: Props) => {
     </Menu>
   );
 
+  const Nav = () => (
+    <Menu
+      theme="light"
+      mode="horizontal"
+      selectedKeys={[currentKey]}
+      onClick={handleMenuItemClick}
+    >
+      <Menu.Item key="dashboard">
+        <DashboardOutlined />
+        <span>首页</span>
+      </Menu.Item>
+      <Menu.SubMenu
+        key="personal-center"
+        title={
+          <span>
+            <UserOutlined />
+            <span>个人中心</span>
+          </span>
+        }
+      >
+        <Item key="personal-info">
+          <ScheduleOutlined />
+          <span>我的主页</span>
+        </Item>
+        <Item key="personal-settings">
+          <SettingOutlined />
+          <span>个人设置</span>
+        </Item>
+      </Menu.SubMenu>
+
+      <Menu.Item key="team-info">
+        <TeamOutlined />
+        <span>团队信息</span>
+      </Menu.Item>
+      <Menu.Item key="team-docs" disabled={!team.teamId}>
+        <FolderOutlined />
+        <span>文档中心</span>
+      </Menu.Item>
+
+      <Menu.Item key="project-center">
+        <ProjectOutlined />
+        <span>项目管理</span>
+      </Menu.Item>
+
+      <Menu.Item key="mystart">
+        <StarOutlined />
+        <span>我的收藏</span>
+      </Menu.Item>
+      {/* <Menu.Item key="">
+    <DeleteOutlined />
+    <span>回收站</span>
+  </Menu.Item> */}
+    </Menu>
+  );
+
+  const HeaderLeft = () => (
+    <div className="logo">
+      <img src={Logo} alt="logo" />
+      <h1>团队协作平台</h1>
+    </div>
+  );
+
   const [form] = Form.useForm();
 
   return (
@@ -211,199 +265,127 @@ const Home: React.FC<Props> = (props: Props) => {
         />
       )}
 
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        width={256}
-        className="sider"
-        breakpoint="lg"
-        collapsedWidth="80"
-        onCollapse={value => {
-          setCollapsed(value);
-          setPaddingLeft(collapsed ? 256 : 80);
-          setHeaderWidth(
-            collapsed ? 'calc(100% - 256px)' : 'calc(100% - 80px)'
-          );
-        }}
-        style={{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-        }}
-      >
-        <div className="logo">
-          <img src={Logo} alt="logo" />
-          {!collapsed && <h1>Team Work</h1>}
-        </div>
-        <Menu
-          theme="light"
-          mode="inline"
-          selectedKeys={[currentKey]}
-          onClick={handleMenuItemClick}
-          style={{ padding: '16px 0px', width: '100%' }}
-        >
-          <Menu.Item key="dashboard">
-            <DashboardOutlined />
-            <span>首页-工作台</span>
-          </Menu.Item>
-          <ItemGroup key="persenal" title="个人中心">
-            <Item key="personal-info">
-              <UserOutlined />
-              <span>个人信息</span>
-            </Item>
-            <Item key="personal-settings">
-              <SettingOutlined />
-              <span>个人设置</span>
-            </Item>
-          </ItemGroup>
-          <ItemGroup key="team" title="团队建设">
-            <Menu.Item key="team-info">
-              <TeamOutlined />
-              <span>基础信息</span>
-            </Menu.Item>
-            <Menu.Item key="team-docs" disabled={!team.teamId}>
-              <FolderOutlined />
-              <span>团队文档</span>
-            </Menu.Item>
-            <Menu.Item key="weekly-report" disabled={!team.teamId}>
-              <CalendarOutlined />
-              <span>成员周报</span>
-            </Menu.Item>
-          </ItemGroup>
+      <Layout>
+        <Header className="header">
+          <div className="top-nav-header-container">
+            <div className="top-nav-header-main">
+              <div className="top-nav-header-left">
+                <HeaderLeft />
+              </div>
+              <div className="top-nav-header-menu">
+                <Nav />
+              </div>
+              <div className="top-nav-header-right">
+                <Dropdown
+                  overlay={<MessageOverlay list={messageInfo.list} />}
+                  overlayClassName="message-overlay-container"
+                  placement="bottomRight"
+                  trigger={['click']}
+                >
+                  <div className="header-actions">
+                    <Badge count={messageInfo?.notRead}>
+                      <IconFont style={{ fontSize: '20px' }} type="icon-tongzhi" />
+                    </Badge>
+                  </div>
+                </Dropdown>
+                <Tooltip placement="bottom" title="邀请团队成员">
+                  <div
+                    className="header-actions"
+                    onClick={() => {
+                      if (team.teamId) {
+                        setInviteModalVisible(true);
+                      } else {
+                        message.warn('您尚未拥有团队，请先创建或加入');
+                      }
+                    }}
+                  >
+                    <UserAddOutlined
+                      style={{ fontSize: '20px', color: '#595959' }}
+                    />
+                  </div>
+                </Tooltip>
+                <Dropdown
+                  className="header-actions"
+                  overlay={userMenu}
+                  visible={userMenuVisiable}
+                  onVisibleChange={handleVisibleChange}
+                >
+                  <div className="avatar-wrapper">
+                    <Avatar src={userInfo.avatar} />
+                    <span className="username">{userInfo.username}</span>
+                  </div>
+                </Dropdown>
+              </div>
 
-          <ItemGroup key="project" title="项目中心">
-            <Menu.Item key="project-list">
-              <ProjectOutlined />
-              <span>项目列表</span>
-            </Menu.Item>
-            <Menu.Item key="project-analyze">
-              <LineChartOutlined />
-              <span>项目统计</span>
-            </Menu.Item>
-          </ItemGroup>
-
-          <ItemGroup key="other" title="其他功能">
-            <Menu.Item key="mystart">
-              <StarOutlined />
-              <span>我的收藏</span>
-            </Menu.Item>
-            <Menu.Item key="">
-              <DeleteOutlined />
-              <span>回收站</span>
-            </Menu.Item>
-          </ItemGroup>
-        </Menu>
-      </Sider>
-      <Layout style={{ paddingLeft }}>
-        <Header className="header" style={{ width: headerWidth }}>
-          {collapsed ? (
-            <MenuUnfoldOutlined className="trigger" onClick={toggle} />
-          ) : (
-            <MenuFoldOutlined className="trigger" onClick={toggle} />
-          )}
-          <div className="right-wrapper">
-            <Dropdown
-              overlay={<MessageOverlay list={messageInfo.list} />}
-              overlayClassName="message-overlay-container"
-              placement="bottomRight"
-              trigger={['click']}
-            >
-              <div className="header-actions">
-                <Badge count={messageInfo?.notRead}>
-                  <IconFont style={{ fontSize: '20px' }} type="icon-tongzhi" />
-                </Badge>
-              </div>
-            </Dropdown>
-            <Tooltip placement="bottom" title="邀请团队成员">
-              <div
-                className="header-actions"
-                onClick={() => {
-                  if (team.teamId) {
-                    setInviteModalVisible(true);
-                  } else {
-                    message.warn('您尚未拥有团队，请先创建或加入');
-                  }
-                }}
-              >
-                <UserAddOutlined
-                  style={{ fontSize: '20px', color: '#595959' }}
-                />
-              </div>
-            </Tooltip>
-            <Dropdown
-              className="header-actions"
-              overlay={userMenu}
-              visible={userMenuVisiable}
-              onVisibleChange={handleVisibleChange}
-            >
-              <div className="avatar-wrapper">
-                <Avatar src={userInfo.avatar} />
-                <span className="username">{userInfo.username}</span>
-              </div>
-            </Dropdown>
+            </div>
           </div>
         </Header>
         <Content
-          className="content-wrapper"
+          className="basic-layout-content"
           style={{
             marginTop: 64,
           }}
         >
-          <Switch>
-            <Route
-              exact
-              path="/home"
-              component={() => <Redirect to="/home/dashboard" />}
-            />
+          <div className="layout-content-wrap">
+            <Switch>
+              <Route
+                exact
+                path="/home"
+                component={() => <Redirect to="/home/dashboard" />}
+              />
 
-            <Route
-              exact
-              path="/home/dashboard"
-              key="/home/dashboard"
-              component={Dashboard}
-            />
-            <Route
-              exact
-              path="/home/personal-info"
-              key="/home/personal-info"
-              component={PersonalInfo}
-            />
-            <Route
-              exact
-              path="/home/personal-settings"
-              key="/home/personal-settings"
-              component={PersonalSetting}
-            />
-            <Route
-              path="/home/personal-settings/base"
-              component={PersonalSetting}
-              exact
-            />
-            <Route
-              path="/home/personal-settings/security"
-              component={PersonalSetting}
-              exact
-            />
-            <Route
-              exact
-              path="/home/team-info"
-              key="/home/team-info"
-              component={TeamInfo}
-            />
-            <Route
-              exact
-              path="/home/team-docs"
-              key="/home/team-docs"
-              component={Docs}
-            />
-            <Route
-              path="/home/doc-detail"
-              key="/home/doc-detail"
-              component={DocDetail}
-            />
-          </Switch>
+              <Route
+                exact
+                path="/home/dashboard"
+                key="/home/dashboard"
+                component={Dashboard}
+              />
+              <Route
+                exact
+                path="/home/personal-info"
+                key="/home/personal-info"
+                component={PersonalInfo}
+              />
+              <Route
+                exact
+                path="/home/personal-settings"
+                key="/home/personal-settings"
+                component={PersonalSetting}
+              />
+              <Route
+                path="/home/personal-settings/base"
+                component={PersonalSetting}
+                exact
+              />
+              <Route
+                path="/home/personal-settings/security"
+                component={PersonalSetting}
+                exact
+              />
+              <Route
+                exact
+                path="/home/team-info"
+                key="/home/team-info"
+                component={TeamInfo}
+              />
+              <Route
+                exact
+                path="/home/team-docs"
+                key="/home/team-docs"
+                component={Docs}
+              />
+              <Route
+                path="/home/doc-detail"
+                key="/home/doc-detail"
+                component={DocDetail}
+              />
+              <Route
+                path="/home/project-center"
+                key="/home/project-center"
+                component={Project}
+              />
+            </Switch>
+          </div>
         </Content>
       </Layout>
     </Layout>

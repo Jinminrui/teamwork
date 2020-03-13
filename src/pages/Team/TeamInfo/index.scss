@@ -1,11 +1,12 @@
 .teamInfo-wrapper {
-  margin: 24px;
   .list {
     margin-top: 24px;
     background: #ffffff;
   }
 }
 
-.teamInfo-header {
+.teamInfo-header-wrapper {
   background: #ffffff;
+  margin-left: -24px;
+  margin-right: -24px;
 }

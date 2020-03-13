@@ -42,13 +42,14 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
   }
   return (
     <div>
-      <PageHeader
-        className="teamInfo-header"
-        title={teamInfo.name}
-        tags={
+      <div className="teamInfo-header-wrapper">
+        <PageHeader
+          className="teamInfo-header content"
+          title={teamInfo.name}
+          tags={
           <Tag color="blue">{`已成立${getTimeGap(teamInfo.createTime)}天`}</Tag>
         }
-        extra={[
+          extra={[
           <Button
             key="1"
             type="primary"
@@ -64,10 +65,12 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
             退出团队
           </Button>,
         ]}
-      >
+        >
         <Paragraph>{teamInfo.description}</Paragraph>
-      </PageHeader>
-      <div className="teamInfo-wrapper">
+        </PageHeader>
+      </div>
+
+      <div className="teamInfo-wrapper content">
         <Card title="成员列表" style={{ padding: 0, marginTop: 24 }}>
           {teamId && pkId && (
             <MemberList
