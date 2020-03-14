@@ -32,7 +32,7 @@ const Dashbord: React.FC = () => {
   return (
     <div className="dashboard-wrapper">
       <div className="header-wrapper">
-        <div className="dashboard-header content">
+        <div className="dashboard-header">
           <div className="left-wrapper">
             <div className="avatar">
               <Avatar src={userInfo.avatar} size={72} />
@@ -78,7 +78,7 @@ const Dashbord: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="dashboard-content content" style={{ marginTop: 24 }}>
+      <div className="dashboard-content" style={{ marginTop: 24 }}>
         <div className="content-main">
           <Row gutter={24}>
             <Col

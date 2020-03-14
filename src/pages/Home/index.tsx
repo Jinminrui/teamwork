@@ -34,7 +34,7 @@ import Dashboard from 'pages/Dashboard';
 import PersonalInfo from 'pages/Persenal/Info';
 import PersonalSetting from 'pages/Persenal/Settings';
 import TeamInfo from 'pages/Team/TeamInfo';
-import Docs from 'pages/Team/docs';
+import Docs from 'pages/docs';
 
 import { logout, update } from 'api/user';
 import { Store } from 'types';
@@ -44,12 +44,12 @@ import { connectWebsocket } from 'store/message/message.action';
 import { GET_REVEIVED_MESSAGE_LIST_SAGE } from 'store/message/actionTypes';
 import InviteModal from 'components/InviteModal';
 
-import DocDetail from 'pages/Team/docs/components/DocDetail';
+import DocDetail from 'pages/docs/components/DocDetail';
 import Project from 'pages/Project';
 import Logo from './logo.svg';
 import MessageOverlay from './components/MessageOverlay';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 const { Item } = Menu;
 
 interface Props extends RouteComponentProps {

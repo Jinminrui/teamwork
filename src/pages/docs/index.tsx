@@ -103,7 +103,6 @@ const Docs = (props: RouteComponentProps) => {
       />
       <div className="teamDocs-pageHeader">
         <PageHeader
-          className="content"
           title="团队文档"
           subTitle="建立属于团队的知识库"
           extra={[
@@ -123,7 +122,7 @@ const Docs = (props: RouteComponentProps) => {
         </PageHeader>
       </div>
 
-      <div className="teamDocs-wrapper content" style={{ marginTop: 24, marginBottom: 24 }}>
+      <div className="teamDocs-wrapper" style={{ marginTop: 24, marginBottom: 24 }}>
         <Card>
           <Form layout="inline">
             <div className="search-docs-form-row">
@@ -155,6 +154,21 @@ const Docs = (props: RouteComponentProps) => {
                   defaultValue={[]}
                   onChange={handleAuhtorSelectChange}
                   style={{ maxWidth: '400px', width: '100%' }}
+                >
+                  {authorOptions}
+                </Select>
+              </div>
+            </div>
+            <div className="search-docs-form-row">
+              <div className="form-row-label">
+                <span>所属项目</span>
+              </div>
+              <div className="form-row-content">
+                <Select
+                  mode="tags"
+                  placeholder="请选择项目"
+                  defaultValue={[]}
+                  style={{ maxWidth: '200px', width: '100%' }}
                 >
                   {authorOptions}
                 </Select>

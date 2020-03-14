@@ -5,7 +5,7 @@ import { Store } from 'types';
 import BraftEditor from 'braft-editor';
 import './index.scss';
 import 'braft-editor/dist/index.css';
-import { docsTag } from 'pages/Team/docs';
+import { docsTag } from 'pages/docs';
 import { update, AddDocParams, addDoc } from 'api/doc';
 
 interface Props {

@@ -44,7 +44,7 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
     <div>
       <div className="teamInfo-header-wrapper">
         <PageHeader
-          className="teamInfo-header content"
+          className="teamInfo-header"
           title={teamInfo.name}
           tags={
           <Tag color="blue">{`已成立${getTimeGap(teamInfo.createTime)}天`}</Tag>
@@ -70,7 +70,7 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
         </PageHeader>
       </div>
 
-      <div className="teamInfo-wrapper content">
+      <div className="teamInfo-wrapper">
         <Card title="成员列表" style={{ padding: 0, marginTop: 24 }}>
           {teamId && pkId && (
             <MemberList

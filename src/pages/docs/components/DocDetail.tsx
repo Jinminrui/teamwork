@@ -38,7 +38,6 @@ const DocDetail = (props: RouteComponentProps) => {
       <div className="docDetail-header">
         <PageHeader
           title={detail.title}
-          className="content"
           onBack={() => window.history.back()}
           subTitle={<Tag>{detail.type}</Tag>}
           avatar={{ src: detail.authorInfo?.avatar }}
