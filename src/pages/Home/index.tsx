@@ -195,7 +195,7 @@ const Home: React.FC<Props> = (props: Props) => {
 
       <Menu.Item key="project-center">
         <ProjectOutlined />
-        <span>项目管理</span>
+        <span>项目中心</span>
       </Menu.Item>
 
       <Menu.Item key="mystart">

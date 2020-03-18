@@ -14,7 +14,6 @@ const PersonalInfo: React.FC = () => {
   const [tabKey, setTabKey] = useState('article');
   const [articleTotal, setArticleTotal] = useState(0);
   const [articleLsit, setArticleList] = useState([]);
-  const [projectList] = useState([]);
   const [projectNum] = useState(0);
   // const [pageSize] = useState(8);
   // const [pageNum] = useState(1);
@@ -76,7 +75,7 @@ const PersonalInfo: React.FC = () => {
         onPageChange={handleArticlePageChange}
       />
     ),
-    project: <ProjectList projectList={projectList} />,
+    project: <ProjectList />,
   };
 
   function handleTabChange(key: string) {
