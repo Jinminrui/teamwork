@@ -23,7 +23,7 @@
     position: relative;
     padding: 8px;
     margin-bottom: 20px;
-    width: 320px;
+    width: 300px;
     height: 180px;
     -webkit-flex: 0 0 auto;
     -ms-flex: 0 0 auto;
@@ -34,10 +34,16 @@
     -webkit-transform: translateY(0);
     transform: translateY(0);
     cursor: pointer;
+    @media screen and (max-width: 1920px) {
+      width: 20%;
+    }
+    @media screen and (min-width: 0px) {
+      width: 300px;
+    }
     &:hover {
       transform: translateY(-4px);
       .item-card {
-        box-shadow: 0 6px 12px rgba(38,38,38,0.1);
+        box-shadow: 0 6px 12px rgba(38, 38, 38, 0.1);
       }
     }
     .mask::after {
@@ -56,7 +62,7 @@
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      & > *{
+      & > * {
         padding: 8px 0;
       }
       &:hover {
@@ -101,9 +107,12 @@
           font-weight: 500;
         }
         .project-setting {
-          color: #cccccc;
-          &:hover {
-            color: #f7f7f7;
+          & > * {
+            color: #cccccc;
+            padding: 0 6px;
+            &:hover {
+              color: #ffffff;
+            }
           }
         }
       }

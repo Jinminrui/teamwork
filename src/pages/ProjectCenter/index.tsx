@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './index.scss';
-import { Menu, Divider } from 'antd';
+import { Menu } from 'antd';
 import {
   BarsOutlined,
   HomeOutlined,

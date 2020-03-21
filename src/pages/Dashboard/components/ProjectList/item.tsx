@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar } from 'antd';
 import './index.scss';
-import { ProjectListItem } from 'types';
+import { ProjectListItem } from 'store/project/project.reducer';
 
 interface Props {
   detail: ProjectListItem;
@@ -10,11 +10,9 @@ interface Props {
 const ProjectItem: React.FC<Props> = (props: Props) => (
   <div className="dashborad-project-item-wrapper">
     <div className="dashborad-project-item-title">
-      <Avatar size="small" className="avatar">
-        Pro
-      </Avatar>
+      <Avatar className="avatar" src={props.detail.cover} />
       <a href="/" className="project-name">
-        {props.detail.title}
+        {props.detail.name}
       </a>
     </div>
     <div className="dashborad-project-item-desc">

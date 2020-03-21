@@ -45,7 +45,9 @@ import { GET_REVEIVED_MESSAGE_LIST_SAGE } from 'store/message/actionTypes';
 import InviteModal from 'components/InviteModal';
 
 import DocDetail from 'pages/docs/components/DocDetail';
-import Project from 'pages/Project';
+import ProjectCenter from 'pages/ProjectCenter';
+import ProjectPanel from 'pages/ProjectPanel';
+import ErrorPage from 'pages/404';
 import Logo from './logo.svg';
 import MessageOverlay from './components/MessageOverlay';
 
@@ -193,7 +195,7 @@ const Home: React.FC<Props> = (props: Props) => {
         <span>文档中心</span>
       </Menu.Item>
 
-      <Menu.Item key="project-center">
+      <Menu.Item key="project-center" disabled={!team.teamId}>
         <ProjectOutlined />
         <span>项目中心</span>
       </Menu.Item>
@@ -333,7 +335,6 @@ const Home: React.FC<Props> = (props: Props) => {
                 path="/home"
                 component={() => <Redirect to="/home/dashboard" />}
               />
-
               <Route
                 exact
                 path="/home/dashboard"
@@ -382,8 +383,10 @@ const Home: React.FC<Props> = (props: Props) => {
               <Route
                 path="/home/project-center"
                 key="/home/project-center"
-                component={Project}
+                component={ProjectCenter}
               />
+              <Route path="/home/project/:id" key="/project" component={ProjectPanel} />
+              <Route component={ErrorPage} />
             </Switch>
           </div>
         </Content>

@@ -1,0 +1,11 @@
+.form-cover-wrapper {
+  display: flex;
+  .cover-display {
+    width: 320px;
+    height: 180px;
+    border-radius: 6px;
+  }
+  .upload-btn {
+    margin-left: 30px;
+  }
+}
