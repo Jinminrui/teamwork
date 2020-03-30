@@ -1,7 +1,7 @@
-import { getList } from 'api/project';
+import { getList, getProjectMembers, getProjectDetail } from 'api/project';
 import { put, takeEvery } from 'redux-saga/effects';
-import { GET_PROJECT_LIST_SAGA } from './actionTypes';
-import { setProjectList, setListLoading } from './project.action';
+import { GET_PROJECT_LIST_SAGA, GET_PROJECT_MEMBERS_SAGA, GET_PROJECT_DETAIL_SAGA } from './actionTypes';
+import { setProjectList, setListLoading, setProjectMembers, setProjectDetail } from './project.action';
 
 function* getProjectListSaga() {
   const userId = localStorage.getItem('userId');
@@ -13,6 +13,20 @@ function* getProjectListSaga() {
   }
 }
 
+function* getProjectMembersSaga(action: any) {
+  const projectId = action.data;
+  const res = yield getProjectMembers(projectId);
+  yield put(setProjectMembers(res.data));
+}
+
+function* getProjectDetailSaga(action: any) {
+  const projectId = action.data;
+  const res = yield getProjectDetail(projectId);
+  yield put(setProjectDetail(res.data));
+}
+
 export default function* watchPerm() {
   yield takeEvery(GET_PROJECT_LIST_SAGA, getProjectListSaga);
+  yield takeEvery(GET_PROJECT_MEMBERS_SAGA, getProjectMembersSaga);
+  yield takeEvery(GET_PROJECT_DETAIL_SAGA, getProjectDetailSaga);
 }

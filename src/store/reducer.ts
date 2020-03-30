@@ -4,6 +4,7 @@ import appReducer from './app/app.reducer';
 import teamReducer from './team/team.reducer';
 import messageReducer from './message/message.reducer';
 import projectReducer from './project/project.reducer';
+import taskReducer from './task/task.reducer';
 
 export default combineReducers({
   user: userReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   team: teamReducer,
   message: messageReducer,
   project: projectReducer,
+  task: taskReducer,
 });

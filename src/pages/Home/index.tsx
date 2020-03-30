@@ -48,6 +48,7 @@ import DocDetail from 'pages/docs/components/DocDetail';
 import ProjectCenter from 'pages/ProjectCenter';
 import ProjectPanel from 'pages/ProjectPanel';
 import ErrorPage from 'pages/404';
+import ViewTaskModal from 'components/ViewTaskModal';
 import Logo from './logo.svg';
 import MessageOverlay from './components/MessageOverlay';
 
@@ -376,8 +377,8 @@ const Home: React.FC<Props> = (props: Props) => {
                 component={Docs}
               />
               <Route
-                path="/home/doc-detail"
-                key="/home/doc-detail"
+                path="/home/doc/:id"
+                key="/home/doc/:id"
                 component={DocDetail}
               />
               <Route
@@ -388,6 +389,7 @@ const Home: React.FC<Props> = (props: Props) => {
               <Route path="/home/project/:id" key="/project" component={ProjectPanel} />
               <Route component={ErrorPage} />
             </Switch>
+            <ViewTaskModal />
           </div>
         </Content>
       </Layout>

@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Tooltip, Spin, Popconfirm, message } from 'antd';
+import { Tooltip, Spin, message, Modal } from 'antd';
 import './index.scss';
-import { SettingOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  SettingOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import { ProjectListItem } from 'store/project/project.reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
 import { GET_PROJECT_LIST_SAGA } from 'store/project/actionTypes';
 import { deleteProject } from 'api/project';
-import { Link } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import EditProjectModal from './components/EditProjectModal';
 
-const ProjectList = () => {
+const { confirm } = Modal;
+
+const ProjectList = (props: RouteComponentProps) => {
   const projectList = useSelector((store: Store) => store.project.list);
   const listLoading = useSelector((store: Store) => store.project.listLoading);
   const [editProjectModalVisible, setEditProjectModalVisible] = useState(false);
@@ -25,7 +32,6 @@ const ProjectList = () => {
     dispatch({ type: GET_PROJECT_LIST_SAGA });
   }, [dispatch]);
 
-
   const handleDeleteProject = (pkId: string) => {
     deleteProject(pkId).then((res: any) => {
       message.success(res.desc);
@@ -37,7 +43,13 @@ const ProjectList = () => {
     <Spin spinning={listLoading}>
       <div className="project-list-wrapper">
         {projectList.map(item => (
-          <Link className="project-item-wrapper" key={item.pkId} to={`/home/project/${item.pkId}/story`}>
+          <div
+            className="project-item-wrapper"
+            key={item.pkId}
+            onClick={() => {
+              props.history.push(`/home/project/${item.pkId}/story`);
+            }}
+          >
             <div
               className="item-card mask"
               style={{ backgroundImage: `url("${item.cover}")` }}
@@ -56,20 +68,28 @@ const ProjectList = () => {
                       }}
                     />
                   </Tooltip>
-                  <Popconfirm
-                    title="确定要删除此项目吗？"
-                    okText="确定"
-                    cancelText="放弃"
-                    okButtonProps={{ danger: true }}
-                    onConfirm={() => { handleDeleteProject(item.pkId); }}
-                  >
-                    <DeleteOutlined style={{ fontSize: 16 }} />
-                  </Popconfirm>
+
+                  <DeleteOutlined
+                    style={{ fontSize: 16 }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      confirm({
+                        title: '确定要删除此项目吗？',
+                        icon: <ExclamationCircleOutlined />,
+                        okText: '确定',
+                        okType: 'danger',
+                        cancelText: '放弃',
+                        onOk() {
+                          handleDeleteProject(item.pkId);
+                        },
+                      });
+                    }}
+                  />
                 </div>
               </div>
               <div className="card-middle">{item.description}</div>
             </div>
-          </Link>
+          </div>
         ))}
         <div
           className="project-item-wrapper"
@@ -99,4 +119,4 @@ const ProjectList = () => {
   );
 };
 
-export default ProjectList;
+export default withRouter(ProjectList);

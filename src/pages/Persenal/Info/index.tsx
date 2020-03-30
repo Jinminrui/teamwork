@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { IdcardOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { Row, Col, Card, Avatar, Divider, List } from 'antd';
 import './index.scss';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
 import ArticleList from 'components/ArticleList';
 // import { getArticleList } from 'api/article';
 import ProjectList from 'components/ProjectList';
 import { getDocList, GetDocListParams } from 'api/doc';
+import { GET_PROJECT_LIST_SAGA } from 'store/project/actionTypes';
 // import { getProjectList } from 'api/project';
 
 const PersonalInfo: React.FC = () => {
   const [tabKey, setTabKey] = useState('article');
   const [articleTotal, setArticleTotal] = useState(0);
   const [articleLsit, setArticleList] = useState([]);
-  const [projectNum] = useState(0);
+  const projectList = useSelector((store: Store) => store.project.list);
   // const [pageSize] = useState(8);
   // const [pageNum] = useState(1);
   const userInfo = useSelector((store: Store) => store.user);
@@ -24,6 +25,8 @@ const PersonalInfo: React.FC = () => {
   // const userId = userInfo.id;
 
   const pageSize = 5;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (teamId) {
@@ -43,6 +46,10 @@ const PersonalInfo: React.FC = () => {
     }
   }, [teamId, articlePageNum, userInfo.pkId]);
 
+  useEffect(() => {
+    dispatch({ type: GET_PROJECT_LIST_SAGA });
+  }, [dispatch]);
+
   // useEffect(() => {
   //   getProjectList().then(res => {
   //     setProjectList(res.data.list);
@@ -57,7 +64,7 @@ const PersonalInfo: React.FC = () => {
     },
     {
       key: 'project',
-      tab: `项目（${projectNum}）`,
+      tab: `项目（${projectList.length}）`,
     },
   ];
 

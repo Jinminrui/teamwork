@@ -50,6 +50,8 @@ request.interceptors.response.use(
       removeCookies('user-token');
       window.location.href = '/login';
       message.warn('登录权限失效，请重新登录！');
+    } else if (error.response?.status === 400) {
+      message.error('参数错误');
     } else {
       message.error(error.message);
     }

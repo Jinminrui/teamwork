@@ -1,0 +1,148 @@
+@import 'static/styles/variable.scss';
+.kanban-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  .kanban-body {
+    display: flex;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    width: 100%;
+    height: calc(100vh - 168px);
+    border-radius: 4px;
+    overflow: auto;
+    .kanban-col {
+      flex-shrink: 0;
+      padding: 4px 0;
+      width: 268px;
+      margin-right: 20px;
+      height: 100%;
+      .kanban-col-header {
+        display: flex;
+        height: 40px;
+        align-items: center;
+        width: 100%;
+        .kanban-col-title {
+          flex: 1;
+          font-weight: 700;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: $title-color;
+        }
+        .kanban-col-action {
+          color: $text-color;
+        }
+      }
+      .add-task-btn {
+        height: 28px;
+        margin: 4px 0 8px;
+        border-radius: 4px;
+        background-color: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        &:hover {
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+          color: $theme-color;
+        }
+      }
+      .kanban-col-content {
+        max-height: calc(100% - 76px);
+        overflow: auto;
+        .kanban-dnd-card {
+          margin-bottom: 8px;
+          width: 268;
+          outline: none;
+          .task-card {
+            position: relative;
+            width: 100%;
+            white-space: normal;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+            min-height: 90px;
+            height: 100%;
+            &:hover {
+              cursor: pointer;
+              .task-priority {
+                width: 8px;
+                opacity: 1;
+              }
+            }
+            .task-priority {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              width: 4px;
+              border-bottom-left-radius: 4px;
+              border-top-left-radius: 4px;
+              transition: width 218ms ease-in;
+              opacity: 0;
+            }
+            .task-card-body {
+              display: flex;
+              .task-detail-content {
+                line-height: 20px;
+                overflow: hidden;
+                cursor: pointer;
+                padding: 14px 16px;
+                display: flex;
+                flex: 1 1 auto;
+                flex-direction: column;
+                align-items: stretch;
+                .task-content {
+                  display: flex;
+                  align-items: center;
+                  .task-name {
+                    flex: 1;
+                    color: $title-color;
+                  }
+                }
+                .task-infos {
+                  margin-top: 4px;
+                  line-height: 18px;
+                  display: flex;
+                  flex-wrap: wrap;
+                  align-items: center;
+                  color: $text-color;
+                  font-size: 12px;
+                  .info-item {
+                    margin-right: 12px;
+                    height: 24px;
+                    line-height: 24px;
+                    .icon {
+                      display: inline-block;
+                      font-size: 14px;
+                      margin-right: 4px;
+                    }
+                  }
+                  .type-icon {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 2px;
+                    background: #389e0d;
+                    font-size: 12px;
+                    width: 18px;
+                    height: 18px;
+                    color: #fff;
+                  }
+                  .type-desc {
+                    color: $text-color;
+                    white-space: nowrap;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

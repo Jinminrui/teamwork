@@ -6,7 +6,7 @@ import './DocDetail.scss';
 import EditorModal from 'components/EditorModal';
 
 const DocDetail = (props: RouteComponentProps) => {
-  const id = window.location.hash.split('?')[1].split('=')[1];
+  const { id } = (props.match.params as any);
   const userId = localStorage.getItem('userId');
   const [detail, setDetail] = useState<any>({});
   const [editorModalVisible, setEditorModalVisible] = useState(false);

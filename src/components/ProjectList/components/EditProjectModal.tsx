@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Upload, Button, message } from 'antd';
 import './EditProjectModal.scss';
 import { UploadOutlined } from '@ant-design/icons';
-import { create, CreateProjectParams } from 'api/project';
+import { create, CreateProjectParams, update } from 'api/project';
 import { ProjectListItem } from 'store/project/project.reducer';
 import { useDispatch } from 'react-redux';
 import { GET_PROJECT_LIST_SAGA } from 'store/project/actionTypes';
@@ -35,19 +35,28 @@ const EditProjectModal: React.FC<Props> = ({
 
   const handleOk = () => {
     form.validateFields().then(value => {
-      const creatorId = localStorage.getItem('userId');
-      const teamId = localStorage.getItem('teamId');
-      if (creatorId && teamId) {
-        const params: CreateProjectParams = {
-          id: value.id,
-          name: value.name,
-          cover: coverUrl,
-          description: value.description,
-          creatorId,
-          teamId,
-        };
-        create(params).then(res => {
-          message.success('创建成功');
+      if (title === '新建项目') {
+        const creatorId = localStorage.getItem('userId');
+        const teamId = localStorage.getItem('teamId');
+        if (creatorId && teamId) {
+          const params: CreateProjectParams = {
+            id: value.id,
+            name: value.name,
+            cover: coverUrl,
+            description: value.description,
+            creatorId,
+            teamId,
+          };
+          create(params).then(res => {
+            message.success('创建成功');
+            form.resetFields();
+            setVisibleFalse();
+            dispatch({ type: GET_PROJECT_LIST_SAGA });
+          });
+        }
+      } else {
+        update({ pkId: initValues?.pkId, ...value }).then(res => {
+          message.success('更新成功');
           form.resetFields();
           setVisibleFalse();
           dispatch({ type: GET_PROJECT_LIST_SAGA });
@@ -55,6 +64,7 @@ const EditProjectModal: React.FC<Props> = ({
       }
     });
   };
+
   const handleCancel = () => {
     form.resetFields();
     setVisibleFalse();

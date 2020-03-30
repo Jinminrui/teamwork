@@ -1,8 +1,10 @@
 import React from 'react';
 import { List, Avatar, Tag, Empty } from 'antd';
 import IconText from 'components/IconText';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import moment from 'moment';
 
-interface Props {
+interface Props extends RouteComponentProps {
   total: number;
   articleList: Array<any>;
   loading: boolean;
@@ -51,7 +53,7 @@ const ArticleList: React.FC<Props> = (props: Props) => {
               <p
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
-                  window.location.hash = `/home/doc-detail?id=${item.pkId}`;
+                  props.history.push(`/home/doc/${item.pkId}`);
                 }}
               >
                 {item.title}
@@ -67,7 +69,7 @@ const ArticleList: React.FC<Props> = (props: Props) => {
             />
             <span style={{ color: 'rgba(0,0,0,.65)' }}>{item.authorInfo.username}</span>
             <span style={{ margin: '0 4px' }}>发布于</span>
-            <span style={{ color: 'rgba(0,0,0,.25)' }}>{item.updateTime}</span>
+            <span style={{ color: 'rgba(0,0,0,.25)' }}>{moment(item.updateTime).format('YYYY年MM月DD日')}</span>
           </div>
         </List.Item>
       )}
@@ -75,4 +77,4 @@ const ArticleList: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default ArticleList;
+export default withRouter(ArticleList);

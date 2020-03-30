@@ -1,0 +1,67 @@
+@import 'static/styles/variable.scss';
+
+.classify-container {
+  .node-wrapper {
+    margin: 0 16px;
+    .active {
+      font-weight: bold;
+      color: $title-color;
+    }
+    .node {
+      background: #fff;
+      color: $title-color;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        .classify-detail {
+          color: $theme-color;
+        }
+        .class-action {
+          opacity: 1;
+        }
+      }
+      .classify-detail {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .icon {
+        font-size: 12px;
+        margin-right: 8px;
+      }
+      .dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-right: 8px;
+        border-radius: 50%;
+        background: #e5e5e5;
+      }
+    }
+    .child {
+      margin-left: 12px;
+      padding-left: 18px;
+      border-left: 2px solid #f7f7f7;
+    }
+    .has-actions {
+      justify-content: space-between;
+      .class-action {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 218ms ease;
+        cursor: pointer;
+        &:hover {
+          background-color: #e8f5fd;
+          color: $theme-color;
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { MessageState } from 'store/message/message.reducer';
 import { TeamState } from 'store/team/team.reducer';
 import { AppState } from 'store/app/app.reducer';
 import { UserState } from 'store/user/user.reducer';
+import { TaskState } from 'store/task/task.reducer';
 import { ProjectState } from '../store/project/project.reducer';
 
 export interface Store {
@@ -10,6 +11,7 @@ export interface Store {
   team: TeamState;
   message: MessageState;
   project: ProjectState;
+  task: TaskState;
 }
 
 export enum MessageType {

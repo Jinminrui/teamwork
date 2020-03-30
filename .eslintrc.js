@@ -63,6 +63,7 @@ module.exports = {
           'types',
           'store',
           'antd/lib/',
+          'config'
         ],
       },
     ],
