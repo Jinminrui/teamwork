@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { storyWorkflow } from 'config';
+import { storyWorkflow, bugWorkflow } from 'config';
 import './index.scss';
 import { Spin } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,12 +14,13 @@ interface Props {
 }
 
 const KanBan: React.FC<Props> = ({ type, taskClass, projectId }) => {
-  const workflow = type === 1 ? storyWorkflow : [];
+  const workflow = type === 1 ? storyWorkflow : bugWorkflow;
   const { taskList, taskListLoading } = useSelector((store: Store) => store.task);
+  const userId = useSelector((store: Store) => store.user.pkId);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getTaskListSagaAction({ projectId, type, taskClass: taskClass.pkId }));
-  }, [dispatch, projectId, type, taskClass]);
+    dispatch(getTaskListSagaAction({ userId, projectId, type, taskClass: taskClass.pkId }));
+  }, [dispatch, projectId, type, taskClass, userId]);
   return (
     <Spin spinning={taskListLoading} tip="加载中...">
       <div className="kanban-container">

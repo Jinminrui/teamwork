@@ -1,8 +1,13 @@
 import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
-import { setCreateTaskProps, setViewTaskProps } from 'store/task/task.action';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setCreateTaskProps,
+  setViewTaskProps,
+  getTaskListSagaAction,
+} from 'store/task/task.action';
 import CreateTaskModal from 'components/CreateTaskModal';
+import { Store } from 'types';
 import IconFont from '../IconFont';
 import TaskCard from './TaskCard';
 
@@ -22,15 +27,18 @@ const Item: React.FC<Props> = ({
   taskList,
 }) => {
   const dispatch = useDispatch();
+  const userId = useSelector((store: Store) => store.user.pkId);
 
   const handleCreateStory = () => {
-    dispatch(setCreateTaskProps({ visible: true, type, projectId, taskClass }));
+    dispatch(setCreateTaskProps({ visible: true, type, projectId, taskClass, stage: stage.name }));
   };
 
   return (
     <div className="kanban-col" key={stage.name}>
       <div className="kanban-col-header">
-        <div className="kanban-col-title">{stage.name}</div>
+        <div className="kanban-col-title">
+          {stage.name} · {taskList.length}
+        </div>
         <div className="kanban-col-action">
           <IconFont style={{ fontSize: 20 }} type="icon-dot" />
         </div>
@@ -48,6 +56,16 @@ const Item: React.FC<Props> = ({
                   projectId,
                   type,
                   taskClass,
+                  refetch: () => {
+                    dispatch(
+                      getTaskListSagaAction({
+                        userId,
+                        projectId,
+                        type,
+                        taskClass,
+                      })
+                    );
+                  },
                 })
               );
             }}

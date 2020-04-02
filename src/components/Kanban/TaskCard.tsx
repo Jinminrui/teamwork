@@ -28,7 +28,7 @@ const TaskCard: React.FC<Props> = ({ detail, handleCardClick }) => (
         style={{ background: priorityColorMap.get(detail.priority) }}
       />
       <div className="task-card-body">
-        <div className="task-detail-content">
+        <div className={`task-detail-content ${detail.stage === '已完成' && 'done'}`}>
           <div className="task-content">
             <div className="task-name">{detail.title}</div>
             <div className="task-executor">

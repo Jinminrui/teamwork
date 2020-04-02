@@ -8,10 +8,13 @@ interface CreateTaskClassParams {
 }
 
 export interface GetTaskListParams {
-  projectId: string;
-  type: number;
+  userId: string;
+  projectId?: string;
+  type?: number;
   taskClass?: string;
   stage?: string;
+  creatorId?: string;
+  executor?: string;
 }
 
 interface UpdateTaskClassParams {
@@ -66,4 +69,8 @@ export function getTaskDetail(id: string) {
 
 export function updateTask(params: any) {
   return post('/project-center/task/update', params);
+}
+
+export function deleteTask(id: string) {
+  return post(`/project-center/task/delete/${id}`);
 }

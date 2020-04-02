@@ -44,8 +44,8 @@ const CreateTaskModal: React.FC = () => {
     (store: Store) => store.task
   );
   const { members } = useSelector((store: Store) => store.project);
-  const creatorId = useSelector((store: Store) => store.user.pkId);
-  const { type, visible, projectId, taskClass } = createTaskProps;
+  const userId = useSelector((store: Store) => store.user.pkId);
+  const { type, visible, projectId, taskClass, stage } = createTaskProps;
   const title = type === 1 ? '创建需求' : '创建缺陷';
   const [form] = Form.useForm();
 
@@ -62,9 +62,10 @@ const CreateTaskModal: React.FC = () => {
         dispatch(
           setCreateTaskProps({
             visible: false,
-            type: 1,
+            type,
             projectId: '',
             taskClass: 'default',
+            stage: '',
           })
         );
       }}
@@ -72,9 +73,9 @@ const CreateTaskModal: React.FC = () => {
         form.validateFields().then(value => {
           const params: CreateTaskParams = {
             title: value.title,
-            note: value.note.toHTML(),
+            note: value.note?.toHTML(),
             type,
-            stage: '需求制定',
+            stage,
             startTime: value.time
               ? moment(value.time[0]).format('YYYY-MM-DD')
               : undefined,
@@ -87,7 +88,7 @@ const CreateTaskModal: React.FC = () => {
             priority: value.priority,
             sprint: value.sprint,
             taskClass: value.taskClass,
-            creatorId,
+            creatorId: userId,
           };
           createTask(params).then(() => {
             message.success('创建成功');
@@ -95,13 +96,14 @@ const CreateTaskModal: React.FC = () => {
             dispatch(
               setCreateTaskProps({
                 visible: false,
-                type: 1,
+                type,
                 projectId: '',
                 taskClass: 'default',
+                stage: '',
               })
             );
             dispatch(getClassInfoSagaAction({ projectId, type }));
-            dispatch(getTaskListSagaAction({ projectId, type, taskClass }));
+            dispatch(getTaskListSagaAction({ userId, projectId, type, taskClass }));
           });
         });
       }}
@@ -123,7 +125,7 @@ const CreateTaskModal: React.FC = () => {
           wrapperCol={{ span: 24 }}
         >
           <Input.TextArea
-            placeholder="输入标题以新建需求"
+            placeholder="输入标题以新建任务"
             autoSize={{ minRows: 2, maxRows: 4 }}
             style={{
               resize: 'none',
@@ -250,7 +252,7 @@ const CreateTaskModal: React.FC = () => {
           />
         </Form.Item>
         <Form.Item
-          label={<Label icon={<BulbOutlined />} text="需求分类" />}
+          label={<Label icon={<BulbOutlined />} text={type === 1 ? '需求分类' : '缺陷分类'} />}
           name="taskClass"
           colon={false}
           labelAlign="left"
@@ -260,7 +262,7 @@ const CreateTaskModal: React.FC = () => {
             defaultValue="default"
             bordered={false}
           >
-            <Option value="default">未分类需求</Option>
+            <Option value="default">{type === 1 ? '未分类需求' : '未分类缺陷'}</Option>
             {classInfo.taskClassList?.map((item: any) => (
               <Option key={item.pkId} value={item.pkId}>
                 {item.name}

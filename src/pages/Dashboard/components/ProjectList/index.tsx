@@ -33,7 +33,10 @@ const ProjectList: React.FC = () => {
         <Empty description="尚未参加项目" />
       ) : (
         list.map(item => (
-          <Grid key={item.id} className="dashbord-project-list-gird">
+          <Grid
+            key={item.id}
+            className="dashbord-project-list-gird"
+          >
             <ProjectItem key={item.id} detail={item} />
           </Grid>
         ))

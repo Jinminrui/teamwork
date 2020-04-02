@@ -10,9 +10,13 @@ import {
   Avatar,
   DatePicker,
   message,
+  Tooltip,
 } from 'antd';
-import { getTaskDetail, updateTask } from 'api/task';
-import { setViewTaskProps, getTaskListSagaAction, getClassInfoSagaAction } from 'store/task/task.action';
+import { getTaskDetail, updateTask, deleteTask } from 'api/task';
+import {
+  setViewTaskProps,
+  getClassInfoSagaAction,
+} from 'store/task/task.action';
 import StoryIcon from 'components/Icon/StoryIcon';
 import BugIcon from 'components/Icon/BugIcon';
 import Label from 'components/Label';
@@ -26,9 +30,11 @@ import {
   BulbOutlined,
   CheckSquareOutlined,
   ProjectOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import './index.scss';
-import { storyWorkflow, storyPointsOptions, priorityColorMap } from 'config';
+import { storyWorkflow, storyPointsOptions, priorityColorMap, bugWorkflow } from 'config';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import { ProjectListItem } from 'store/project/project.reducer';
@@ -37,16 +43,19 @@ import moment from 'moment';
 
 const { Title } = Typography;
 const { Option } = Select;
+const { confirm } = Modal;
 
 const ViewTaskModal = () => {
   const dispatch = useDispatch();
   const { viewTaskProps, classInfo } = useSelector(
     (store: Store) => store.task
   );
-  const { taskId, visible, projectId, type, taskClass } = viewTaskProps;
+  const userId = useSelector((store: Store) => store.user.pkId);
+  const { taskId, visible, projectId, type, refetch } = viewTaskProps;
   const [taskDetail, setTaskDetail] = useState<any>({});
   const [projectInfo, setProjectInfo] = useState<ProjectListItem>();
   const [members, setMembers] = useState<Array<any>>([]);
+  const workflow = type === 1 ? storyWorkflow : bugWorkflow;
 
   const controls: any = ['bold', 'italic', 'underline', 'list-ul', 'list-ol'];
 
@@ -58,7 +67,7 @@ const ViewTaskModal = () => {
     if (taskId && visible) {
       getTaskDetail(taskId).then(res => {
         setTaskDetail(res.data);
-        getProjectDetail(res.data.projectId).then(res1 => {
+        getProjectDetail(res.data.projectId, userId).then(res1 => {
           setProjectInfo(res1.data);
         });
         getProjectMembers(res.data.projectId).then(res2 => {
@@ -66,29 +75,50 @@ const ViewTaskModal = () => {
         });
       });
     }
-  }, [taskId, visible]);
+  }, [taskId, visible, userId]);
 
   useEffect(() => {
     setEditorState(BraftEditor.createEditorState(taskDetail.note));
   }, [taskDetail]);
 
-  function getTitle(type: number) {
-    if (type === 1) {
-      return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <StoryIcon />
-          <span style={{ marginLeft: 6 }}>需求</span>
-        </div>
-      );
-    }
-    if (type === 2) {
-      return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <BugIcon />
-          <span style={{ marginLeft: 6 }}>需求</span>
-        </div>
-      );
-    }
+  function handleDeleteTask() {
+    confirm({
+      title: '确定要删除这个任务吗？',
+      icon: <ExclamationCircleOutlined />,
+      content: '该操作不可撤销',
+      okText: '确定',
+      cancelText: '放弃',
+      okType: 'danger',
+      onOk() {
+        deleteTask(taskId).then((res: any) => {
+          message.success(res.desc);
+          dispatch(setViewTaskProps({ visible: false, taskId: '', refetch: () => {} }));
+          refetch();
+        });
+      },
+    });
+  }
+
+  function getTitle(param: number) {
+    return (
+      <div className="modal-title">
+        {param === 1 && (
+          <div className="title">
+            <StoryIcon />
+            <span style={{ marginLeft: 6 }}>需求</span>
+          </div>
+        )}
+        {param === 2 && (
+          <div className="title">
+            <BugIcon />
+            <span style={{ marginLeft: 6 }}>缺陷</span>
+          </div>
+        )}
+        <Tooltip title="删除任务">
+          <DeleteOutlined className="delete-task" onClick={handleDeleteTask} />
+        </Tooltip>
+      </div>
+    );
   }
 
   function formatTime(startTime: string, endTime: string): any {
@@ -111,8 +141,8 @@ const ViewTaskModal = () => {
     updateTask(updateParams).then((res: any) => {
       message.success(res.desc);
       setTaskDetail(res.data);
+      refetch();
       if (projectId && type) {
-        dispatch(getTaskListSagaAction({ projectId, type, taskClass }));
         if (field === 'taskClass') {
           dispatch(getClassInfoSagaAction({ projectId, type }));
         }
@@ -127,8 +157,9 @@ const ViewTaskModal = () => {
       title={getTitle(taskDetail.type)}
       centered
       width={666}
+      maskClosable={false}
       onCancel={() => {
-        dispatch(setViewTaskProps({ visible: false, taskId: '' }));
+        dispatch(setViewTaskProps({ visible: false, taskId: '', refetch: () => {} }));
       }}
       bodyStyle={{ maxHeight: 800, height: '100%', overflow: 'auto' }}
     >
@@ -172,7 +203,7 @@ const ViewTaskModal = () => {
                 handleFieldChange('stage', value);
               }}
             >
-              {storyWorkflow.map(item => (
+              {workflow.map(item => (
                 <Option value={item.name} key={item.name}>
                   {item.name}
                 </Option>
@@ -228,7 +259,9 @@ const ViewTaskModal = () => {
               format="YYYY-MM-DD"
               bordered={false}
               value={formatTime(taskDetail.startTime, taskDetail.endTime)}
-              onChange={value => { handleFieldChange('time', value); }}
+              onChange={value => {
+                handleFieldChange('time', value);
+              }}
             />
           </div>
         </div>
@@ -263,7 +296,9 @@ const ViewTaskModal = () => {
               placeholder="待添加"
               bordered={false}
               value={taskDetail.storyPoints || undefined}
-              onChange={value => { handleFieldChange('storyPoints', value); }}
+              onChange={value => {
+                handleFieldChange('storyPoints', value);
+              }}
             >
               {storyPointsOptions.map(item => (
                 <Option key={item} value={item}>
@@ -283,7 +318,9 @@ const ViewTaskModal = () => {
               placeholder="待添加"
               bordered={false}
               value={taskDetail.priority || undefined}
-              onChange={value => { handleFieldChange('priority', value); }}
+              onChange={value => {
+                handleFieldChange('priority', value);
+              }}
             >
               <Option value={1}>
                 <Tag color={priorityColorMap.get(1)}>普通</Tag>
@@ -305,16 +342,18 @@ const ViewTaskModal = () => {
         </div>
         <div className="flex-wrapper">
           <div className="task-info-label">
-            <Label icon={<BulbOutlined />} text="需求分类" />
+            <Label icon={<BulbOutlined />} text={type === 1 ? '需求分类' : '缺陷分类'} />
           </div>
           <div className="task-info-value">
             <Select
               style={{ width: 180 }}
               value={taskDetail.taskClass}
               bordered={false}
-              onChange={value => { handleFieldChange('taskClass', value); }}
+              onChange={value => {
+                handleFieldChange('taskClass', value);
+              }}
             >
-              <Option value="default">未分类需求</Option>
+              <Option value="default">{type === 1 ? '未分类需求' : '未分类缺陷'}</Option>
               {classInfo.taskClassList?.map((item: any) => (
                 <Option key={item.pkId} value={item.pkId}>
                   {item.name}

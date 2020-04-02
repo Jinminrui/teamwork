@@ -1,51 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Card, List, Typography, Empty } from 'antd';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Card, List, Empty, Tag, Button } from 'antd';
+import { getTaskList } from 'api/task';
+import { useSelector, useDispatch } from 'react-redux';
+import { Store } from 'types';
+import { priorityColorMap, priorityDescMap } from 'config';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { setViewTaskProps } from 'store/task/task.action';
+import StoryIcon from 'components/Icon/StoryIcon';
+import { ProjectOutlined } from '@ant-design/icons';
 
-interface TodoItem {
-  id: number;
-  level: string;
-  content: string;
-  isCompleted: boolean;
-}
-
-const { Text } = Typography;
-
-const TodoList: React.FC<any> = (props: any) => {
-  const [list] = useState<Array<TodoItem>>([]);
+const TodoList: React.FC<RouteComponentProps> = ({ history }) => {
+  const [list, setList] = useState<Array<any>>([]);
   const [loading] = useState(false);
+  const userId = useSelector((store: Store) => store.user.pkId);
+  const dispatch = useDispatch();
 
-  const levelColor: Map<string, string> = new Map([
-    ['first', '#fa541c'],
-    ['second', '#faad14'],
-    ['third', '#a0d911'],
-  ]);
+  const fetchData = useCallback(
+    () => {
+      getTaskList({ userId, executor: userId }).then(res => {
+        setList(res.data.slice(0, 6));
+      });
+    },
+    [userId],
+  );
 
   useEffect(() => {
-    // setLoading(true);
-    // setTimeout(() => {
-    //   setList([
-    //     {
-    //       id: 1,
-    //       level: 'first',
-    //       content: '完成毕业设计的架构设计',
-    //       isCompleted: false,
-    //     },
-    //     {
-    //       id: 2,
-    //       level: 'second',
-    //       content: '完成毕业设计的后端开发',
-    //       isCompleted: false,
-    //     },
-    //     {
-    //       id: 3,
-    //       level: 'third',
-    //       content: '完成毕业设计的前端开发',
-    //       isCompleted: false,
-    //     },
-    //   ]);
-    //   setLoading(false);
-    // }, 3000);
-  }, []);
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div>
@@ -53,6 +34,16 @@ const TodoList: React.FC<any> = (props: any) => {
         title="待办事项"
         style={{ padding: 0, marginBottom: 24 }}
         loading={loading}
+        extra={[
+          <Button
+            type="link"
+            onClick={() => {
+              history.push('/home/project-center');
+            }}
+          >
+            查看更多
+          </Button>,
+        ]}
       >
         {list.length ? (
           <List
@@ -60,14 +51,42 @@ const TodoList: React.FC<any> = (props: any) => {
             size="small"
             split={false}
             renderItem={(item, index) => (
-              <List.Item>
-                <Text
-                  delete={item.isCompleted}
-                  style={{ color: levelColor.get(item.level) }}
-                >
-                  {item.content}
-                </Text>
-              </List.Item>
+              <div
+                className="list-item"
+                onClick={() => {
+                  dispatch(
+                    setViewTaskProps({
+                      visible: true,
+                      taskId: item.pkId,
+                      refetch: fetchData,
+                    })
+                  );
+                }}
+              >
+                <div className="detail">
+                  <div className="name">
+                    {item.title}
+                    <span className="task-priority">
+                      <Tag color={priorityColorMap.get(item.priority)}>
+                        {priorityDescMap.get(item.priority)}
+                      </Tag>
+                    </span>
+                  </div>
+                  <div className="task-infos">
+                    <span className="status label">{item.stage}</span>
+                    <span className="type">
+                      <StoryIcon />
+                      <span style={{ marginLeft: 6 }}>
+                        {item.type === 1 ? '需求' : '缺陷'}
+                      </span>
+                    </span>
+                    <span className="project">
+                      <ProjectOutlined style={{ marginRight: 4 }} />
+                    项目：{item.projectDetail.name}
+                    </span>
+                  </div>
+                </div>
+              </div>
             )}
           />
         ) : (
@@ -78,4 +97,4 @@ const TodoList: React.FC<any> = (props: any) => {
   );
 };
 
-export default TodoList;
+export default withRouter(TodoList);

@@ -13,9 +13,9 @@ function* getClassInfoSaga(action: any) {
 }
 
 function* getTaskListSaga(action: any) {
-  const { projectId, type, taskClass } = action.data;
+  const { userId, projectId, type, taskClass } = action.data;
   yield put(setTaskListLoading(true));
-  const res = yield getTaskList({ projectId, type, taskClass });
+  const res = yield getTaskList({ userId, projectId, type, taskClass });
   yield put(setTaskList(res.data));
   yield put(setTaskListLoading(false));
 }

@@ -20,3 +20,17 @@
     }
   }
 }
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 40px;
+  .title {
+    display: flex;
+    align-items: center;
+  }
+  .delete-task {
+    cursor: pointer;
+  }
+}

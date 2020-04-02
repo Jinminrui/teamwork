@@ -87,6 +87,9 @@
             }
             .task-card-body {
               display: flex;
+              .done {
+                opacity: 0.5;
+              }
               .task-detail-content {
                 line-height: 20px;
                 overflow: hidden;

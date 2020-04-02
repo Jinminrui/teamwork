@@ -20,9 +20,12 @@ function* getProjectMembersSaga(action: any) {
 }
 
 function* getProjectDetailSaga(action: any) {
+  const userId = localStorage.getItem('userId');
   const projectId = action.data;
-  const res = yield getProjectDetail(projectId);
-  yield put(setProjectDetail(res.data));
+  if (userId && projectId) {
+    const res = yield getProjectDetail(projectId, userId);
+    yield put(setProjectDetail(res.data));
+  }
 }
 
 export default function* watchPerm() {

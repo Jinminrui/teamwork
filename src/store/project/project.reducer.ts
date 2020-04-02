@@ -6,6 +6,8 @@ export interface ProjectListItem {
   name: string;
   description: string;
   cover: string;
+  status: number;
+  currentRole: number;
 }
 
 export interface ProjectState {

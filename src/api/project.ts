@@ -9,6 +9,11 @@ export interface CreateProjectParams {
   description: string;
 }
 
+export interface InviteParams {
+  userId: string;
+  projectId: string;
+}
+
 export function create(params: CreateProjectParams) {
   return post('/project-center/project/create', params);
 }
@@ -29,6 +34,10 @@ export function getProjectMembers(projectId: string) {
   return get(`/project-center/project/${projectId}/members`);
 }
 
-export function getProjectDetail(projectId: string) {
-  return get(`/project-center/project/${projectId}`);
+export function getProjectDetail(projectId: string, userId: string) {
+  return get(`/project-center/project/${projectId}/${userId}`);
+}
+
+export function inviteProjectMember(params: InviteParams) {
+  return post('/project-center/project/invite', params);
 }

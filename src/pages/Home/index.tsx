@@ -312,6 +312,7 @@ const Home: React.FC<Props> = (props: Props) => {
                   overlay={userMenu}
                   visible={userMenuVisiable}
                   onVisibleChange={handleVisibleChange}
+                  trigger={['click']}
                 >
                   <div className="avatar-wrapper">
                     <Avatar src={userInfo.avatar} />
@@ -319,7 +320,6 @@ const Home: React.FC<Props> = (props: Props) => {
                   </div>
                 </Dropdown>
               </div>
-
             </div>
           </div>
         </Header>

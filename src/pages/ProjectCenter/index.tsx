@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import './index.scss';
 import { Menu } from 'antd';
-import {
-  BarsOutlined,
-  HomeOutlined,
-  TeamOutlined,
-  FileAddOutlined,
-} from '@ant-design/icons';
+import { BarsOutlined, HomeOutlined, FileAddOutlined } from '@ant-design/icons';
 import ProjectList from 'components/ProjectList';
 import RecentTask from './components/RecentTask';
 import TaskList from './components/TaskList';
@@ -35,10 +30,6 @@ const Project = () => {
           <Menu.Item key="mycreate">
             <FileAddOutlined />
             我创建的
-          </Menu.Item>
-          <Menu.Item key="myjoin">
-            <TeamOutlined />
-            我参与的
           </Menu.Item>
         </Menu>
       </div>

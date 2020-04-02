@@ -28,11 +28,13 @@ const ClassifyTree = (props: Props) => {
   const { projectId, type } = props;
   const [showLeaf, setShowLeaf] = useState(true);
   const [editClassModalVisible, setEditClassModalVisible] = useState(false);
-  const [editClassTitle, setEditClassTitle] = useState('创建需求分类');
+  const [editClassTitle, setEditClassTitle] = useState('创建分类');
   const [initData, setInitData] = useState<any>(undefined);
   const dispatch = useDispatch();
 
-  const { classInfo, classInfoLoading } = useSelector((store: Store) => store.task);
+  const { classInfo, classInfoLoading } = useSelector(
+    (store: Store) => store.task
+  );
 
   useEffect(() => {
     dispatch(getClassInfoSagaAction({ projectId, type }));
@@ -40,15 +42,15 @@ const ClassifyTree = (props: Props) => {
 
   function handleEditTaskClass(item: any) {
     setInitData(item);
-    setEditClassTitle('编辑需求分类');
+    setEditClassTitle('编辑分类');
     setEditClassModalVisible(true);
   }
 
   function handleDeleteTaskClass(item: any) {
     confirm({
-      title: '您确定要删除该需求分类吗？',
+      title: '您确定要删除该分类吗？',
       icon: <ExclamationCircleOutlined />,
-      content: '需求分类一旦删除，该分类下所有需求将被设为未分类需求。',
+      content: '分类一旦删除，该分类下所有任务将被设为未分类。',
       okType: 'danger',
       okText: '确定',
       cancelText: '放弃',
@@ -70,7 +72,10 @@ const ClassifyTree = (props: Props) => {
               props.current.pkId === undefined ? 'active' : ''
             }`}
             onClick={() => {
-              props.setCurrent({ pkId: undefined, name: '所有需求' });
+              props.setCurrent({
+                pkId: undefined,
+                name: type === 1 ? '所有需求' : '所有缺陷',
+              });
             }}
           >
             <div
@@ -82,7 +87,7 @@ const ClassifyTree = (props: Props) => {
               {showLeaf ? <CaretDownOutlined /> : <CaretRightOutlined />}
             </div>
             <div className="classify-detail">
-              所有需求 {`· ${classInfo.total || 0}`}
+              {type === 1 ? '所有需求' : '所有缺陷'} {`· ${classInfo.total || 0}`}
             </div>
           </div>
           {showLeaf && (
@@ -92,12 +97,12 @@ const ClassifyTree = (props: Props) => {
                   props.current.pkId === 'default' ? 'active' : ''
                 }`}
                 onClick={() => {
-                  props.setCurrent({ pkId: 'default', name: '未分类需求' });
+                  props.setCurrent({ pkId: 'default', name: type === 1 ? '未分类需求' : '未分类缺陷' });
                 }}
               >
                 <div className="dot" />
                 <div className="classify-detail">
-                  未分类需求 {`· ${classInfo.noClassTaskNum || 0}`}
+                  {type === 1 ? '未分类需求' : '未分类缺陷'} {`· ${classInfo.noClassTaskNum || 0}`}
                 </div>
               </div>
               {classInfo?.taskClassList?.map((item: any) => (
@@ -144,10 +149,10 @@ const ClassifyTree = (props: Props) => {
                 style={{ marginTop: 10 }}
                 onClick={() => {
                   setEditClassModalVisible(true);
-                  setEditClassTitle('创建需求分类');
+                  setEditClassTitle(type === 1 ? '创建需求分类' : '创建缺陷分类');
                 }}
               >
-                创建需求分类
+                {type === 1 ? '创建需求分类' : '创建缺陷分类'}
               </Button>
             </div>
           )}

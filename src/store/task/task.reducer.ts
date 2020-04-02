@@ -12,6 +12,7 @@ export interface CreateTaskProps {
   type: number;
   projectId: string;
   taskClass: string;
+  stage: string;
 }
 
 export interface ViewTaskProps {
@@ -20,6 +21,7 @@ export interface ViewTaskProps {
   projectId?: string;
   type?: number;
   taskClass?: string;
+  refetch: () => void;
 }
 
 export interface TaskState {
@@ -39,10 +41,12 @@ const defaultState: TaskState = {
     type: 1,
     projectId: '',
     taskClass: 'default',
+    stage: '',
   },
   viewTaskProps: {
     taskId: '',
     visible: false,
+    refetch: () => {},
   },
   taskList: [],
   taskListLoading: false,

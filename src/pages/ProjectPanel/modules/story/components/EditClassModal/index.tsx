@@ -29,10 +29,10 @@ const EditClassModal: React.FC<Props> = ({
   const dispatch = useDispatch();
   const handleOk = () => {
     form.validateFields().then(value => {
-      if (title === '创建需求分类') {
+      if (title.indexOf('创建') !== -1) {
         createTaskClass({
           projectId: (match.params as any).id,
-          type: 1,
+          type,
           name: value.name,
           description: value.description,
         }).then(res => {
@@ -43,7 +43,7 @@ const EditClassModal: React.FC<Props> = ({
           dispatch(getClassInfoSagaAction({ projectId, type }));
         });
       }
-      if (title === '编辑需求分类') {
+      if (title.indexOf('编辑') !== -1) {
         updateTaskClass({
           pkId: initValues.pkId,
           name: value.name,
