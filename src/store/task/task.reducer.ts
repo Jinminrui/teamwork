@@ -5,6 +5,7 @@ import {
   SET_CLASS_INFO_LOADING,
   SET_TASK_LIST,
   SET_TASK_LIST_LOADING,
+  SET_SPRINT_LIST,
 } from './actionTypes';
 
 export interface CreateTaskProps {
@@ -31,6 +32,7 @@ export interface TaskState {
   viewTaskProps: ViewTaskProps;
   taskList: Array<any>;
   taskListLoading: boolean;
+  sprintList: Array<any>;
 }
 
 const defaultState: TaskState = {
@@ -50,6 +52,7 @@ const defaultState: TaskState = {
   },
   taskList: [],
   taskListLoading: false,
+  sprintList: [],
 };
 
 export default (state = defaultState, action: any) => {
@@ -66,6 +69,8 @@ export default (state = defaultState, action: any) => {
       return { ...state, taskList: action.data };
     case SET_TASK_LIST_LOADING:
       return { ...state, taskListLoading: action.data };
+    case SET_SPRINT_LIST:
+      return { ...state, sprintList: action.data };
     default:
       return state;
   }

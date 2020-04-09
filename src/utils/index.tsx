@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import moment from 'moment';
 
 export function setCookies(name: string, value: string | object) {
   Cookies.set(name, value);
@@ -55,4 +56,27 @@ export function getUrlParams(url: string) {
     obj[key] = value;
   });
   return obj;
+}
+
+export function formatDateCalendar(date: string) {
+  return moment(date).calendar(moment(), {
+    sameDay: '[今天]',
+    nextDay: '[明天]',
+    nextWeek: 'M月DD日',
+    lastDay: '[昨天]',
+    lastWeek: 'M月DD日',
+    sameElse(now) {
+      if (moment(now).year === moment(date).year) {
+        return 'M月DD日';
+      }
+      return 'YYYY年M月DD日';
+    },
+  });
+}
+
+
+export function formatRangePickerMoment(startTime: string, endTime: string): any {
+  if (startTime && endTime) {
+    return [moment(startTime), moment(endTime)];
+  }
 }

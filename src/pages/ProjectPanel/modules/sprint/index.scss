@@ -1,0 +1,173 @@
+@import 'static/styles/variable.scss';
+
+.sprint-panel-container {
+  display: flex;
+  .sprint-sider-container {
+    position: relative;
+    background: white;
+    height: calc(100vh - 113px);
+    display: flex;
+    .trigger-container {
+      height: calc(100vh - 113px);
+      position: absolute;
+      align-items: center;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      cursor: pointer;
+      &:hover {
+        .border-line {
+          background-color: $theme-color;
+        }
+        .trigger {
+          background: $theme-color;
+          color: white;
+          border: none;
+        }
+      }
+      .border-line {
+        height: 100%;
+        width: 2px;
+        background-color: #e5e5e5;
+        transition-property: background-color, width;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in-out;
+      }
+      .trigger {
+        margin-top: -44.5px;
+        width: 14px;
+        height: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        color: $text-color;
+        border-radius: 0 4px 4px 0;
+        border: 1px solid #e5e5e5;
+        border-left-color: transparent;
+        opacity: 1;
+        transition-property: background-color, opacity;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in-out;
+      }
+    }
+    .sprint-classify-container {
+      .sprint-classify-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 16px;
+        .sprint-classify-title {
+          font-weight: 500;
+          color: $title-color;
+          height: 40px;
+          line-height: 40px;
+          white-space: nowrap;
+        }
+        .add-sprint-btn {
+          font-size: 16px;
+          height: 24px;
+          width: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          transition: background-color 0.3s ease,border 0.3s ease,color 0.3s ease;
+          cursor: pointer;
+          user-select: none;
+          &:hover{
+            background-color: #e8f5fd;
+            color: $theme-color
+          }
+        }
+      }
+      .sprint-list-container{
+        padding: 0 8px;
+        .active {
+          color: $title-color;
+          background: #f7f7f7;
+        }
+        .sprint-list-item{
+          display: flex;
+          padding: 0 8px;
+          width: 100%;
+          border-radius: 4px;
+          cursor: pointer;
+          flex-direction: column;
+          margin-bottom: 8px;
+          &:hover{
+            background: #f7f7f7;
+          }
+          .sprint-name {
+            padding: 8px 0;
+          }
+          .sprint-options {
+            display: flex;
+            align-items: center;
+            .actions {
+              margin-left: 4px;
+              font-size: 24px;
+              color: $title-color;
+              &:hover {
+                color: $theme-color;
+              }
+            }
+          }
+          .sprint-item-header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+          }
+          .sprint-subtitle {
+            font-size: 12px;
+            color: $text-color;
+            margin-bottom: 8px;
+          }
+        }
+      }
+    }
+  }
+  .sprint-content-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .sprint-class-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .sprint-class-title {
+        height: 28px;
+        line-height: 28px;
+        color: $title-color;
+        padding: 0 6px;
+        margin-left: -6px;
+        cursor: pointer;
+        border-radius: 6px;
+        &:hover {
+          background-color: #e5e5e5;
+        }
+      }
+    }
+  }
+}
+
+.cell-avatar {
+  display: flex;
+  align-items: center;
+}
+
+.type-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .desc {
+    margin-left: 4px;
+  }
+}
+
+.index {
+  color: $text-color;
+  margin-right: 32px;
+}

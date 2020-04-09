@@ -3,11 +3,12 @@ import { Card, List, Empty, Tag, Button } from 'antd';
 import { getTaskList } from 'api/task';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
-import { priorityColorMap, priorityDescMap } from 'config';
+import { priorityColorMap, priorityDescMap, getStatusTagColor } from 'config';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { setViewTaskProps } from 'store/task/task.action';
 import StoryIcon from 'components/Icon/StoryIcon';
 import { ProjectOutlined } from '@ant-design/icons';
+import BugIcon from 'components/Icon/BugIcon';
 
 const TodoList: React.FC<RouteComponentProps> = ({ history }) => {
   const [list, setList] = useState<Array<any>>([]);
@@ -36,6 +37,7 @@ const TodoList: React.FC<RouteComponentProps> = ({ history }) => {
         loading={loading}
         extra={[
           <Button
+            key={1}
             type="link"
             onClick={() => {
               history.push('/home/project-center');
@@ -53,6 +55,7 @@ const TodoList: React.FC<RouteComponentProps> = ({ history }) => {
             renderItem={(item, index) => (
               <div
                 className="list-item"
+                key={item.pkId}
                 onClick={() => {
                   dispatch(
                     setViewTaskProps({
@@ -66,16 +69,11 @@ const TodoList: React.FC<RouteComponentProps> = ({ history }) => {
                 <div className="detail">
                   <div className="name">
                     {item.title}
-                    <span className="task-priority">
-                      <Tag color={priorityColorMap.get(item.priority)}>
-                        {priorityDescMap.get(item.priority)}
-                      </Tag>
-                    </span>
                   </div>
                   <div className="task-infos">
-                    <span className="status label">{item.stage}</span>
+                    <Tag color={getStatusTagColor(item.stage)}>{item.stage}</Tag>
                     <span className="type">
-                      <StoryIcon />
+                      {item.type === 1 ? <StoryIcon /> : <BugIcon />}
                       <span style={{ marginLeft: 6 }}>
                         {item.type === 1 ? '需求' : '缺陷'}
                       </span>
@@ -86,6 +84,11 @@ const TodoList: React.FC<RouteComponentProps> = ({ history }) => {
                     </span>
                   </div>
                 </div>
+                <span className="task-priority">
+                  <Tag color={priorityColorMap.get(item.priority)}>
+                    {priorityDescMap.get(item.priority)}
+                  </Tag>
+                </span>
               </div>
             )}
           />

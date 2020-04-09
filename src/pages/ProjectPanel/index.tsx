@@ -22,7 +22,7 @@ import {
   getProjectMembersSagaAction,
   getProjectDetailSagaAction,
 } from 'store/project/project.action';
-import { setTaskList } from 'store/task/task.action';
+import { setTaskList, getSpringLisSagaAction } from 'store/task/task.action';
 import {
   TeamOutlined,
   PlusCircleFilled,
@@ -32,6 +32,9 @@ import { Store } from 'types';
 import { inviteProjectMember } from 'api/project';
 import Story from './modules/story';
 import Bug from './modules/bug';
+import Analytics from './modules/analytics';
+import Summary from './modules/summary';
+import Sprint from './modules/sprint';
 
 const PanelNav = withRouter((props: RouteComponentProps) => {
   const projectId = (props.match.params as any).id;
@@ -67,6 +70,7 @@ const ProjectPanel = (props: RouteComponentProps) => {
   useEffect(() => {
     dispatch(getProjectMembersSagaAction(projectId));
     dispatch(getProjectDetailSagaAction(projectId));
+    dispatch(getSpringLisSagaAction({ projectId }));
     return () => {
       dispatch(setTaskList([]));
     };
@@ -108,6 +112,9 @@ const ProjectPanel = (props: RouteComponentProps) => {
           />
           <Route path="/home/project/:id/story" component={Story} />
           <Route path="/home/project/:id/bug" component={Bug} />
+          <Route path="/home/project/:id/sprint" component={Sprint} />
+          <Route path="/home/project/:id/analytics" component={Analytics} />
+          <Route path="/home/project/:id/summary" component={Summary} />
         </Switch>
         <Drawer
           title="项目成员"
@@ -118,7 +125,7 @@ const ProjectPanel = (props: RouteComponentProps) => {
           onClose={() => setMemberListVisible(false)}
           visible={memberListVisible}
           getContainer={false}
-          style={{ position: 'absolute' }}
+          style={{ position: 'absolute', height: 'calc(100vh - 112px)' }}
           bodyStyle={{ padding: 0, background: '#f7f7f7' }}
           headerStyle={{ background: '#f7f7f7' }}
           width={400}

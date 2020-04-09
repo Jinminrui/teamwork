@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Upload, Button, message } from 'antd';
+import { Modal, Form, Input, Upload, Button, message, Select, Tag } from 'antd';
 import './EditProjectModal.scss';
 import { UploadOutlined } from '@ant-design/icons';
 import { create, CreateProjectParams, update } from 'api/project';
 import { ProjectListItem } from 'store/project/project.reducer';
 import { useDispatch } from 'react-redux';
 import { GET_PROJECT_LIST_SAGA } from 'store/project/actionTypes';
+import { projectStatusMap } from 'config';
 
 interface Props {
   visible: boolean;
@@ -101,6 +102,7 @@ const EditProjectModal: React.FC<Props> = ({
           initValues && {
             name: initValues.name,
             description: initValues.description,
+            status: initValues.status,
             cover: coverUrl,
             id: initValues.id,
           }
@@ -137,6 +139,17 @@ const EditProjectModal: React.FC<Props> = ({
             placeholder="(任务 ID 前缀，2-6 位字母)"
             style={{ width: 474 }}
           />
+        </Form.Item>
+        <Form.Item name="status" label="项目进度">
+          <Select style={{ width: 474 }} placeholder="请确定项目进度">
+            {[1, 2, 3].map(item => (
+              <Select.Option value={item}>
+                <Tag color={projectStatusMap.get(item)?.color}>
+                  {projectStatusMap.get(item)?.desc}
+                </Tag>
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item name="description" label="项目编号">
           <Input.TextArea

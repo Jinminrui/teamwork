@@ -3,6 +3,7 @@ import { Avatar } from 'antd';
 import './index.scss';
 import { ProjectListItem } from 'store/project/project.reducer';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import moment from 'moment';
 
 interface Props extends RouteComponentProps {
   detail: ProjectListItem;
@@ -25,7 +26,7 @@ const ProjectItem: React.FC<Props> = (props: Props) => (
       <p>{props.detail.description}</p>
     </div>
     <div className="dashborad-project-item-footer">
-      <div className="dashborad-project-item-update-time">2天前</div>
+      <div className="dashborad-project-item-update-time">{moment(props.detail.updateTime).fromNow()}</div>
     </div>
   </div>
 );

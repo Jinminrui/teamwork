@@ -9,6 +9,8 @@ import {
   SET_TASK_LIST,
   SET_TASK_LIST_LOADING,
   GET_TASK_LIST_SAGA,
+  SET_SPRINT_LIST,
+  GET_SPRINT_LIST_SAGA,
 } from './actionTypes';
 
 export const setClassInfo = (data: any) => ({
@@ -48,5 +50,15 @@ export const setTaskListLoading = (data: boolean) => ({
 
 export const getTaskListSagaAction = (data: GetTaskListParams) => ({
   type: GET_TASK_LIST_SAGA,
+  data,
+});
+
+export const setSprintList = (data: any) => ({
+  type: SET_SPRINT_LIST,
+  data,
+});
+
+export const getSpringLisSagaAction = (data: any) => ({
+  type: GET_SPRINT_LIST_SAGA,
   data,
 });

@@ -6,7 +6,8 @@ import StoryIcon from 'components/Icon/StoryIcon';
 import { ProjectOutlined } from '@ant-design/icons';
 import { setViewTaskProps } from 'store/task/task.action';
 import { useDispatch } from 'react-redux';
-import { priorityColorMap, priorityDescMap } from 'config';
+import { priorityColorMap, priorityDescMap, getStatusTagColor } from 'config';
+import BugIcon from 'components/Icon/BugIcon';
 
 interface Props {
   type: string;
@@ -81,9 +82,9 @@ const TaskList = (props: Props) => {
                   </span>
                 </div>
                 <div className="task-infos">
-                  <span className="status label">{item.stage}</span>
+                  <Tag color={getStatusTagColor(item.stage)}>{item.stage}</Tag>
                   <span className="type">
-                    <StoryIcon />
+                    {item.type === 1 ? <StoryIcon /> : <BugIcon />}
                     <span style={{ marginLeft: 6 }}>
                       {item.type === 1 ? '需求' : '缺陷'}
                     </span>

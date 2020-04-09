@@ -8,6 +8,8 @@ export interface ProjectListItem {
   cover: string;
   status: number;
   currentRole: number;
+  createTime: string;
+  updateTime: string;
 }
 
 export interface ProjectState {

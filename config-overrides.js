@@ -6,10 +6,8 @@ const {
   fixBabelImports,
   addLessLoader,
   addWebpackAlias,
-  addWebpackPlugin,
   addBabelPlugins,
 } = require('customize-cra');
-const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 function resolve(dir) {
@@ -31,7 +29,6 @@ module.exports = override(
   addWebpackAlias({
     '@': resolve('src'),
   }),
-  addWebpackPlugin(new AntdDayjsWebpackPlugin()),
   addBabelPlugins('@babel/plugin-proposal-optional-chaining')
   // addWebpackPlugin(new BundleAnalyzerPlugin())
 );

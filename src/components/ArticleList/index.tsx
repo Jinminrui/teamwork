@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, Avatar, Tag, Empty } from 'antd';
-import IconText from 'components/IconText';
+// import IconText from 'components/IconText';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
 
@@ -33,19 +33,19 @@ const ArticleList: React.FC<Props> = (props: Props) => {
       renderItem={item => (
         <List.Item
           key={item.id}
-          actions={[
-            <IconText
-              type="star"
-              text={`${item.stared}`}
-              key="list-vertical-star-o"
-            />,
-            <IconText
-              type="like"
-              text={`${item.liked}`}
-              key="list-vertical-like-o"
-            />,
-            <IconText type="message" text="0" key="list-vertical-message" />,
-          ]}
+          // actions={[
+          //   <IconText
+          //     type="star"
+          //     text={`${item.stared}`}
+          //     key="list-vertical-star-o"
+          //   />,
+          //   <IconText
+          //     type="like"
+          //     text={`${item.liked}`}
+          //     key="list-vertical-like-o"
+          //   />,
+          //   <IconText type="message" text="0" key="list-vertical-message" />,
+          // ]}
         >
           <List.Item.Meta
             title={

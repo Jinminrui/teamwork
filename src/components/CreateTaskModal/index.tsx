@@ -103,7 +103,9 @@ const CreateTaskModal: React.FC = () => {
               })
             );
             dispatch(getClassInfoSagaAction({ projectId, type }));
-            dispatch(getTaskListSagaAction({ userId, projectId, type, taskClass }));
+            dispatch(
+              getTaskListSagaAction({ userId, projectId, type, taskClass })
+            );
           });
         });
       }}
@@ -146,11 +148,7 @@ const CreateTaskModal: React.FC = () => {
           name="executor"
           colon={false}
         >
-          <Select
-            style={{ width: 180 }}
-            defaultValue="none"
-            bordered={false}
-          >
+          <Select style={{ width: 180 }} defaultValue="none" bordered={false}>
             <Option value="none">
               <span className="avatar-option">
                 <Avatar
@@ -245,14 +243,17 @@ const CreateTaskModal: React.FC = () => {
           colon={false}
           labelAlign="left"
         >
-          <Select
-            style={{ width: 180 }}
-            placeholder="待添加"
-            bordered={false}
-          />
+          <Select style={{ width: 180 }} placeholder="待添加" bordered={false}>
+            <Option value="default">未规划的任务</Option>
+          </Select>
         </Form.Item>
         <Form.Item
-          label={<Label icon={<BulbOutlined />} text={type === 1 ? '需求分类' : '缺陷分类'} />}
+          label={
+            <Label
+              icon={<BulbOutlined />}
+              text={type === 1 ? '需求分类' : '缺陷分类'}
+            />
+          }
           name="taskClass"
           colon={false}
           labelAlign="left"
@@ -262,7 +263,9 @@ const CreateTaskModal: React.FC = () => {
             defaultValue="default"
             bordered={false}
           >
-            <Option value="default">{type === 1 ? '未分类需求' : '未分类缺陷'}</Option>
+            <Option value="default">
+              {type === 1 ? '未分类需求' : '未分类缺陷'}
+            </Option>
             {classInfo.taskClassList?.map((item: any) => (
               <Option key={item.pkId} value={item.pkId}>
                 {item.name}

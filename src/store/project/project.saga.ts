@@ -1,7 +1,16 @@
 import { getList, getProjectMembers, getProjectDetail } from 'api/project';
 import { put, takeEvery } from 'redux-saga/effects';
-import { GET_PROJECT_LIST_SAGA, GET_PROJECT_MEMBERS_SAGA, GET_PROJECT_DETAIL_SAGA } from './actionTypes';
-import { setProjectList, setListLoading, setProjectMembers, setProjectDetail } from './project.action';
+import {
+  GET_PROJECT_LIST_SAGA,
+  GET_PROJECT_MEMBERS_SAGA,
+  GET_PROJECT_DETAIL_SAGA,
+} from './actionTypes';
+import {
+  setProjectList,
+  setListLoading,
+  setProjectMembers,
+  setProjectDetail,
+} from './project.action';
 
 function* getProjectListSaga() {
   const userId = localStorage.getItem('userId');

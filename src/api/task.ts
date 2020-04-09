@@ -15,6 +15,7 @@ export interface GetTaskListParams {
   stage?: string;
   creatorId?: string;
   executor?: string;
+  sprint?: string;
 }
 
 interface UpdateTaskClassParams {
@@ -39,38 +40,49 @@ export interface CreateTaskParams {
   creatorId: string;
 }
 
+const TASKCLASS = '/project-center/taskclass';
+const TASK = '/project-center/task';
+
 export function createTaskClass(params: any) {
-  return post('/project-center/taskclass/create', params);
+  return post(`${TASKCLASS}/create`, params);
 }
 
 export function getTaskClassList(projectId: string, type: number) {
-  return get(`/project-center/taskclass/list/${projectId}/${type}`);
+  return get(`${TASKCLASS}/list/${projectId}/${type}`);
 }
 
 export function getTaskList(params: GetTaskListParams) {
-  return get('/project-center/task/list', params);
+  return get(`${TASK}/list`, params);
 }
 
 export function deleteTaskClass(id: string) {
-  return post(`/project-center/taskclass/delete/${id}`);
+  return post(`${TASKCLASS}/delete/${id}`);
 }
 
 export function updateTaskClass(params: UpdateTaskClassParams) {
-  return post('/project-center/taskclass/update', params);
+  return post(`${TASKCLASS}/update`, params);
 }
 
 export function createTask(params: CreateTaskParams) {
-  return post('/project-center/task/create', params);
+  return post(`${TASK}/create`, params);
 }
 
 export function getTaskDetail(id: string) {
-  return get(`/project-center/task/${id}`);
+  return get(`${TASK}/${id}`);
 }
 
 export function updateTask(params: any) {
-  return post('/project-center/task/update', params);
+  return post(`${TASK}/update`, params);
 }
 
 export function deleteTask(id: string) {
-  return post(`/project-center/task/delete/${id}`);
+  return post(`${TASK}/delete/${id}`);
+}
+
+export function analyseTask(projectId: string, stage?: string) {
+  return get(`${TASK}/analyseTaskByExecutor`, { projectId, stage });
+}
+
+export function analyseFinishedTaskByMember(projectId: string) {
+  return get(`${TASK}/analyseFinishedTaskByMember`, { projectId });
 }

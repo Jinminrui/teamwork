@@ -58,7 +58,7 @@ const Story = (props: RouteComponentProps) => {
           </div>
         </div>
       </div>
-      <Content style={{ paddingTop: 24, paddingLeft: 24, background: '#f6f6f6' }} className="panel-layout">
+      <Content style={{ paddingTop: 10, paddingLeft: 24, background: '#f6f6f6' }} className="panel-layout">
         <div className="story-content-container">
           <div className="story-class-header">
             <div className="story-class-title">

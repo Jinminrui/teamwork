@@ -1,0 +1,28 @@
+@import 'static/styles/variable.scss';
+
+.analytics-container {
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  .analytics-wrapper {
+    width: 100%;
+    .analytics-content {
+      max-width: 1224px;
+      width: 100%;
+      margin: 0 auto;
+      .analytics-content-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 48px;
+        color: $title-color;
+        font-size: 16px;
+        padding-left: 12px;
+      }
+      .graph-cards {
+        padding: 0 8px;
+      }
+    }
+  }
+}

@@ -11,8 +11,9 @@ import {
   DatePicker,
   message,
   Tooltip,
+  Button,
 } from 'antd';
-import { getTaskDetail, updateTask, deleteTask } from 'api/task';
+import { getTaskDetail, updateTask, deleteTask, getTaskClassList } from 'api/task';
 import {
   setViewTaskProps,
   getClassInfoSagaAction,
@@ -34,12 +35,18 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import './index.scss';
-import { storyWorkflow, storyPointsOptions, priorityColorMap, bugWorkflow } from 'config';
+import {
+  storyWorkflow,
+  storyPointsOptions,
+  priorityColorMap,
+  bugWorkflow,
+} from 'config';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import { ProjectListItem } from 'store/project/project.reducer';
 import { getProjectDetail, getProjectMembers } from 'api/project';
 import moment from 'moment';
+import { getSpringList } from 'api/sprint';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -47,7 +54,7 @@ const { confirm } = Modal;
 
 const ViewTaskModal = () => {
   const dispatch = useDispatch();
-  const { viewTaskProps, classInfo } = useSelector(
+  const { viewTaskProps } = useSelector(
     (store: Store) => store.task
   );
   const userId = useSelector((store: Store) => store.user.pkId);
@@ -55,6 +62,8 @@ const ViewTaskModal = () => {
   const [taskDetail, setTaskDetail] = useState<any>({});
   const [projectInfo, setProjectInfo] = useState<ProjectListItem>();
   const [members, setMembers] = useState<Array<any>>([]);
+  const [sprints, setSprints] = useState<Array<any>>([]);
+  const [classList, setClassList] = useState<Array<any>>([]);
   const workflow = type === 1 ? storyWorkflow : bugWorkflow;
 
   const controls: any = ['bold', 'italic', 'underline', 'list-ul', 'list-ol'];
@@ -72,6 +81,12 @@ const ViewTaskModal = () => {
         });
         getProjectMembers(res.data.projectId).then(res2 => {
           setMembers(res2.data);
+        });
+        getSpringList(res.data.projectId).then(res3 => {
+          setSprints(res3.data);
+        });
+        getTaskClassList(res.data.projectId, res.data.type).then(res4 => {
+          setClassList(res4.data.taskClassList);
         });
       });
     }
@@ -92,7 +107,9 @@ const ViewTaskModal = () => {
       onOk() {
         deleteTask(taskId).then((res: any) => {
           message.success(res.desc);
-          dispatch(setViewTaskProps({ visible: false, taskId: '', refetch: () => {} }));
+          dispatch(
+            setViewTaskProps({ visible: false, taskId: '', refetch: () => {} })
+          );
           refetch();
         });
       },
@@ -131,7 +148,7 @@ const ViewTaskModal = () => {
     const updateParams: any = {
       pkId: taskDetail.pkId,
     };
-    if (field === 'time') {
+    if (field === 'time' && value) {
       updateParams.startTime = moment(value[0]).format('YYYY-MM-DD');
       updateParams.endTime = moment(value[1]).format('YYYY-MM-DD');
     } else {
@@ -159,7 +176,9 @@ const ViewTaskModal = () => {
       width={666}
       maskClosable={false}
       onCancel={() => {
-        dispatch(setViewTaskProps({ visible: false, taskId: '', refetch: () => {} }));
+        dispatch(
+          setViewTaskProps({ visible: false, taskId: '', refetch: () => {} })
+        );
       }}
       bodyStyle={{ maxHeight: 800, height: '100%', overflow: 'auto' }}
     >
@@ -269,11 +288,14 @@ const ViewTaskModal = () => {
           <div className="task-info-label">
             <Label icon={<FileTextOutlined />} text="备注" />
           </div>
-          <div className="task-info-value">
+          <div className="task-info-value" style={{ flexDirection: 'column' }}>
             <BraftEditor
               value={editorState}
               controls={controls}
               contentStyle={{ height: 200, fontSize: 14 }}
+              onChange={value => {
+                setEditorState(value);
+              }}
               style={{
                 border: '1px solid #e5e5e5',
                 borderRadius: 4,
@@ -284,6 +306,13 @@ const ViewTaskModal = () => {
                 borderBottom: '1px solid #e5e5e5',
               }}
             />
+            <Button
+              type="primary"
+              style={{ alignSelf: 'flex-end', marginTop: 10 }}
+              onClick={() => handleFieldChange('note', editorState.toHTML())}
+            >
+              保存
+            </Button>
           </div>
         </div>
         <div className="flex-wrapper">
@@ -338,11 +367,30 @@ const ViewTaskModal = () => {
           <div className="task-info-label">
             <Label icon={<SyncOutlined />} text="迭代" />
           </div>
-          <div className="task-info-value" />
+          <div className="task-info-value">
+            <Select
+              style={{ width: 180 }}
+              value={taskDetail.sprint}
+              bordered={false}
+              onChange={value => {
+                handleFieldChange('sprint', value);
+              }}
+            >
+              <Option value="default">未规划的任务</Option>
+              {sprints.map(item => (
+                <Option value={item.pkId} key={item.pkId}>
+                  {item.title}
+                </Option>
+              ))}
+            </Select>
+          </div>
         </div>
         <div className="flex-wrapper">
           <div className="task-info-label">
-            <Label icon={<BulbOutlined />} text={type === 1 ? '需求分类' : '缺陷分类'} />
+            <Label
+              icon={<BulbOutlined />}
+              text={type === 1 ? '需求分类' : '缺陷分类'}
+            />
           </div>
           <div className="task-info-value">
             <Select
@@ -353,8 +401,10 @@ const ViewTaskModal = () => {
                 handleFieldChange('taskClass', value);
               }}
             >
-              <Option value="default">{type === 1 ? '未分类需求' : '未分类缺陷'}</Option>
-              {classInfo.taskClassList?.map((item: any) => (
+              <Option value="default">
+                {type === 1 ? '未分类需求' : '未分类缺陷'}
+              </Option>
+              {classList.map((item: any) => (
                 <Option key={item.pkId} value={item.pkId}>
                   {item.name}
                 </Option>

@@ -27,7 +27,7 @@
       }
       .border-line {
         height: 100%;
-        width: 1px;
+        width: 2px;
         background-color: #e5e5e5;
         transition-property: background-color, width;
         transition-duration: 200ms;
@@ -57,7 +57,7 @@
         font-weight: 500;
         color: $title-color;
         margin-bottom: 8px;
-        padding: 0 16px;
+        padding: 4px 16px;
         height: 40px;
         line-height: 40px;
         white-space: nowrap;

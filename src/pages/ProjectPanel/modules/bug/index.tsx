@@ -9,7 +9,7 @@ const { Sider, Content } = Layout;
 
 const Bug = (props: RouteComponentProps) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [current, setCurrent] = useState<any>({ pkId: undefined, name: '所有需求' });
+  const [current, setCurrent] = useState<any>({ pkId: undefined, name: '所有缺陷' });
 
   const projectId = (props.match.params as any).id;
   return (
@@ -52,7 +52,7 @@ const Bug = (props: RouteComponentProps) => {
           </div>
         </div>
       </div>
-      <Content style={{ paddingTop: 24, paddingLeft: 24, background: '#f6f6f6' }} className="panel-layout">
+      <Content style={{ paddingTop: 10, paddingLeft: 24, background: '#f6f6f6' }} className="panel-layout">
         <div className="story-content-container">
           <div className="story-class-header">
             <div className="story-class-title">
