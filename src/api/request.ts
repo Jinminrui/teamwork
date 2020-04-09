@@ -11,6 +11,8 @@ if (env === 'development') {
   HOST = 'http://www.jinminrui.cn:8040';
 }
 
+export const uploadAvatarUrl = `${HOST}/user-center/oss/uploadAvatar`;
+
 const baseConfig: AxiosRequestConfig = {
   baseURL: HOST,
   // withCredentials: true,

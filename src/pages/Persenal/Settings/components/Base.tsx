@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
 import { UserState } from 'store/user/user.reducer';
 import { update } from 'api/user';
+import { uploadAvatarUrl } from 'api/request';
 
 const Base = (props: any) => {
   const {
@@ -194,14 +195,14 @@ const Base = (props: any) => {
             <Upload
               className="upload-btn"
               showUploadList={false}
-              action="http://localhost:8081/oss/uploadAvatar"
+              action={uploadAvatarUrl}
               // customRequest={uploadRequest}
               data={{ userId: pkId }}
               beforeUpload={beforeUpload}
               onChange={handleChange}
             >
               <Button loading={uploadLoading}>
-                <UploadOutlined /> 更换头像
+                更换头像
               </Button>
             </Upload>
           </div>
