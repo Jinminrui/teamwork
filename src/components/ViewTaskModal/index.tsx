@@ -64,7 +64,7 @@ const ViewTaskModal = () => {
   const [members, setMembers] = useState<Array<any>>([]);
   const [sprints, setSprints] = useState<Array<any>>([]);
   const [classList, setClassList] = useState<Array<any>>([]);
-  const workflow = type === 1 ? storyWorkflow : bugWorkflow;
+  const [workflow, setWorkFlow] = useState<Array<any>>([]);
 
   const controls: any = ['bold', 'italic', 'underline', 'list-ul', 'list-ol'];
 
@@ -76,6 +76,12 @@ const ViewTaskModal = () => {
     if (taskId && visible) {
       getTaskDetail(taskId).then(res => {
         setTaskDetail(res.data);
+        if (res.data.type === 1) {
+          setWorkFlow(storyWorkflow);
+        }
+        if (res.data.type === 2) {
+          setWorkFlow(bugWorkflow);
+        }
         getProjectDetail(res.data.projectId, userId).then(res1 => {
           setProjectInfo(res1.data);
         });

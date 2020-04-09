@@ -3,7 +3,6 @@ import './index.scss';
 import { Menu } from 'antd';
 import { BarsOutlined, HomeOutlined, FileAddOutlined } from '@ant-design/icons';
 import ProjectList from 'components/ProjectList';
-import RecentTask from './components/RecentTask';
 import TaskList from './components/TaskList';
 
 const Project = () => {
@@ -36,8 +35,7 @@ const Project = () => {
       <div className="project-center-content-container">
         {currentKey === 'home' ? (
           <div>
-            <RecentTask />
-            <div className="title" style={{ marginTop: 50, marginBottom: 20 }}>我参与的项目</div>
+            <div className="title" style={{ marginBottom: 20 }}>我参与的项目</div>
             <ProjectList />
           </div>
         ) : (

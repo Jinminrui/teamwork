@@ -18,9 +18,11 @@ const TodoList: React.FC<RouteComponentProps> = ({ history }) => {
 
   const fetchData = useCallback(
     () => {
-      getTaskList({ userId, executor: userId }).then(res => {
-        setList(res.data.slice(0, 6));
-      });
+      if (userId) {
+        getTaskList({ userId, executor: userId, stage: 'todo' }).then(res => {
+          setList(res.data.slice(0, 6));
+        });
+      }
     },
     [userId],
   );
