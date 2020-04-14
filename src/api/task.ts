@@ -40,6 +40,12 @@ export interface CreateTaskParams {
   creatorId: string;
 }
 
+export interface AnalyseBugAccumulativeTrendParams {
+  projectId: string;
+  sprintId?: string;
+  interval: number;
+}
+
 const TASKCLASS = '/project-center/taskclass';
 const TASK = '/project-center/task';
 
@@ -85,4 +91,8 @@ export function analyseTask(projectId: string, stage?: string) {
 
 export function analyseFinishedTaskByMember(projectId: string) {
   return get(`${TASK}/analyseFinishedTaskByMember`, { projectId });
+}
+
+export function analyseBugAccumulativeTrend(params: AnalyseBugAccumulativeTrendParams) {
+  return get(`${TASK}/analyseBugAccumulativeTrend`, params);
 }

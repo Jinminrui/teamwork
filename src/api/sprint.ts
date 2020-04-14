@@ -19,6 +19,12 @@ export interface UpdateSprintParams {
   description?: string;
 }
 
+export interface StartSprintParams {
+  pkId: string;
+  startTime: string;
+  endTime: string;
+}
+
 
 export function createSprint(params: CreateSprintParams) {
   return post('/project-center/sprint/create', params);
@@ -38,4 +44,12 @@ export function updateSprint(params: UpdateSprintParams) {
 
 export function deleteSprint(id: string) {
   return post(`/project-center/sprint/delete/${id}`);
+}
+
+export function startSprint(params: StartSprintParams) {
+  return post('/project-center/sprint/start', params);
+}
+
+export function completeSprint(id: string) {
+  return post(`/project-center/sprint/${id}/complete`);
 }

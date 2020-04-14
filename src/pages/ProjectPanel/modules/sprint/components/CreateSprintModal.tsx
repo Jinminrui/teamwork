@@ -127,6 +127,7 @@ const CreateSprintModal: React.FC<Props> = ({
           labelAlign="left"
           name="time"
           colon={false}
+          rules={[{ required: true, message: '请确定迭代周期' }]}
         >
           <DatePicker.RangePicker
             placeholder={['设置开始时间', '设置截止时间']}

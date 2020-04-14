@@ -53,7 +53,6 @@ const PanelNav = withRouter((props: RouteComponentProps) => {
       <Menu.Item key="story">需求</Menu.Item>
       <Menu.Item key="bug">缺陷</Menu.Item>
       <Menu.Item key="sprint">迭代</Menu.Item>
-      <Menu.Item key="events">日程</Menu.Item>
       <Menu.Item key="analytics">统计</Menu.Item>
       <Menu.Item key="summary">概览</Menu.Item>
     </Menu>
@@ -139,6 +138,7 @@ const ProjectPanel = (props: RouteComponentProps) => {
                   title={item.info.username}
                   description={item.info.position}
                 />
+                <div>{item.role === 1 && '创建者'}</div>
               </List.Item>
             )}
           />

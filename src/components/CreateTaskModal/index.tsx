@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
 import {
@@ -33,6 +33,7 @@ import moment from 'moment';
 import Label from 'components/Label';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
+import { getSpringList } from 'api/sprint';
 
 const { Option } = Select;
 
@@ -45,9 +46,18 @@ const CreateTaskModal: React.FC = () => {
   );
   const { members } = useSelector((store: Store) => store.project);
   const userId = useSelector((store: Store) => store.user.pkId);
+  const [sprints, setSprints] = useState<Array<any>>([]);
   const { type, visible, projectId, taskClass, stage } = createTaskProps;
   const title = type === 1 ? '创建需求' : '创建缺陷';
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (visible && projectId) {
+      getSpringList(projectId).then(res => {
+        setSprints(res.data);
+      });
+    }
+  }, [visible, projectId]);
 
   return (
     <Modal
@@ -245,6 +255,11 @@ const CreateTaskModal: React.FC = () => {
         >
           <Select style={{ width: 180 }} placeholder="待添加" bordered={false}>
             <Option value="default">未规划的任务</Option>
+            {sprints.map(item => (
+              <Option value={item.pkId} key={item.pkId}>
+                {item.title}
+              </Option>
+            ))}
           </Select>
         </Form.Item>
         <Form.Item

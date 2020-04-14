@@ -6,7 +6,6 @@ import {
   FolderOutlined,
   ProjectOutlined,
   SettingOutlined,
-  StarOutlined,
   TeamOutlined,
   UserOutlined,
   LogoutOutlined,
@@ -200,15 +199,6 @@ const Home: React.FC<Props> = (props: Props) => {
         <ProjectOutlined />
         <span>项目中心</span>
       </Menu.Item>
-
-      <Menu.Item key="mystart">
-        <StarOutlined />
-        <span>我的收藏</span>
-      </Menu.Item>
-      {/* <Menu.Item key="">
-    <DeleteOutlined />
-    <span>回收站</span>
-  </Menu.Item> */}
     </Menu>
   );
 

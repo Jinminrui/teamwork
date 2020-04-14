@@ -17,6 +17,7 @@ import { getTaskDetail, updateTask, deleteTask, getTaskClassList } from 'api/tas
 import {
   setViewTaskProps,
   getClassInfoSagaAction,
+  getSpringLisSagaAction,
 } from 'store/task/task.action';
 import StoryIcon from 'components/Icon/StoryIcon';
 import BugIcon from 'components/Icon/BugIcon';
@@ -164,12 +165,17 @@ const ViewTaskModal = () => {
     updateTask(updateParams).then((res: any) => {
       message.success(res.desc);
       setTaskDetail(res.data);
-      refetch();
-      if (projectId && type) {
-        if (field === 'taskClass') {
+      if (projectId) {
+        if (field === 'taskClass' && type) {
           dispatch(getClassInfoSagaAction({ projectId, type }));
         }
+        if (field === 'sprint') {
+          console.log(projectId);
+
+          dispatch(getSpringLisSagaAction({ projectId }));
+        }
       }
+      refetch();
     });
   }
 

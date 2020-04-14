@@ -32,7 +32,12 @@ const TaskCard: React.FC<Props> = ({ detail, handleCardClick }) => (
       <div className="task-card-body">
         <div
           className={`task-detail-content ${
-            detail.stage === '已完成' || detail.stage === '关闭' ? 'done' : ''
+            detail.stage === '已完成' ||
+            detail.stage === '关闭' ||
+            detail.stage === '已拒绝' ||
+            detail.stage === '已解决'
+              ? 'done'
+              : ''
           }`}
         >
           <div className="task-content">
@@ -77,12 +82,10 @@ const TaskCard: React.FC<Props> = ({ detail, handleCardClick }) => (
                 <SyncOutlined className="icon" /> {detail.sprintDetail.title}
               </span>
             )}
-            {detail.taskClass !== 'default' && (
-              <span className="type-desc info-item">
-                <BulbOutlined className="icon" />
+            <span className="type-desc info-item">
+              <BulbOutlined className="icon" />
                 需求分类：{detail.taskClassDetail.name}
-              </span>
-            )}
+            </span>
           </div>
         </div>
       </div>

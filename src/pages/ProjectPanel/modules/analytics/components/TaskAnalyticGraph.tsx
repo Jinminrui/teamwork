@@ -28,7 +28,7 @@ const TaskAnalyticGraph: React.FC<RouteComponentProps> = props => {
       const chart = new Chart({
         container: 'graph',
         autoFit: true,
-        height: 200,
+        height: 300,
       });
 
       chart.data(dv.rows);

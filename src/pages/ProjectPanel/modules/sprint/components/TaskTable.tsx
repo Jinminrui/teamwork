@@ -149,6 +149,7 @@ const TaskTable: React.FC<Props> = ({ projectId, sprintId }) => {
             setViewTaskProps({
               visible: true,
               taskId: record.pkId,
+              projectId,
               refetch: () => {
                 dispatch(
                   getTaskListSagaAction({ projectId, sprint: sprintId, userId })

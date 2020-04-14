@@ -18,15 +18,12 @@ const FinishedTaskAnalyticGraph: React.FC<RouteComponentProps> = props => {
       const chart = new Chart({
         container: 'graph2',
         autoFit: true,
-        height: 200,
+        height: 300,
       });
       chart.data(graphData);
 
       chart.scale('taskNum', {
         alias: '任务数',
-        min: 0,
-        max: 20,
-        tickInterval: 5,
       });
       chart.tooltip({
         showMarkers: false,
@@ -38,7 +35,7 @@ const FinishedTaskAnalyticGraph: React.FC<RouteComponentProps> = props => {
   }, [graphData]);
 
   return (
-    <Card title="已完成的需求情况" style={{ marginBottom: 24 }}>
+    <Card title="已完成的任务情况" style={{ marginBottom: 24 }}>
       <div id="graph2" />
     </Card>
   );

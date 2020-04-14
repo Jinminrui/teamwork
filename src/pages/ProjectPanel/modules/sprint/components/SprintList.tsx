@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
-import { Tag, Menu, Dropdown, Progress, Modal } from 'antd';
+import { Tag, Menu, Dropdown, Progress, Modal, Typography, message } from 'antd';
 import { formatDateCalendar } from 'utils';
 import { sprintStatusMap } from 'config';
 import {
   EllipsisOutlined,
   InfoCircleOutlined,
   DeleteOutlined,
-  SwapOutlined,
   CheckCircleOutlined,
   ExclamationCircleOutlined,
+  PlayCircleOutlined,
 } from '@ant-design/icons';
-import { deleteSprint } from 'api/sprint';
+import { deleteSprint, startSprint, completeSprint } from 'api/sprint';
 import { getSpringLisSagaAction } from 'store/task/task.action';
 import ViewSprintModal from './ViewSprintModal';
 
 const { confirm } = Modal;
+
+const { Paragraph } = Typography;
 
 interface Props {
   current: any;
@@ -32,7 +34,7 @@ const SprintList: React.FC<Props> = ({
   const dispatch = useDispatch();
   const { sprintList } = useSelector((store: Store) => store.task);
   const [viewSprintModalVisible, setViewSprintModalVisible] = useState(false);
-  const [sprintId, setSprintId] = useState('');
+  const [sprint, setSprint] = useState<any>();
   const handleViewSprint = () => {
     setViewSprintModalVisible(true);
   };
@@ -46,9 +48,61 @@ const SprintList: React.FC<Props> = ({
       cancelText: '放弃',
       okType: 'danger',
       onOk() {
-        deleteSprint(sprintId).then((res: any) => {
+        deleteSprint(sprint?.pkId).then(() => {
           dispatch(getSpringLisSagaAction({ projectId }));
         });
+      },
+    });
+  };
+
+  const handleStartSprint = () => {
+    confirm({
+      title: '开始迭代',
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <div>
+          <Paragraph>迭代名称：{sprint.title}</Paragraph>
+          <Paragraph>
+            迭代周期：{formatDateCalendar(sprint.startTime)} -{' '}
+            {formatDateCalendar(sprint.endTime)}
+          </Paragraph>
+        </div>
+      ),
+      okText: '确定',
+      cancelText: '放弃',
+      onOk() {
+        if (projectId && sprint) {
+          const { pkId, startTime, endTime } = sprint;
+          startSprint({ pkId, startTime, endTime }).then(res => {
+            dispatch(getSpringLisSagaAction({ projectId }));
+          });
+        }
+      },
+    });
+  };
+
+  const handleCompleteSprint = () => {
+    confirm({
+      title: '完成迭代',
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <div>
+          <Paragraph>迭代名称：{sprint.title}</Paragraph>
+          <Paragraph>
+            请检查迭代中任务的完成情况，如有未完成的任务，将无法结束迭代
+          </Paragraph>
+        </div>
+      ),
+      okText: '确定',
+      cancelText: '取消',
+      onOk() {
+        if (sprint) {
+          completeSprint(sprint.pkId).then((res: any) => {
+            if (res.code === 200) {
+              message.success(res.desc);
+            }
+          });
+        }
       },
     });
   };
@@ -59,11 +113,11 @@ const SprintList: React.FC<Props> = ({
         <InfoCircleOutlined />
         迭代详情
       </Menu.Item>
-      <Menu.Item>
-        <SwapOutlined />
-        规划迭代
+      <Menu.Item onClick={handleStartSprint}>
+        <PlayCircleOutlined />
+        开始迭代
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item onClick={handleCompleteSprint}>
         <CheckCircleOutlined />
         完成迭代
       </Menu.Item>
@@ -99,12 +153,12 @@ const SprintList: React.FC<Props> = ({
           <div className="sprint-item-header">
             <div className="sprint-name">{item.title}</div>
             <div className="sprint-options">
-              <Tag>{sprintStatusMap.get(item.status)}</Tag>
+              <Tag color={item.status === 2 ? 'blue' : 'default'}>{sprintStatusMap.get(item.status)}</Tag>
               <div
                 className="actions"
                 onClick={e => {
                   e.stopPropagation();
-                  setSprintId(item.pkId);
+                  setSprint(item);
                 }}
               >
                 <Dropdown
@@ -146,7 +200,7 @@ const SprintList: React.FC<Props> = ({
         setUnvisible={() => {
           setViewSprintModalVisible(false);
         }}
-        sprintId={sprintId}
+        sprintId={sprint?.pkId}
       />
     </div>
   );

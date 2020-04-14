@@ -3,6 +3,7 @@ import './index.scss';
 import { Row, Col } from 'antd';
 import TaskAnalyticGraph from './components/TaskAnalyticGraph';
 import FinishedTaskAnalyticGraph from './components/FinishedTaskAnalyticGraph';
+import BugTrend from './components/BugTrend';
 
 const Analytics = () => (
   <div className="analytics-container">
@@ -13,14 +14,14 @@ const Analytics = () => (
         </div>
         <div className="graph-cards">
           <Row gutter={24}>
-            <Col lg={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+            <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
               <TaskAnalyticGraph />
             </Col>
-            <Col lg={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+            <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
               <FinishedTaskAnalyticGraph />
             </Col>
-            <Col lg={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
-                3
+            <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+              <BugTrend />
             </Col>
           </Row>
         </div>

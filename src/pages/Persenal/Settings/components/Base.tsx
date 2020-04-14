@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { UploadOutlined } from '@ant-design/icons';
 import { Avatar, Input, Upload, Button, Form, message } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
@@ -7,7 +6,7 @@ import { UserState } from 'store/user/user.reducer';
 import { update } from 'api/user';
 import { uploadAvatarUrl } from 'api/request';
 
-const Base = (props: any) => {
+const Base = () => {
   const {
     pkId,
     username,

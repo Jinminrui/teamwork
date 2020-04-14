@@ -85,10 +85,12 @@ const MemberList: React.FC<MemberListProps> = ({
                     <PhoneOutlined />
                     <span style={{ marginLeft: 6 }}>{item.phone}</span>
                   </div>
-                  <div style={{ paddingTop: 3 }}>
-                    <MailOutlined />
-                    <span style={{ marginLeft: 6 }}>{item.email}</span>
-                  </div>
+                  {item.email && (
+                    <div style={{ paddingTop: 3 }}>
+                      <MailOutlined />
+                      <span style={{ marginLeft: 6 }}>{item.email}</span>
+                    </div>
+                  )}
                 </div>
               }
             />
