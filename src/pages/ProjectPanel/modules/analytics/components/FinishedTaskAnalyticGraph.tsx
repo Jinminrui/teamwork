@@ -3,6 +3,7 @@ import { analyseFinishedTaskByMember } from 'api/task';
 import { Card } from 'antd';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Chart } from '@antv/g2';
+import { height } from '../graphConfig';
 
 const FinishedTaskAnalyticGraph: React.FC<RouteComponentProps> = props => {
   const projectId = (props.match.params as any).id;
@@ -18,7 +19,7 @@ const FinishedTaskAnalyticGraph: React.FC<RouteComponentProps> = props => {
       const chart = new Chart({
         container: 'graph2',
         autoFit: true,
-        height: 300,
+        height,
       });
       chart.data(graphData);
 

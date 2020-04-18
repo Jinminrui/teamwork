@@ -14,6 +14,13 @@ export interface InviteParams {
   projectId: string;
 }
 
+export interface DeleteProjectParams {
+  projectId: string;
+  operatorId: string;
+  teamId: string;
+  projectName: string;
+}
+
 export function create(params: CreateProjectParams) {
   return post('/project-center/project/create', params);
 }
@@ -26,8 +33,8 @@ export function getList(userId: string) {
   return get(`/project-center/project/list/${userId}`);
 }
 
-export function deleteProject(id: string) {
-  return post(`/project-center/project/delete/${id}`);
+export function deleteProject(params: DeleteProjectParams) {
+  return post('/project-center/project/delete/', params);
 }
 
 export function getProjectMembers(projectId: string) {

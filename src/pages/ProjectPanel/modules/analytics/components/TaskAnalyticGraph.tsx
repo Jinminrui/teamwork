@@ -4,6 +4,7 @@ import { analyseTask } from 'api/task';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import DataSet from '@antv/data-set';
 import { Chart } from '@antv/g2';
+import { height } from '../graphConfig';
 
 const TaskAnalyticGraph: React.FC<RouteComponentProps> = props => {
   const projectId = (props.match.params as any).id;
@@ -28,7 +29,7 @@ const TaskAnalyticGraph: React.FC<RouteComponentProps> = props => {
       const chart = new Chart({
         container: 'graph',
         autoFit: true,
-        height: 300,
+        height,
       });
 
       chart.data(dv.rows);

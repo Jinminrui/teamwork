@@ -54,7 +54,7 @@ const TaskList = (props: Props) => {
   return (
     <div className="task-list-container">
       <div className="header-bar">
-        <div className="title">{getTitle()} · 9</div>
+        <div className="title">{getTitle()} · {list.length}</div>
       </div>
       <div className="task-list">
         <List

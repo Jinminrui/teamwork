@@ -1,6 +1,7 @@
 @import 'static/styles/variable.scss';
 .task-list-container {
   margin-right: 24px;
+  overflow: hidden;
   .header-bar {
     display: flex;
     justify-content: space-between;

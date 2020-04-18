@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, List } from 'antd';
+import { getActivityList } from 'api/activity';
+import { useSelector } from 'react-redux';
+import { Store } from 'types';
+import moment from 'moment';
 
 const ActivityList: React.FC = () => {
   const [list, setList] = useState<Array<number>>([]);
   const [loading, setLoading] = useState(false);
+  const { teamId } = useSelector((store: Store) => store.team);
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setList([1, 2, 3, 4, 5, 6]);
-      setLoading(false);
-    }, 400);
-  }, []);
+    if (teamId) {
+      setLoading(true);
+      getActivityList({ teamId }).then(res => {
+        setList(res.data);
+        setLoading(false);
+      });
+    }
+  }, [teamId]);
 
   return (
     <Card
@@ -21,17 +28,17 @@ const ActivityList: React.FC = () => {
       <List
         itemLayout="horizontal"
         dataSource={list}
-        renderItem={item => (
+        renderItem={(item: any) => (
           <List.Item>
             <List.Item.Meta
               avatar={
                 <Avatar
-                  src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
+                  src={item.creatorDetail.avatar}
                   size={32}
                 />
               }
-              title={<a href="/">金敏睿 在 高逼格设计天团 新建项目 六月迭代</a>}
-              description="1小时前"
+              title={item.title}
+              description={moment(item.createTime).fromNow()}
             />
           </List.Item>
         )}

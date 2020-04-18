@@ -11,13 +11,15 @@ import { ProjectListItem } from 'store/project/project.reducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
 import { GET_PROJECT_LIST_SAGA } from 'store/project/actionTypes';
-import { deleteProject } from 'api/project';
+import { deleteProject, DeleteProjectParams } from 'api/project';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import EditProjectModal from './components/EditProjectModal';
 
 const { confirm } = Modal;
 
 const ProjectList = (props: RouteComponentProps) => {
+  const userId = useSelector((store: Store) => store.user.pkId);
+  const teamId = useSelector((store: Store) => store.team.teamId);
   const projectList = useSelector((store: Store) => store.project.list);
   const listLoading = useSelector((store: Store) => store.project.listLoading);
   const [editProjectModalVisible, setEditProjectModalVisible] = useState(false);
@@ -32,11 +34,19 @@ const ProjectList = (props: RouteComponentProps) => {
     dispatch({ type: GET_PROJECT_LIST_SAGA });
   }, [dispatch]);
 
-  const handleDeleteProject = (pkId: string) => {
-    deleteProject(pkId).then((res: any) => {
-      message.success(res.desc);
-      dispatch({ type: GET_PROJECT_LIST_SAGA });
-    });
+  const handleDeleteProject = (item: ProjectListItem) => {
+    if (teamId) {
+      const params: DeleteProjectParams = {
+        projectId: item.pkId,
+        operatorId: userId,
+        projectName: item.name,
+        teamId,
+      };
+      deleteProject(params).then((res: any) => {
+        message.success(res.desc);
+        dispatch({ type: GET_PROJECT_LIST_SAGA });
+      });
+    }
   };
 
   return (
@@ -80,7 +90,7 @@ const ProjectList = (props: RouteComponentProps) => {
                         okType: 'danger',
                         cancelText: '放弃',
                         onOk() {
-                          handleDeleteProject(item.pkId);
+                          handleDeleteProject(item);
                         },
                       });
                     }}

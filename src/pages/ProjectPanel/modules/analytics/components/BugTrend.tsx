@@ -10,6 +10,7 @@ import {
 } from 'api/task';
 import moment from 'moment';
 import { Chart } from '@antv/g2';
+import { height } from '../graphConfig';
 
 const { Option } = Select;
 
@@ -32,7 +33,7 @@ const BugTrend: React.FC<RouteComponentProps> = props => {
         const chart: Chart = new Chart({
           container: 'graph3',
           autoFit: true,
-          height: 300,
+          height,
         });
 
         chart.tooltip({
@@ -42,6 +43,15 @@ const BugTrend: React.FC<RouteComponentProps> = props => {
 
         chart.scale('date', {
           formatter: val => moment(val).format('MM-DD'),
+        });
+
+        chart.scale('value', {
+          min: 0,
+          alias: '缺陷数',
+        });
+
+        chart.axis('value', {
+          title: {},
         });
 
         chart

@@ -151,7 +151,7 @@ const EditProjectModal: React.FC<Props> = ({
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="description" label="项目编号">
+        <Form.Item name="description" label="项目简介">
           <Input.TextArea
             placeholder="介绍一下这个项目"
             rows={4}
