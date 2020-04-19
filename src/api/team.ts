@@ -26,8 +26,13 @@ interface InviteParams {
   phones: Array<string>;
 }
 
-export function getTeamInfo(id: string) {
-  return get(`/user-center/team/${id}`);
+interface GetTeamInfoParams {
+  teamId: string;
+  userId: string;
+}
+
+export function getTeamInfo(params: GetTeamInfoParams) {
+  return get('/user-center/team/detail', params);
 }
 
 export function create(params: CreateParams) {

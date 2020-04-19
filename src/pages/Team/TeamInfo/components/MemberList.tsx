@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Popconfirm, Button, Avatar, Tag, List, message } from 'antd';
-import { MessageFilled, PhoneOutlined, MailOutlined } from '@ant-design/icons';
-import { useSelector, useDispatch } from 'react-redux';
-import { UserState } from 'store/user/user.reducer';
-import { deleteMember } from 'api/team';
+import { Avatar, Tag, List } from 'antd';
+import { MessageFilled, PhoneOutlined, MailOutlined, WechatOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 import { Store } from 'types';
 import MessageModal from 'components/MessageModal';
 
@@ -13,46 +11,15 @@ interface MemberListProps {
   teamId: string;
 }
 
-const MemberList: React.FC<MemberListProps> = ({
-  teamId,
-  myId,
-  isTeamCreator,
-}) => {
+const MemberList: React.FC<MemberListProps> = () => {
   const memberList = useSelector((store: Store) => store.team?.memberList);
   const [messageModalVisible, setMessageModalVisible] = useState(false);
-  const dispatch = useDispatch();
-  function handleDeleteMember(item: UserState) {
-    if (teamId && item.pkId) {
-      deleteMember({ teamId, userId: item.pkId }).then((res: any) => {
-        message.success(res.desc);
-        dispatch({ type: 'SET_MEMBER_LIST_SAGA', teamId });
-      });
-    }
-  }
-
   return (
     <div>
       <List
         dataSource={memberList}
         renderItem={item => (
-          <List.Item
-            actions={[
-              isTeamCreator && item.pkId !== myId && (
-                <Popconfirm
-                  title="您确定要移除该成员吗？"
-                  onConfirm={() => {
-                    handleDeleteMember(item);
-                  }}
-                  okText="确认"
-                  cancelText="取消"
-                >
-                  <Button danger size="small">
-                    移除
-                  </Button>
-                </Popconfirm>
-              ),
-            ]}
-          >
+          <List.Item>
             <List.Item.Meta
               avatar={<Avatar src={item.avatar} size={64} />}
               title={
@@ -85,12 +52,17 @@ const MemberList: React.FC<MemberListProps> = ({
                     <PhoneOutlined />
                     <span style={{ marginLeft: 6 }}>{item.phone}</span>
                   </div>
-                  {item.email && (
-                    <div style={{ paddingTop: 3 }}>
-                      <MailOutlined />
-                      <span style={{ marginLeft: 6 }}>{item.email}</span>
-                    </div>
-                  )}
+
+                  <div style={{ paddingTop: 3 }}>
+                    <MailOutlined />
+                    <span style={{ marginLeft: 6 }}>{item.email || '尚未设置'}</span>
+                  </div>
+
+                  <div style={{ paddingTop: 3 }}>
+                    <WechatOutlined />
+                    <span style={{ marginLeft: 6 }}>{item.wxName || '尚未设置'}</span>
+                  </div>
+
                 </div>
               }
             />

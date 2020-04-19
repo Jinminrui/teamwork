@@ -44,7 +44,7 @@ const Dashbord: React.FC = () => {
               </div>
               <div className="desc">
                 <IdcardOutlined style={{ marginRight: 8, fontSize: 20 }} />
-                {userInfo.position}
+                {userInfo.position || '尚未确定职位'}
               </div>
             </div>
           </div>

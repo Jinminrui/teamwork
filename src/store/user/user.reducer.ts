@@ -13,6 +13,7 @@ export interface UserState {
   position?: string;
   description?: string;
   createTime?: string;
+  wxName?: string;
 }
 
 const defaultState: UserState = {
@@ -26,6 +27,7 @@ const defaultState: UserState = {
   teams: [],
   position: '',
   description: '',
+  wxName: '',
 };
 
 export default (state = defaultState, action: any) => {

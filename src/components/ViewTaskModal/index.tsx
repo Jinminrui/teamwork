@@ -192,7 +192,7 @@ const ViewTaskModal = () => {
           setViewTaskProps({ visible: false, taskId: '', refetch: () => {} })
         );
       }}
-      bodyStyle={{ maxHeight: 800, height: '100%', overflow: 'auto' }}
+      bodyStyle={{ maxHeight: 820, height: '100%', overflow: 'auto' }}
     >
       <div className="task-detail-wrapper">
         <Title

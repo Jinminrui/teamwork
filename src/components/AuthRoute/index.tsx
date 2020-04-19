@@ -9,6 +9,9 @@ interface Props {
 
 const AuthRoute: React.FC<Props> = ({ path, component }) => {
   const isLogin = Cookies.get('user-token');
+  if (!isLogin) {
+    return <Redirect to={{ pathname: '/login' }} />;
+  }
   return (<Route
     path={path}
     component={component}

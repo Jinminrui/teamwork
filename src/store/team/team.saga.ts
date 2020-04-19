@@ -9,8 +9,11 @@ function* setMemberListSaga(action: any) {
 }
 
 function* setTeamInfoSaga(action: any) {
-  const res = yield getTeamInfo(action.teamId);
-  yield put(setTeamInfo(res.data));
+  const userId = localStorage.getItem('userId');
+  if (userId) {
+    const res = yield getTeamInfo({ teamId: action.teamId, userId });
+    yield put(setTeamInfo(res.data));
+  }
 }
 
 export default function* watchTeam() {

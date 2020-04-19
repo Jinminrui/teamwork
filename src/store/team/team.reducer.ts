@@ -8,6 +8,7 @@ export interface TeamInfo {
   creatorId: string;
   createTime: string;
   updateTime: string;
+  currentRole: number;
 }
 
 export interface TeamState {

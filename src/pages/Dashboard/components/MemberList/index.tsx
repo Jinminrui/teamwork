@@ -16,7 +16,7 @@ const MemberList = () => {
     <Card
       title="成员"
       style={{ padding: 0 }}
-      extra={<Link to="/team">全部成员</Link>}
+      extra={<Link to="/home/team-info">全部成员</Link>}
     >
       {memberList.length === 0 ? (
         <Empty description="快去邀请你的团队成员吧！" />

@@ -4,22 +4,43 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
 import './index.scss';
-import { PageHeader, Tag, Button, message, Typography, Card } from 'antd';
+import { PageHeader, Tag, Button, message, Typography, Card, Modal } from 'antd';
 import { getTimeGap } from 'utils';
-import { update } from 'api/team';
+import { update, deleteMember } from 'api/team';
 import { RouteComponentProps } from 'react-router-dom';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import NoTeam from './components/NoTeam';
 import TeamInfoFormModal from './components/TeamInfoFormModal';
 import MemberList from './components/MemberList';
 
 const { Paragraph } = Typography;
+const { confirm } = Modal;
 
 const TeamInfo: React.FC<RouteComponentProps> = () => {
-  const { role, pkId } = useSelector((store: Store) => store.user);
+  const { pkId } = useSelector((store: Store) => store.user);
   const { teamId, teamInfo } = useSelector((store: Store) => store.team);
   const [visible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
+
+  function handleDeleteMember() {
+    confirm({
+      title: '确定要退出该团队吗？',
+      icon: <ExclamationCircleOutlined />,
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        if (teamId && pkId) {
+          deleteMember({ teamId, userId: pkId }).then((res: any) => {
+            message.success(res.desc);
+            window.location.reload();
+          });
+        }
+      },
+    });
+  }
+
 
   function onUpdate(value: any) {
     if (teamId) {
@@ -56,12 +77,11 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
             onClick={() => {
               setVisible(true);
             }}
-            disabled={role !== 1}
             ghost
           >
             修改信息
           </Button>,
-          <Button key="2" danger>
+          <Button key="2" danger onClick={() => handleDeleteMember()}>
             退出团队
           </Button>,
         ]}
@@ -76,7 +96,7 @@ const TeamInfo: React.FC<RouteComponentProps> = () => {
             <MemberList
               teamId={teamId}
               myId={pkId}
-              isTeamCreator={role === 1}
+              isTeamCreator={teamInfo.currentRole === 1}
             />
           )}
         </Card>
