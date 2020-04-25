@@ -4,6 +4,7 @@ import { Row, Col } from 'antd';
 import TaskAnalyticGraph from './components/TaskAnalyticGraph';
 import FinishedTaskAnalyticGraph from './components/FinishedTaskAnalyticGraph';
 import BugTrend from './components/BugTrend';
+import BurnupGraph from './components/BurnupGraph';
 
 const Analytics = () => (
   <div className="analytics-container">
@@ -22,6 +23,9 @@ const Analytics = () => (
             </Col>
             <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
               <BugTrend />
+            </Col>
+            <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+              <BurnupGraph />
             </Col>
           </Row>
         </div>

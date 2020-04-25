@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Avatar, List } from 'antd';
+import { Card, Avatar, List, Empty } from 'antd';
 import { getActivityList } from 'api/activity';
 import { useSelector } from 'react-redux';
 import { Store } from 'types';
@@ -28,6 +28,7 @@ const ActivityList: React.FC = () => {
       <List
         itemLayout="horizontal"
         dataSource={list}
+        locale={{ emptyText: <Empty description="暂无待办工作" /> }}
         renderItem={(item: any) => (
           <List.Item>
             <List.Item.Meta

@@ -49,54 +49,51 @@ const TodoList: React.FC<RouteComponentProps> = ({ history }) => {
           </Button>,
         ]}
       >
-        {list.length ? (
-          <List
-            dataSource={list}
-            size="small"
-            split={false}
-            renderItem={(item, index) => (
-              <div
-                className="list-item"
-                key={item.pkId}
-                onClick={() => {
-                  dispatch(
-                    setViewTaskProps({
-                      visible: true,
-                      taskId: item.pkId,
-                      refetch: fetchData,
-                    })
-                  );
-                }}
-              >
-                <div className="detail">
-                  <div className="name">
-                    {item.title}
-                  </div>
-                  <div className="task-infos">
-                    <Tag color={getStatusTagColor(item.stage)}>{item.stage}</Tag>
-                    <span className="type">
-                      {item.type === 1 ? <StoryIcon /> : <BugIcon />}
-                      <span style={{ marginLeft: 6 }}>
-                        {item.type === 1 ? '需求' : '缺陷'}
-                      </span>
-                    </span>
-                    <span className="project">
-                      <ProjectOutlined style={{ marginRight: 4 }} />
-                    项目：{item.projectDetail.name}
-                    </span>
-                  </div>
+        <List
+          dataSource={list}
+          size="small"
+          split={false}
+          locale={{ emptyText: <Empty description="暂无待办工作" /> }}
+          renderItem={(item, index) => (
+            <div
+              className="list-item"
+              key={item.pkId}
+              onClick={() => {
+                dispatch(
+                  setViewTaskProps({
+                    visible: true,
+                    taskId: item.pkId,
+                    refetch: fetchData,
+                  })
+                );
+              }}
+            >
+              <div className="detail">
+                <div className="name">
+                  {item.title}
                 </div>
-                <span className="task-priority">
-                  <Tag color={priorityColorMap.get(item.priority)}>
-                    {priorityDescMap.get(item.priority)}
-                  </Tag>
-                </span>
+                <div className="task-infos">
+                  <Tag color={getStatusTagColor(item.stage)}>{item.stage}</Tag>
+                  <span className="type">
+                    {item.type === 1 ? <StoryIcon /> : <BugIcon />}
+                    <span style={{ marginLeft: 6 }}>
+                      {item.type === 1 ? '需求' : '缺陷'}
+                    </span>
+                  </span>
+                  <span className="project">
+                    <ProjectOutlined style={{ marginRight: 4 }} />
+                    项目：{item.projectDetail.name}
+                  </span>
+                </div>
               </div>
-            )}
-          />
-        ) : (
-          <Empty description="暂无待办工作" />
-        )}
+              <span className="task-priority">
+                <Tag color={priorityColorMap.get(item.priority)}>
+                  {priorityDescMap.get(item.priority)}
+                </Tag>
+              </span>
+            </div>
+          )}
+        />
       </Card>
     </div>
   );
