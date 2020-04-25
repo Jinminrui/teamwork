@@ -55,26 +55,10 @@ const Dashbord: React.FC = () => {
                 {userInfo.createTime ? getTimeGap(userInfo.createTime) : 0}
               </p>
             </div>
-            <div className="state-item">
+            {/* <div className="state-item">
               <p className="title">项目数</p>
               <p className="data">32</p>
-            </div>
-            <div className="state-item">
-              <p className="title">团队排名</p>
-              <p className="data">
-              8
-                <span
-                  style={{
-                    color: 'rgba(0, 0, 0, 0.45)',
-                    fontSize: '24px',
-                    fontWeight: 300,
-                    padding: '0 2px',
-                  }}
-                >
-                / 24
-                </span>
-              </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
