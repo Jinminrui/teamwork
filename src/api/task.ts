@@ -96,3 +96,7 @@ export function analyseFinishedTaskByMember(projectId: string) {
 export function analyseBugAccumulativeTrend(params: AnalyseBugAccumulativeTrendParams) {
   return get(`${TASK}/analyseBugAccumulativeTrend`, params);
 }
+
+export function analyseBurnDown(sprintId: string) {
+  return get(`${TASK}/analyseBurnDown`, { sprintId });
+}

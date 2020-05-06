@@ -53,3 +53,7 @@ export function startSprint(params: StartSprintParams) {
 export function completeSprint(id: string) {
   return post(`/project-center/sprint/${id}/complete`);
 }
+
+export function getFinishedSprints(projectId: string) {
+  return get('/project-center/sprint/list/finished', { projectId });
+}

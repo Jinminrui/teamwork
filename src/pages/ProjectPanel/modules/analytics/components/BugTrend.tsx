@@ -57,13 +57,15 @@ const BugTrend: React.FC<RouteComponentProps> = props => {
         chart
           .line()
           .position('date*value')
-          .color('type');
+          .color('type')
+          .shape('smooth');
 
         chart
           .point()
           .position('date*value')
           .color('type')
-          .shape('circle');
+          .shape('circle')
+          .size(2);
         chart.data(res.data);
 
         chart.render();
@@ -109,7 +111,7 @@ const BugTrend: React.FC<RouteComponentProps> = props => {
   );
 
   return (
-    <Card title="缺陷累计趋势" extra={<FilterForm />}>
+    <Card title="缺陷累计趋势" extra={<FilterForm />} style={{ marginBottom: 24 }}>
       <div id="graph3" />
     </Card>
   );

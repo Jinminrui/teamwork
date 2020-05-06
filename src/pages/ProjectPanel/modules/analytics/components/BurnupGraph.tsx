@@ -1,125 +1,82 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Select } from 'antd';
-import { useSelector } from 'react-redux';
-import { Store } from 'types';
+import { Card, Form, Select, Empty } from 'antd';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { Chart } from '@antv/g2';
+import { getFinishedSprints } from 'api/sprint';
+import { analyseBurnDown } from 'api/task';
 import { height } from '../graphConfig';
 
 const { Option } = Select;
 
 const BurnupGraph: React.FC<RouteComponentProps> = props => {
-  // const projectId = (props.match.params as any).id;
-  const { sprintList } = useSelector((store: Store) => store.task);
-  const [sprintId, setSprintId] = useState(sprintList.length ? sprintList[0].pkId : undefined);
+  const projectId = (props.match.params as any).id;
+  const [sprintList, setSprintList] = useState<any>([]);
+  const [sprintId, setSprintId] = useState('');
+  const [curChart, setChart] = useState<any>();
 
   useEffect(() => {
-    const data = [
-      {
-        date: '2020-04-07',
-        type: '实际剩余Story Points',
-        value: 10,
-      },
-      {
-        date: '2020-04-07',
-        type: '理想剩余Story Points',
-        value: 10,
-      },
-      {
-        date: '2020-04-08',
-        type: '实际剩余Story Points',
-        value: 7,
-      },
-      {
-        date: '2020-04-08',
-        type: '理想剩余Story Points',
-        value: 8,
-      },
-      {
-        date: '2020-04-09',
-        type: '实际剩余Story Points',
-        value: 5,
-      },
-      {
-        date: '2020-04-09',
-        type: '理想剩余Story Points',
-        value: 6,
-      },
-      {
-        date: '2020-04-10',
-        type: '实际剩余Story Points',
-        value: 4,
-      },
-      {
-        date: '2020-04-10',
-        type: '理想剩余Story Points',
-        value: 4,
-      },
-      {
-        date: '2020-04-11',
-        type: '实际剩余Story Points',
-        value: 1,
-      },
-      {
-        date: '2020-04-11',
-        type: '理想剩余Story Points',
-        value: 2,
-      },
-      {
-        date: '2020-04-12',
-        type: '实际剩余Story Points',
-        value: 1,
-      },
-      {
-        date: '2020-04-12',
-        type: '理想剩余Story Points',
-        value: 0,
-      },
-    ];
-    const chart: Chart = new Chart({
-      container: 'graph4',
-      autoFit: true,
-      height,
+    getFinishedSprints(projectId).then(res => {
+      if (res.data.length) {
+        setSprintList(res.data);
+        setSprintId(res.data[0].pkId);
+      }
     });
+  }, [projectId]);
 
-    chart.tooltip({
-      showCrosshairs: true,
-      shared: true,
-    });
+  useEffect(() => {
+    if (sprintId !== '') {
+      analyseBurnDown(sprintId).then(res => {
+        if (!curChart) {
+          const chart: Chart = new Chart({
+            container: 'graph4',
+            autoFit: true,
+            height,
+          });
 
-    chart.scale('date', {
-      formatter: val => moment(val).format('MM-DD'),
-    });
+          chart.tooltip({
+            showCrosshairs: true,
+            shared: true,
+          });
 
-    chart.scale('value', {
-      min: 0,
-      alias: 'Story Points',
-    });
+          chart.scale('date', {
+            formatter: val => moment(val).format('MM-DD'),
+          });
 
-    chart.axis('value', {
-      title: {},
-    });
+          chart.scale('value', {
+            min: 0,
+            alias: 'Story Points',
+          });
 
-    chart
-      .line()
-      .position('date*value')
-      .color('type')
-      .shape('smooth');
+          chart.axis('value', {
+            title: {},
+          });
 
-    chart
-      .point()
-      .position('date*value')
-      .color('type')
-      .shape('circle');
-    chart.data(data);
+          chart
+            .line()
+            .position('date*value')
+            .color('type')
+            .shape('smooth');
 
-    chart.render();
-  }, []);
+          chart
+            .point()
+            .position('date*value')
+            .color('type')
+            .shape('circle')
+            .size(2);
+          chart.data(res.data);
+          chart.render();
+          setChart(chart);
+        } else {
+          curChart.changeData(res.data);
+        }
+      });
+    }
+  }, [curChart, sprintId]);
 
   const FilterForm = () => (
     <Form layout="inline">
-      {sprintList.length && (
+      {sprintList.length !== 0 ? (
         <Form.Item label="迭代" name="sprintId">
           <Select
             defaultValue={sprintList[0].pkId}
@@ -127,18 +84,18 @@ const BurnupGraph: React.FC<RouteComponentProps> = props => {
             onChange={value => setSprintId(value)}
             style={{ width: 104 }}
           >
-            {sprintList.map(item => (
+            {sprintList.map((item: any) => (
               <Option key={item.pkId} value={item.pkId}>{item.title}</Option>
             ))}
           </Select>
         </Form.Item>
-      )}
+      ) : ''}
     </Form>
   );
 
   return (
     <Card title="燃尽图" extra={<FilterForm />}>
-      <div id="graph4" />
+      {sprintList.length ? <div id="graph4" /> : <Empty style={{ height }} description="暂无数据" />}
     </Card>
   );
 };

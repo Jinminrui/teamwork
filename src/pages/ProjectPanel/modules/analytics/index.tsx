@@ -15,16 +15,16 @@ const Analytics = () => (
         </div>
         <div className="graph-cards">
           <Row gutter={24}>
-            <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+            <Col span={24}>
               <TaskAnalyticGraph />
             </Col>
-            <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+            <Col span={24}>
               <FinishedTaskAnalyticGraph />
             </Col>
-            <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+            <Col span={24}>
               <BugTrend />
             </Col>
-            <Col xl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+            <Col span={24}>
               <BurnupGraph />
             </Col>
           </Row>
