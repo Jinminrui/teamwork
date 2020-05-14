@@ -29,6 +29,7 @@ const ActivityList: React.FC = () => {
         itemLayout="horizontal"
         dataSource={list}
         locale={{ emptyText: <Empty description="暂无待办工作" /> }}
+        style={{ height: 400, overflow: 'auto' }}
         renderItem={(item: any) => (
           <List.Item>
             <List.Item.Meta
