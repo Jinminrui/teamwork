@@ -64,8 +64,7 @@ const BugTrend: React.FC<RouteComponentProps> = props => {
           .point()
           .position('date*value')
           .color('type')
-          .shape('circle')
-          .size(2);
+          .shape('circle');
         chart.data(res.data);
 
         chart.render();

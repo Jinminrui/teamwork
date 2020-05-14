@@ -142,6 +142,12 @@ const TaskTable: React.FC<Props> = ({ projectId, sprintId }) => {
       scroll={{ x: 1200, y: tableHeight }}
       dataSource={taskList}
       rowKey="pkId"
+      rowClassName={(record: any) => (record.stage === '已完成' ||
+        record.stage === '关闭' ||
+        record.stage === '已解决' ||
+        record.stage === '已拒绝'
+        ? 'finished'
+        : '')}
       size="small"
       onRow={record => ({
         onClick: () => {

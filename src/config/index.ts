@@ -91,6 +91,12 @@ export const sprintStatusMap = new Map([
   [3, '已结束'],
 ]);
 
+export const sprintStatusColorMap = new Map([
+  [1, 'default'],
+  [2, 'processing'],
+  [3, 'success'],
+]);
+
 
 export const getStatusTagColor = (status: string) => {
   const workflow = storyWorkflow.concat(bugWorkflow);

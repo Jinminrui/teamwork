@@ -58,6 +58,10 @@ const ClassifyTree = (props: Props) => {
         deleteTaskClass(item.pkId).then(() => {
           message.success('删除成功');
           dispatch(getClassInfoSagaAction({ projectId, type }));
+          props.setCurrent({
+            pkId: undefined,
+            name: type === 1 ? '所有需求' : '所有缺陷',
+          });
         });
       },
     });

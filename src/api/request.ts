@@ -13,6 +13,8 @@ if (env === 'development') {
 
 export const uploadAvatarUrl = `${HOST}/user-center/oss/uploadAvatar`;
 
+export const uploadProjectCoverUrl = `${HOST}/project-center/project/uploadProjectCover`;
+
 const baseConfig: AxiosRequestConfig = {
   baseURL: HOST,
   // withCredentials: true,

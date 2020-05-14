@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from 'types';
-import { Tag, Menu, Dropdown, Progress, Modal, Typography, message } from 'antd';
+import {
+  Tag,
+  Menu,
+  Dropdown,
+  Progress,
+  Modal,
+  Typography,
+  message,
+} from 'antd';
 import { formatDateCalendar } from 'utils';
-import { sprintStatusMap } from 'config';
+import { sprintStatusMap, sprintStatusColorMap } from 'config';
 import {
   EllipsisOutlined,
   InfoCircleOutlined,
@@ -113,11 +121,11 @@ const SprintList: React.FC<Props> = ({
         <InfoCircleOutlined />
         迭代详情
       </Menu.Item>
-      <Menu.Item onClick={handleStartSprint}>
+      <Menu.Item onClick={handleStartSprint} disabled={sprint.status !== 1}>
         <PlayCircleOutlined />
         开始迭代
       </Menu.Item>
-      <Menu.Item onClick={handleCompleteSprint}>
+      <Menu.Item onClick={handleCompleteSprint} disabled={sprint.status !== 2}>
         <CheckCircleOutlined />
         完成迭代
       </Menu.Item>
@@ -153,7 +161,9 @@ const SprintList: React.FC<Props> = ({
           <div className="sprint-item-header">
             <div className="sprint-name">{item.title}</div>
             <div className="sprint-options">
-              <Tag color={item.status === 2 ? 'blue' : 'default'}>{sprintStatusMap.get(item.status)}</Tag>
+              <Tag color={sprintStatusColorMap.get(item.status)}>
+                {sprintStatusMap.get(item.status)}
+              </Tag>
               <div
                 className="actions"
                 onClick={e => {

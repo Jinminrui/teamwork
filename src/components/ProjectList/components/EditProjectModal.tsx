@@ -7,6 +7,7 @@ import { ProjectListItem } from 'store/project/project.reducer';
 import { useDispatch } from 'react-redux';
 import { GET_PROJECT_LIST_SAGA } from 'store/project/actionTypes';
 import { projectStatusMap } from 'config';
+import { uploadProjectCoverUrl } from 'api/request';
 
 interface Props {
   visible: boolean;
@@ -114,7 +115,8 @@ const EditProjectModal: React.FC<Props> = ({
             <Upload
               className="upload-btn"
               showUploadList={false}
-              action="http://localhost:8081/oss/uploadAvatar"
+              action={uploadProjectCoverUrl}
+              data={{ projectId: initValues?.pkId }}
               onChange={handleChange}
             >
               <Button loading={uploadLoading} type="primary" ghost>

@@ -12,7 +12,7 @@ import EditorModal from 'components/EditorModal';
 
 const { Option } = Select;
 
-export const docsTag = ['全部', '技术分享', '项目文档', '团队规范', '会议记录'];
+export const docsTag = ['全部', '技术分享', '项目文档', '团队规范', '会议记录', '测试类型'];
 
 const Docs = (props: RouteComponentProps) => {
   const [tags, setTags] = useState<Array<string>>([]);
@@ -159,7 +159,7 @@ const Docs = (props: RouteComponentProps) => {
                 </Select>
               </div>
             </div>
-            <div className="search-docs-form-row">
+            {/* <div className="search-docs-form-row">
               <div className="form-row-label">
                 <span>所属项目</span>
               </div>
@@ -173,7 +173,7 @@ const Docs = (props: RouteComponentProps) => {
                   {authorOptions}
                 </Select>
               </div>
-            </div>
+            </div> */}
           </Form>
         </Card>
         <Card style={{ marginTop: 24 }}>
