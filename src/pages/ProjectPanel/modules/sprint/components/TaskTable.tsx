@@ -10,6 +10,7 @@ import BugIcon from 'components/Icon/BugIcon';
 import {
   setViewTaskProps,
   getTaskListSagaAction,
+  getSpringLisSagaAction,
 } from 'store/task/task.action';
 
 interface Props {
@@ -160,6 +161,7 @@ const TaskTable: React.FC<Props> = ({ projectId, sprintId }) => {
                 dispatch(
                   getTaskListSagaAction({ projectId, sprint: sprintId, userId })
                 );
+                dispatch(getSpringLisSagaAction({ projectId }));
               },
             })
           );

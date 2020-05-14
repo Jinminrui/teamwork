@@ -1,6 +1,8 @@
 import { post, get } from './request';
 
 export interface CreateSprintParams{
+  creatorId: string;
+  teamId: string;
   title: string;
   director?: string;
   startTime?: string;

@@ -22,6 +22,7 @@ import {
 } from '@ant-design/icons';
 import { deleteSprint, startSprint, completeSprint } from 'api/sprint';
 import { getSpringLisSagaAction } from 'store/task/task.action';
+import moment from 'moment';
 import ViewSprintModal from './ViewSprintModal';
 
 const { confirm } = Modal;
@@ -152,58 +153,61 @@ const SprintList: React.FC<Props> = ({
       >
         <span className="sprint-name">未规划的任务</span>
       </div>
-      {sprintList.map(item => (
-        <div
-          className={`sprint-list-item ${current.id === item.pkId && 'active'}`}
-          onClick={() => onSprintChange({ id: item.pkId, name: item.title })}
-          key={item.pkId}
-        >
-          <div className="sprint-item-header">
-            <div className="sprint-name">{item.title}</div>
-            <div className="sprint-options">
-              <Tag color={sprintStatusColorMap.get(item.status)}>
-                {sprintStatusMap.get(item.status)}
-              </Tag>
-              <div
-                className="actions"
-                onClick={e => {
-                  e.stopPropagation();
-                  setSprint(item);
-                }}
-              >
-                <Dropdown
-                  overlay={SprintOptions}
-                  trigger={['click']}
-                  placement="bottomLeft"
+      {sprintList
+        .sort((a, b) => (moment(a.createTime).isBefore(b.createTime) ? -1 : 1))
+        .map(item => (
+          <div
+            className={`sprint-list-item ${current.id === item.pkId &&
+              'active'}`}
+            onClick={() => onSprintChange({ id: item.pkId, name: item.title })}
+            key={item.pkId}
+          >
+            <div className="sprint-item-header">
+              <div className="sprint-name">{item.title}</div>
+              <div className="sprint-options">
+                <Tag color={sprintStatusColorMap.get(item.status)}>
+                  {sprintStatusMap.get(item.status)}
+                </Tag>
+                <div
+                  className="actions"
+                  onClick={e => {
+                    e.stopPropagation();
+                    setSprint(item);
+                  }}
                 >
-                  <EllipsisOutlined />
-                </Dropdown>
+                  <Dropdown
+                    overlay={SprintOptions}
+                    trigger={['click']}
+                    placement="bottomLeft"
+                  >
+                    <EllipsisOutlined />
+                  </Dropdown>
+                </div>
               </div>
             </div>
+            <div className="sprint-subtitle">
+              {item.startTime && (
+                <span>{formatDateCalendar(item.startTime)}</span>
+              )}
+              <span style={{ margin: '0 4px' }}>-</span>
+              {item.endTime && <span>{formatDateCalendar(item.endTime)}</span>}
+            </div>
+            <div className="sprint-subtitle">
+              任务
+              <span style={{ margin: '0 4px' }}>
+                {item.doneTask} / {item.allTask}
+              </span>
+              <Progress
+                type="circle"
+                trailColor="#e5e5e5"
+                percent={(item.doneTask / item.allTask) * 100}
+                showInfo={false}
+                strokeWidth={14}
+                width={16}
+              />
+            </div>
           </div>
-          <div className="sprint-subtitle">
-            {item.startTime && (
-              <span>{formatDateCalendar(item.startTime)}</span>
-            )}
-            <span style={{ margin: '0 4px' }}>-</span>
-            {item.endTime && <span>{formatDateCalendar(item.endTime)}</span>}
-          </div>
-          <div className="sprint-subtitle">
-            任务
-            <span style={{ margin: '0 4px' }}>
-              {item.doneTask} / {item.allTask}
-            </span>
-            <Progress
-              type="circle"
-              trailColor="#e5e5e5"
-              percent={(item.doneTask / item.allTask) * 100}
-              showInfo={false}
-              strokeWidth={14}
-              width={16}
-            />
-          </div>
-        </div>
-      ))}
+        ))}
       <ViewSprintModal
         projectId={projectId}
         visible={viewSprintModalVisible}

@@ -35,6 +35,8 @@ const CreateSprintModal: React.FC<Props> = ({
 }) => {
   const [form] = Form.useForm();
   const { members } = useSelector((store: Store) => store.project);
+  const creatorId = useSelector((store: Store) => store.user.pkId);
+  const teamId = useSelector((store: Store) => store.team.teamId);
   const dispatch = useDispatch();
   return (
     <Modal
@@ -47,26 +49,30 @@ const CreateSprintModal: React.FC<Props> = ({
         setUnVisible();
       }}
       onOk={() => {
-        form.validateFields().then(value => {
-          const params: CreateSprintParams = {
-            title: value.title,
-            director: value.director,
-            startTime: value.time
-              ? moment(value.time[0]).format('YYYY-MM-DD')
-              : undefined,
-            endTime: value.time
-              ? moment(value.time[1]).format('YYYY-MM-DD')
-              : undefined,
-            projectId,
-            description: value.description,
-          };
-          createSprint(params).then((res: any) => {
-            message.success(res.desc);
-            form.resetFields();
-            setUnVisible();
-            dispatch(getSpringLisSagaAction({ projectId }));
+        if (teamId) {
+          form.validateFields().then(value => {
+            const params: CreateSprintParams = {
+              creatorId,
+              teamId,
+              title: value.title,
+              director: value.director,
+              startTime: value.time
+                ? moment(value.time[0]).format('YYYY-MM-DD')
+                : undefined,
+              endTime: value.time
+                ? moment(value.time[1]).format('YYYY-MM-DD')
+                : undefined,
+              projectId,
+              description: value.description,
+            };
+            createSprint(params).then((res: any) => {
+              message.success(res.desc);
+              form.resetFields();
+              setUnVisible();
+              dispatch(getSpringLisSagaAction({ projectId }));
+            });
           });
-        });
+        }
       }}
     >
       <Form form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
