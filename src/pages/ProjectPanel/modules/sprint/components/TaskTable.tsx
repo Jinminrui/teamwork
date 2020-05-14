@@ -123,6 +123,7 @@ const TaskTable: React.FC<Props> = ({ projectId, sprintId }) => {
       key: 'storyPoints',
       width: 180,
       ellipsis: true,
+      render: (value: any) => (value || '待设置'),
     },
     {
       title: '任务分类',
