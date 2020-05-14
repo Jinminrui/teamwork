@@ -94,7 +94,9 @@ const BurnupGraph: React.FC<RouteComponentProps> = props => {
 
   return (
     <Card title="燃尽图" extra={<FilterForm />}>
-      {sprintList.length ? <div id="graph4" /> : <Empty style={{ height }} description="暂无数据" />}
+      <div id="graph4">
+        {sprintList.length === 0 && <Empty style={{ height }} description="暂无数据" />}
+      </div>
     </Card>
   );
 };

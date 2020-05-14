@@ -91,7 +91,7 @@ const BugTrend: React.FC<RouteComponentProps> = props => {
           <Option value={30}>过去一个月</Option>
         </Select>
       </Form.Item>
-      {sprintList.length && (
+      {sprintList.length ? (
         <Form.Item label="迭代" name="sprintId">
           <Select
             defaultValue={sprintId}
@@ -105,7 +105,7 @@ const BugTrend: React.FC<RouteComponentProps> = props => {
             ))}
           </Select>
         </Form.Item>
-      )}
+      ) : ''}
     </Form>
   );
 
